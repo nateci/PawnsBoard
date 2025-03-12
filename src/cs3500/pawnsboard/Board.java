@@ -4,7 +4,7 @@ import java.awt.*;
 import static java.awt.Color.RED;
 
 /**
- * Representation for the Board of the game.
+ * Representation for a Board for Pawns Board.
  */
 public class Board {
   private final int rows;
@@ -54,15 +54,16 @@ public class Board {
 
   private void applyInfluence(Player player, Card card, int row, int col) {
     char[][] influence = player.getColor() == RED ?
-            card.getInfluenceGrid() : card.getMirroredInfluenceGrid(); // if the card isn't
-    int center = 2;
+            card.getInfluenceGrid() : card.getMirroredInfluenceGrid(); // if the player is blue, use the
+    int center = 2;   // the center of the influence grid              // use the mirrored influence grid
     for (int r = 0; r < 5; r++) {
       for (int c = 0; c < 5; c++) {
-        int targetRow = row + (r - center);
-        int targetCol = col + (c - center);
+        int targetRow = row + (r - center); // sub. center from original position results in influenced row
+        int targetCol = col + (c - center); // sub. center from original position results in influenced col
 
         if (isValidCell(targetRow, targetCol)) {
-          grid[targetRow][targetCol].applyInfluence(player.getColor(), influence[r][c]);
+          grid[targetRow][targetCol].influenceBoard(player.getColor(), influence[r][c]);  // applies influence grid
+                                                                                          // to the board
         }
       }
     }
@@ -82,13 +83,13 @@ public class Board {
   public void printTextView() {
     for (int r = 0; r < rows; r++) {
       int[] scores = calculateRowScores(r);
-      System.out.print(scores[0] + " ");
+      System.out.print(scores[0] + " ");  // prints the red row scores to the board
 
       for (int c = 0; c < cols; c++) {
-        System.out.print(grid[r][c].toTextualView());
+        System.out.print(grid[r][c].toTextualView()); // prints the actual card to the board
       }
 
-      System.out.println(" " + scores[1]);
+      System.out.println(" " + scores[1]); // prints the blue row scores to the board
     }
   }
 
@@ -102,17 +103,17 @@ public class Board {
     int redScore = 0, blueScore = 0;
     for (int c = 0; c < cols; c++) {
       Cell cell = grid[row][c];
-      if (cell.hasCard()) {
+      if (cell.hasCard()) { // checks if a cell has a card
         Card card = cell.getCard();
         if (cell.getOwner() == Color.RED) {
-          redScore += card.getValue();
+          redScore += card.getValue(); // if the card belongs to red add value of card to red score
         } else {
-          blueScore += card.getValue();
+          blueScore += card.getValue(); // if the card belongs to blue add value of card to blue score
         }
       }
     }
 
-    return new int[]{redScore, blueScore};
+    return new int[]{redScore, blueScore}; // returns both the blue and red scores
   }
 
   /**
@@ -129,9 +130,9 @@ public class Board {
       int redRowScore = rowScores[0];
       int blueRowScore = rowScores[1];
       if (redRowScore > blueRowScore && playerColor == Color.RED) {
-        totalScore += redRowScore;
+        totalScore += redRowScore;  // only count red row score if it's greater than blue
       } else if (blueRowScore > redRowScore && playerColor == Color.BLUE) {
-        totalScore += blueRowScore;
+        totalScore += blueRowScore; // only count blue row score if it's greater than red
       }
     }
 
