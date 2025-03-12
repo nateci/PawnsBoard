@@ -43,7 +43,7 @@ public class Board {
         int targetRow = row + (r - center);
         int targetCol = col + (c - center);
 
-        if (isValidCell(targetRow, targetCol)) {
+        if (!isValidCell(targetRow, targetCol)) {
           grid[targetRow][targetCol].applyInfluence(player.getColor(), influence[r][c]);
         }
       }
