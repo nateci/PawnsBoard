@@ -1,6 +1,7 @@
 package cs3500.pawnsboard;
 
 import java.awt.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Game {
@@ -9,7 +10,6 @@ public class Game {
   private final Player bluePlayer;
   private Player currentPlayer;
   private boolean consecutivePasses = false;
-
   private boolean gameOver = false;
 
 
@@ -17,17 +17,21 @@ public class Game {
     this.board = board;
     this.redPlayer = redPlayer;
     this.bluePlayer = bluePlayer;
-    this.currentPlayer = redPlayer; //oh lawd jesus sit that thang on me
+    this.currentPlayer = redPlayer;
   }
 
   public void play() {
     Scanner scanner = new Scanner(System.in);
-    boolean gameOver = false;
+    gameOver = false;
 
-    while (!gameOver) { //isnt this not always true i initializedthis as false
+    while (!gameOver) {
       board.printTextView();
       System.out.println((currentPlayer.getColor() == Color.RED ? "Red" : "Blue")
               + "'s turn. Enter 'pass' or card placement (row col cardIndex): ");
+
+      System.out.println("Your current hand: ");
+      displayHand(currentPlayer);
+
       String input = scanner.nextLine();
 
       if (input.equalsIgnoreCase("pass")) {
@@ -64,6 +68,22 @@ public class Game {
     scanner.close();
     determineWinner();
   }
+
+  private void displayHand(Player player) {
+    List<Card> hand = player.getHand();
+
+    if (hand.isEmpty()) {
+      System.out.println("Your hand is empty.");
+      return;
+    }
+
+    for (int i = 0; i < hand.size(); i++) {
+      Card card = hand.get(i);
+      System.out.println(i + ": " + card.getName() + " (Cost: " + card.getCost() + ", Value: " + card.getValue() + ")");
+    }
+  }
+
+
 
   //FOR TESTING
   public boolean isGameOver() {
