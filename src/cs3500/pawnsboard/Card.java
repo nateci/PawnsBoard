@@ -38,7 +38,7 @@ public class Card {
     char[][] mirrored = new char[5][5];
     for (int r = 0; r < 5; r++) {
       for (int c = 0; c < 5; c++) {
-        mirrored[r][4 - c] = influenceGrid[r][c]; //th0is should mirror WDOPAWDIOWAJDOAJD
+        mirrored[r][4 - c] = influenceGrid[r][c];
       }
     }
     return mirrored;

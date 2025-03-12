@@ -1,6 +1,7 @@
 package cs3500.pawnsboard;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
@@ -10,13 +11,18 @@ public class Player {
 
   public Player(Color color, List<Card> deck) {
     this.color = color;
-    this.deck = deck;
-    this.hand = deck.subList(0, Math.min(5, deck.size()));
+    this.deck = new ArrayList<>(deck); // ✅ Copy deck to avoid modifying original
+    this.hand = new ArrayList<>(deck.subList(0, Math.min(5, deck.size()))); // ✅ Create a new list for hand
   }
 
   public Color getColor() {
     return color;
   }
+
+  public List<Card> getHand() {
+    return hand;
+  }
+
 
   public boolean playCard(Board board, int cardIndex, int row, int col) {
     if (cardIndex < 0 || cardIndex >= hand.size()) {
