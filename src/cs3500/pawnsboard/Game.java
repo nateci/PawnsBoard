@@ -7,7 +7,7 @@ import java.util.Scanner;
 /**
  * Representation for an actual game and its functions.
  */
-public class Game {
+public class Game implements PawnsBoardGame {
   private final Board board;
   private final Player redPlayer;
   private final Player bluePlayer;
@@ -29,10 +29,7 @@ public class Game {
     this.currentPlayer = redPlayer;
   }
 
-  /**
-   * Main game loop that manages player turns and game state. Players can either pass their turn
-   * or place a card by specifying row, column, and card index.
-   */
+  @Override
   public void play() {
     Scanner scanner = new Scanner(System.in);
     gameOver = false;
@@ -107,11 +104,7 @@ public class Game {
     }
   }
 
-  /**
-   * Checks if the game is over.
-   *
-   * @return true if the game is over, false otherwise
-   */
+  @Override
   public boolean isGameOver() {
     return gameOver || (!redPlayer.hasValidMoves(board) && !bluePlayer.hasValidMoves(board));
   }
@@ -124,10 +117,8 @@ public class Game {
     currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
   }
 
-  /**
-   * Calculates and displays the final scores, determining the winner of the game.
-   */
-  void determineWinner() {
+  @Override
+  public void determineWinner() {
     // Calculate total scores for both players
     int redScore = board.calculateTotalScore(Color.RED);
     int blueScore = board.calculateTotalScore(Color.BLUE);

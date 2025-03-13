@@ -6,7 +6,7 @@ import static java.awt.Color.RED;
 /**
  * Representation for a Board for Pawns Board.
  */
-public class Board {
+public class Board implements GameBoard {
   private final int rows;
   private final int cols;
   private final Cell[][] grid;
@@ -34,15 +34,7 @@ public class Board {
     }
   }
 
-  /**
-   * method for placing a card onto the board.
-   *
-   * @param player The player placing the card (red or blue)
-   * @param card the card the player is placing
-   * @param row the row of the placed card
-   * @param col the column of the placed card
-   * @return if the card has been placed at the designated position
-   */
+  @Override
   public boolean placeCard(Player player, Card card, int row, int col) {
     if (!isValidMove(player, card, row, col)) {
       return false;
@@ -73,13 +65,12 @@ public class Board {
     return row >= 0 && row < rows && col >= 0 && col < cols;
   }
 
-  boolean isValidMove(Player player, Card card, int row, int col) {
+  @Override
+  public boolean isValidMove(Player player, Card card, int row, int col) {
     return grid[row][col].canPlaceCard(player, card);
   }
 
-  /**
-   * Prints the textual view of the game.
-   */
+  @Override
   public void printTextView() {
     for (int r = 0; r < rows; r++) {
       int[] scores = calculateRowScores(r);
@@ -93,12 +84,7 @@ public class Board {
     }
   }
 
-  /**
-   * Calculates the score of a designated row for both players.
-   *
-   * @param row the row that's currently being used to calculate the score
-   * @return the score of both players for the designated row
-   */
+  @Override
   public int[] calculateRowScores(int row) {
     int redScore = 0, blueScore = 0;
     for (int c = 0; c < cols; c++) {
@@ -116,12 +102,7 @@ public class Board {
     return new int[]{redScore, blueScore}; // returns both the blue and red scores
   }
 
-  /**
-   * Calculates the total score of the game.
-   *
-   * @param playerColor the player's color (red or blue)
-   * @return the total score of the winning player
-   */
+  @Override
   public int calculateTotalScore(Color playerColor) {
     int totalScore = 0;
 
@@ -139,31 +120,17 @@ public class Board {
     return totalScore;
   }
 
-  /**
-   * Getter method for the rows in the game board.
-   *
-   * @return the number of rows
-   */
+  @Override
   public int getRows() {
     return rows;
   }
 
-  /**
-   * Getter method for the columns in the game board.
-   *
-   * @return the number of columns
-   */
+  @Override
   public int getCols() {
     return cols;
   }
 
-  /**
-   * Getter method for the cells of the game board.
-   *
-   * @param row the current row of the game board
-   * @param col the current column of the game board
-   * @return the designated cell of the game board
-   */
+  @Override
   public Cell getCell(int row, int col) {
     if (row < 0 || row >= rows || col < 0 || col >= cols) {
       throw new IllegalArgumentException("Invalid board position: (" + row + ", " + col + ")");

@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  * Representation for a card in Pawns Board.
  */
-public class Card {
+public class Card implements PawnsBoardCard {
   private final String name;
   private final int cost;
   private final int value;
@@ -29,56 +29,32 @@ public class Card {
     this.owner = owner;
   }
 
-  /**
-   * Getter method for the name of the card.
-   *
-   * @return the name of the card
-   */
+  @Override
   public String getName() {
     return name;
   }
 
-  /**
-   * Getter method for the cost of the card.
-   *
-   * @return the cost of the card
-   */
+  @Override
   public int getCost() {
     return cost;
   }
 
-  /**
-   * Getter method for the value of the card.
-   *
-   * @return the value of the card
-   */
+  @Override
   public int getValue() {
     return value;
   }
 
-  /**
-   * Getter method for the influence grid of the card.
-   *
-   * @return the influence grid
-   */
+  @Override
   public char[][] getInfluenceGrid() {
     return influenceGrid;
   }
 
-  /**
-   * Getter method for the owner (player) of the card.
-   *
-   * @return the owner of the card
-   */
+  @Override
   public Color getOwner() {
     return owner;
   }
 
-  /**
-   * Gets the mirrored influence grid (strictly for the blue plauer).
-   *
-   * @return the mirrored influence grid
-   */
+  @Override
   public char[][] getMirroredInfluenceGrid() {
     char[][] mirrored = new char[5][5];
     for (int r = 0; r < 5; r++) {

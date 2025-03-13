@@ -5,77 +5,45 @@ import java.awt.*;
 /**
  * Representation for a cell on the board.
  */
-public class Cell {
+public class Cell implements PawnsBoardCell {
   private int pawns = 0;
   private Color owner = null;
   private Card card = null;
 
-  /**
-   * Setter method for the pawns of the game.
-   *
-   * @param count the number of pawns
-   * @param owner the owner (player) that the pawns belong to.
-   */
+  @Override
   public void setPawns(int count, Color owner) {
     this.pawns = count;
     this.owner = owner;
   }
 
-  /**
-   * Sets a card within a cell.
-   *
-   * @param card the card being used
-   */
+  @Override
   public void setCard(Card card) {
     this.card = card;
     this.pawns = 0;
     this.owner = null;
   }
 
-  /**
-   * Checks if a cell has a card.
-   *
-   * @return if the cell has a card or not
-   */
+  @Override
   public boolean hasCard() {
     return card != null;
   }
 
-  /**
-   * Gets the card at a cell.
-   *
-   * @return the card at the cell
-   */
+  @Override
   public Card getCard() {
     return card;
   }
 
-  /**
-   * Getter method for the owner of a card at a cell.
-   *
-   * @return the owner of the card
-   */
+  @Override
   public Color getOwner() {
     return (card != null) ? card.getOwner() : owner;
   }
 
-  /**
-   * Checks if you can place a card in a cell or not.
-   *
-   * @param player the player
-   * @param card the card
-   * @return if you can place a card or not
-   */
+  @Override
   public boolean canPlaceCard(Player player, Card card) {
     return this.pawns >= card.getCost() && this.owner == player.getColor();
   }
 
-  /**
-   * Actual logic for influencing the board accroding to the influence grid.
-   *
-   * @param playerColor the color of the player (red or blue)
-   * @param influenceType the influence type
-   */
+  @Override
   public void influenceBoard(Color playerColor, char influenceType) {
     if (card != null) return;
 
@@ -91,20 +59,12 @@ public class Cell {
     }
   }
 
-  /**
-   * Getter method for the number of pawns.
-   *
-   * @return the number of pawns
-   */
+  @Override
   public int getPawnCount() {
     return pawns;
   }
 
-  /**
-   * The textual view of the game.
-   *
-   * @return a String of the textual view of the game
-   */
+  @Override
   public String toTextualView() {
     if (card != null) return card.getOwner() == Color.RED ? "R" : "B";
     if (pawns > 0) return String.valueOf(pawns);

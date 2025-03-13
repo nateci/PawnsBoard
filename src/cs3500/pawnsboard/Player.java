@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Represents a player in the game who can play cards on the board.
  */
-public class Player {
+public class Player implements PawnsBoardPlayer {
   private final Color color;
   private final List<Card> deck;
   private List<Card> hand;
@@ -24,33 +24,17 @@ public class Player {
     this.hand = new ArrayList<>(deck.subList(0, Math.min(5, deck.size()))); // ✅ Create a new list for hand
   }
 
-  /**
-   * Getter method for the color of the player (red or blue).
-   *
-   * @return the color of the player
-   */
+  @Override
   public Color getColor() {
     return color;
   }
 
-  /**
-   * Getter method for the hand of the player
-   *
-   * @return the hand of the player
-   */
+  @Override
   public List<Card> getHand() {
     return hand;
   }
 
-  /**
-   * Attempts to play a card from the player's hand onto the board.
-   *
-   * @param board The game board
-   * @param cardIndex The index of the card in the player's hand
-   * @param row The row position where the card should be placed
-   * @param col The column position where the card should be placed
-   * @return if the card was successfully placed or not
-   */
+  @Override
   public boolean playCard(Board board, int cardIndex, int row, int col) {
     // Validate that cardIndex is within the bounds of the hand
     if (cardIndex < 0 || cardIndex >= hand.size()) {
@@ -70,12 +54,7 @@ public class Player {
     }
   }
 
-  /**
-   * Checks whether the player has any valid moves available.
-   *
-   * @param board The game board
-   * @return if the player has at least 1 valid move or not
-   */
+  @Override
   public boolean hasValidMoves(Board board) {
     // Check each card in the player's hand
     for (Card card : hand) {
