@@ -102,7 +102,10 @@ public class PawnsBoard {
 ---
 
 ## **Source Organization**
-**`src/cs3500/pawnsboard/`** *(Main game logic)*
+**'`src/cs3500/`**(_Main_)*
+- `PawnsBoard.java` → Main method for running the game PawnsBoard.
+
+**`src/cs3500/pawnsboard/`** (_Model_)*
 - `Game.java` → Controls game flow.
 - `Board.java` → Represents the game grid.
 - `Player.java` → Manages player actions and cards.
@@ -110,43 +113,22 @@ public class PawnsBoard {
 - `Cell.java` → Represents a single space on the board.
 - `DeckReader.java` → Loads decks from files.
 
-**`test/cs3500/pawnsboard/`** *(Unit tests)*
+**'`src/cs3500/pawnsboard/view/`**(_View_)*
+- `PawnsBoardTextualView.java` → Textual view for PawnsBoard.
+
+**`test/cs3500/pawnsboard/`** *(Model tests)*
 - `BoardTest.java` → Ensures board initialization and logic work correctly.
 - `GameTest.java` → Tests game mechanics, turn switching, and scoring.
 - `PlayerTest.java` → Validates player actions.
 - `ViewTest.java` → Checks correct text output for board, hands, and results.
 - `InvalidMovesTest.java` → Ensures invalid moves are properly rejected.
 
-**`docs/`** *(Configuration files)*
+**`test/cs3500/pawnsboard/view/`** *(View tests)*
+- `ViewTest.java` → Ensures PawnsBoardTextualView is functioning correctly.
+
+**`docs/`** *(Config files)*
 - `deck.config` → Contains the list of available cards for players.
 
 ---
 
-### **How to Run**
-**Compile and run the game:**
-```sh
-javac -d bin src/cs3500/pawnsboard/*.java
-java -cp bin cs3500.pawnsboard.PawnsBoard
-```
-**Run tests using JUnit:**
-```sh
-mvn test
-```
-or
-```sh
-java -cp bin:libs/junit-5.jar org.junit.platform.console.ConsoleLauncher --select-package cs3500.pawnsboard
-```
-
----
-
-## **Future Improvements**
-- **Graphical Interface (GUI)**: Convert text-based rendering into a GUI.
-- **AI Opponent**: Implement a simple AI player.
-- **Custom Board Sizes**: Allow different board dimensions beyond the default.
-
----
-
-## **Final Notes**
-This README provides **a clear structure** for understanding **how the game works**, **how the code is organized**, and **how to get started**. If you have any questions or need additional documentation, refer to the **Javadoc comments** in each file.
-
-**Enjoy playing Pawns Board!**
+**I hope you enjoy playing Pawns Board!**
