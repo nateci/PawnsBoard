@@ -1,17 +1,17 @@
 # Pawns Board
 
 ## Overview
-**Pawns Board** is a strategic two-player board game where players compete to control a grid using **pawns** and **cards** with unique effects. Each player, **Red** and **Blue**, will take turns placing cards on a rectangular board to influence nearby cells, convert opponent's pawns, and secure higher row scores. The game ends when both players pass consecutively, and the winner is determined by the total score respectively to conquered (or won) rows.
+Pawns Board is a strategic two-player board game where players compete to control a grid using pawns and cards with unique effects. Each player, Red and Blue, will take turns placing cards on a rectangular board to influence nearby cells, convert opponent's pawns, and secure higher row scores. The game ends when both players pass consecutively, and the winner is determined by the total score respectively to conquered (or won) rows.
 
 ### **Key Assumptions**
-- The game is **strictly two-player**.
-- The board size is **customizable** but must meet the following conditions:
-  - **Rows:** Must be greater than 0.
-  - **Columns:** Must be **odd** and greater than 1.
-- Each **player's deck** is read from a configuration file and contains **only two copies of each card**.
-- **Cards influence surrounding cells**, either adding pawns or converting opponent’s pawns.
-- **Pawns cannot be moved**, only influenced by cards.
-- The game runs in a **text-based console format**.
+- The game is strictly two-player.
+- The board size must meet the following conditions:
+  - Rows: Must be equal to 3.
+  - Columns: Must be equal to 5.
+- Each player's deck is read from a configuration file and contains only two copies of each card.
+- Cards influence surrounding cells, either adding pawns or converting opponent’s pawns.
+- Pawns cannot be moved, only influenced by cards.
+- The game runs in a text-based format.
 
 ---
 
