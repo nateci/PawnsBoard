@@ -24,12 +24,16 @@ public class DeckReaderTest {
     // Retrieve the first card from the deck
     Card firstCard = deck.get(0);
     // Verify the first card's properties
-    assertEquals("Security", firstCard.getName(), "First card should be 'Security'.");
-    assertEquals(1, firstCard.getCost(), "Security card should have a cost of 1.");
-    assertEquals(2, firstCard.getValue(), "Security card should have a value of 2.");
+    assertEquals("Security", firstCard.getName(),
+            "First card should be 'Security'.");
+    assertEquals(1, firstCard.getCost(),
+            "Security card should have a cost of 1.");
+    assertEquals(2, firstCard.getValue(),
+            "Security card should have a value of 2.");
     // Retrieve the influence grid of the first card
     char[][] grid = firstCard.getInfluenceGrid();
     // Ensure the center of the influence grid is 'C' (center)
-    assertEquals('C', grid[2][2], "The center of the influence grid should be 'C'.");
+    assertEquals('C', grid[2][2],
+            "The center of the influence grid should be 'C'.");
   }
 }

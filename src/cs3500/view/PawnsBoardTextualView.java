@@ -42,7 +42,8 @@ public class PawnsBoardTextualView {
 
     for (int i = 0; i < hand.size(); i++) {
       Card card = hand.get(i);
-      System.out.println(i + ": " + card.getName() + " (Cost: " + card.getCost() + ", Value: " + card.getValue() + ")");
+      System.out.println(i + ": " + card.getName()
+              + " (Cost: " + card.getCost() + ", Value: " + card.getValue() + ")");
     }
   }
 

@@ -18,7 +18,8 @@ public class PlayerTest {
     // Create a 3x5 board
     Board board = new Board(3, 5);
     // Create a red player with a single test card
-    Player redPlayer = new Player(Color.RED, List.of(new Card("Test", 1, 2, new char[][]{
+    Player redPlayer = new Player(Color.RED,
+            List.of(new Card("Test", 1, 2, new char[][]{
             {'X', 'X', 'I', 'X', 'X'},
             {'X', 'X', 'I', 'X', 'X'},
             {'X', 'I', 'C', 'I', 'X'},

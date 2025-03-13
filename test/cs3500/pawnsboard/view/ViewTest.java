@@ -101,7 +101,8 @@ public class ViewTest {
                     + "Red Wins!" + newline;
 
     // Assert output matches expected winner message
-    assertEquals(expectedOutput, outputStream.toString(), "Winner announcement should be correct.");
+    assertEquals(expectedOutput, outputStream.toString(),
+            "Winner announcement should be correct.");
   }
 
   @Test
