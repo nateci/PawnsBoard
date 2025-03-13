@@ -1,11 +1,11 @@
 package cs3500.pawnsboard;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit tests for the Board class.
@@ -35,7 +35,7 @@ public class BoardTest {
       for (int c = 1; c < 4; c++) {
         assertEquals(0, board.getCell(r, c).getPawnCount(),
                 "Cell (" + r + "," + c + ") should be empty.");
-        Assertions.assertNull(board.getCell(r, c).getCard(),
+        assertNull(board.getCell(r, c).getCard(),
                 "Cell (" + r + "," + c + ") should not contain a card.");
       }
     }
