@@ -1,5 +1,7 @@
 package cs3500.pawnsboard;
-import java.awt.*;
+
+
+import java.awt.Color;
 
 import static java.awt.Color.RED;
 
@@ -46,16 +48,16 @@ public class Board implements GameBoard {
 
   private void applyInfluence(Player player, Card card, int row, int col) {
     char[][] influence = player.getColor() == RED ?
-            card.getInfluenceGrid() : card.getMirroredInfluenceGrid(); // if the player is blue, use the
-    int center = 2;   // the center of the influence grid              // use the mirrored influence grid
+            card.getInfluenceGrid() : card.getMirroredInfluenceGrid(); // if the player is blue, use
+    int center = 2;   // the center of the influence grid              // mirrored influence grid
     for (int r = 0; r < 5; r++) {
       for (int c = 0; c < 5; c++) {
-        int targetRow = row + (r - center); // sub. center from original position results in influenced row
-        int targetCol = col + (c - center); // sub. center from original position results in influenced col
+        int targetRow = row + (r - center); // sub. center from original  results in influenced row
+        int targetCol = col + (c - center); // sub. center from original  results in influenced col
 
         if (isValidCell(targetRow, targetCol)) {
-          grid[targetRow][targetCol].influenceBoard(player.getColor(), influence[r][c]);  // applies influence grid
-                                                                                          // to the board
+          grid[targetRow][targetCol].influenceBoard(player.getColor(), influence[r][c]);  // applies
+          // influence to the board
         }
       }
     }
@@ -67,7 +69,13 @@ public class Board implements GameBoard {
 
   @Override
   public boolean isValidMove(Player player, Card card, int row, int col) {
-    return grid[row][col].canPlaceCard(player, card);
+    if (row < 0 || row >= rows || col < 0 || col >= cols) {
+      System.out.println("Invalid move: Out of bounds at (" + row + "," + col + ")");
+      return false;
+    }
+    else {
+      return grid[row][col].canPlaceCard(player, card);
+    }
   }
 
   @Override
@@ -94,7 +102,7 @@ public class Board implements GameBoard {
         if (cell.getOwner() == Color.RED) {
           redScore += card.getValue(); // if the card belongs to red add value of card to red score
         } else {
-          blueScore += card.getValue(); // if the card belongs to blue add value of card to blue score
+          blueScore += card.getValue(); // if the card belongs to blue add value of card to blue
         }
       }
     }

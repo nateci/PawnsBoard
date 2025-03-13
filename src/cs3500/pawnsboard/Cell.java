@@ -1,6 +1,6 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Representation for a cell on the board.
@@ -45,7 +45,9 @@ public class Cell implements PawnsBoardCell {
 
   @Override
   public void influenceBoard(Color playerColor, char influenceType) {
-    if (card != null) return;
+    if (card != null) {
+      return;
+    }
 
     if (influenceType == 'I') {
       if (pawns == 0) {
@@ -66,8 +68,12 @@ public class Cell implements PawnsBoardCell {
 
   @Override
   public String toTextualView() {
-    if (card != null) return card.getOwner() == Color.RED ? "R" : "B";
-    if (pawns > 0) return String.valueOf(pawns);
+    if (card != null) {
+      return card.getOwner() == Color.RED ? "R" : "B";
+    }
+    if (pawns > 0) {
+      return String.valueOf(pawns);
+    }
     return "_";
   }
 }

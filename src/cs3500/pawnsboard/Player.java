@@ -1,6 +1,6 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,8 +9,7 @@ import java.util.List;
  */
 public class Player implements PawnsBoardPlayer {
   private final Color color;
-  private final List<Card> deck;
-  private List<Card> hand;
+  private final List<Card> hand;
 
   /**
    * An instance of a new player with the specified color and deck.
@@ -20,8 +19,7 @@ public class Player implements PawnsBoardPlayer {
    */
   public Player(Color color, List<Card> deck) {
     this.color = color;
-    this.deck = new ArrayList<>(deck); // ✅ Copy deck to avoid modifying original
-    this.hand = new ArrayList<>(deck.subList(0, Math.min(5, deck.size()))); // ✅ Create a new list for hand
+    this.hand = new ArrayList<>(deck.subList(0, Math.min(5, deck.size())));
   }
 
   @Override
