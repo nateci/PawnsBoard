@@ -1,6 +1,6 @@
 package cs3500;
 
-import java.awt.*;
+import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
 
@@ -10,7 +10,14 @@ import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.DeckReader;
 import cs3500.pawnsboard.Game;
 
+/**
+ * The class that runs the pawns board game.
+ */
 public class PawnsBoard {
+
+  /**
+   * Allows you to actually run the Pawns Board game.
+   */
   public static void main(String[] args) {
     try {
       List<Card> redDeck = DeckReader.loadDeck("docs/deck.config", Color.RED);

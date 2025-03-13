@@ -18,8 +18,7 @@ public class Card implements PawnsBoardCard {
    * @param name the name of the card
    * @param cost the cost of the card
    * @param value the value of the card
-   * @param influenceGrid the influenceGrid,
-   * (how placing a card affects the other positions on the board)
+   * @param influenceGrid the influenceGrid
    * @param owner the player (red or blue)
    */
   public Card(String name, int cost, int value, char[][] influenceGrid, Color owner) {

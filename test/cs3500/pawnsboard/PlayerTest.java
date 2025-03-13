@@ -5,7 +5,12 @@ import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 
 /**
  * Unit tests for the Player class.
@@ -20,12 +25,12 @@ public class PlayerTest {
     // Create a red player with a single test card
     Player redPlayer = new Player(Color.RED,
             List.of(new Card("Test", 1, 2, new char[][]{
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'I', 'C', 'I', 'X'},
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'X', 'I', 'X', 'X'}
-    }, Color.RED)));
+              {'X', 'X', 'I', 'X', 'X'},
+              {'X', 'X', 'I', 'X', 'X'},
+              {'X', 'I', 'C', 'I', 'X'},
+              {'X', 'X', 'I', 'X', 'X'},
+              {'X', 'X', 'I', 'X', 'X'}
+            }, Color.RED)));
     // Attempt to place the card in an invalid location (column 4, which belongs to Blue)
     assertFalse(redPlayer.playCard(board, 0, 0, 4),
             "Card should not be placed in an opponent's column.");

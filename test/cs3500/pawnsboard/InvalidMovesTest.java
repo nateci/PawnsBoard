@@ -3,7 +3,10 @@ package cs3500.pawnsboard;
 import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for verifying invalid move conditions in the game.
@@ -14,13 +17,13 @@ public class InvalidMovesTest {
   public void testInvalidCardPlacements() {
     Board board = new Board(3, 5);
     Player redPlayer = new Player(Color.RED,
-            List.of(new Card("TestCard", 1, 3, new char[][]{
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'I', 'C', 'I', 'X'},
-            {'X', 'X', 'I', 'X', 'X'},
-            {'X', 'X', 'I', 'X', 'X'}
-    }, Color.RED)));
+              List.of(new Card("TestCard", 1, 3, new char[][]{
+                {'X', 'X', 'I', 'X', 'X'},
+                {'X', 'X', 'I', 'X', 'X'},
+                {'X', 'I', 'C', 'I', 'X'},
+                {'X', 'X', 'I', 'X', 'X'},
+                {'X', 'X', 'I', 'X', 'X'}
+              }, Color.RED)));
 
     // Out of bounds placement (row -1, column 0)
     assertFalse(redPlayer.playCard(board, 0, -1, 0),
@@ -39,12 +42,12 @@ public class InvalidMovesTest {
     // Attempt to place a card that costs 3 pawns on a cell with only 1 pawn
     Player bluePlayer = new Player(Color.BLUE, List.of(new Card("ExpensiveCard",
             3, 5, new char[][]{
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'C', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'}
-    }, Color.BLUE)));
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'C', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'}
+            }, Color.BLUE)));
     assertFalse(bluePlayer.playCard(board, 0, 0, 4),
             "Card should not be placed when there are insufficient pawns.");
   }
@@ -54,12 +57,12 @@ public class InvalidMovesTest {
     Board board = new Board(3, 5);
     Player redPlayer = new Player(Color.RED,
             List.of(new Card("CheckMove", 1, 1, new char[][]{
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'C', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'}
-    }, Color.RED)));
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'C', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'}
+            }, Color.RED)));
 
     Card testCard = redPlayer.getHand().get(0);
 
@@ -83,12 +86,12 @@ public class InvalidMovesTest {
     Board board = new Board(3, 5);
     Player redPlayer = new Player(Color.RED, List.of(new Card("Placer",
             1, 1, new char[][]{
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'C', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'},
-            {'X', 'X', 'X', 'X', 'X'}
-    }, Color.RED)));
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'C', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'},
+              {'X', 'X', 'X', 'X', 'X'}
+            }, Color.RED)));
     // Place a card and verify the board state
     assertTrue(redPlayer.playCard(board, 0, 0, 0),
             "Card should be placed successfully.");

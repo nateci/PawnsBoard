@@ -7,6 +7,9 @@ import cs3500.pawnsboard.Board;
 import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.Player;
 
+/**
+ * Textual view class for the Pawns Board game.
+ */
 public class PawnsBoardTextualView {
   private final Scanner scanner;
 
@@ -14,7 +17,7 @@ public class PawnsBoardTextualView {
     this.scanner = new Scanner(System.in);
   }
 
-  /** Prints the board with row scores */
+  /** Prints the board with row scores. */
   public void printTextView(Board board) {
     for (int r = 0; r < board.getRows(); r++) {
       int[] scores = board.calculateRowScores(r);
@@ -28,7 +31,7 @@ public class PawnsBoardTextualView {
     }
   }
 
-  /** Displays the player's hand */
+  /** Displays the player's hand. */
   public void displayHand(Player player) {
     List<Card> hand = player.getHand();
 
@@ -47,13 +50,13 @@ public class PawnsBoardTextualView {
     }
   }
 
-  /** Prompts the user for input */
+  /** Prompts the user for input. */
   public String getUserInput() {
     System.out.println("Enter 'pass' or card placement (row col cardIndex): ");
     return scanner.nextLine();
   }
 
-  /** Displays the final winner */
+  /** Displays the final winner. */
   public void displayWinner(int redScore, int blueScore) {
     System.out.println("Game Over!");
     System.out.println("Red Score: " + redScore);
