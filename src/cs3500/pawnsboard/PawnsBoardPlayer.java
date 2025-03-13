@@ -1,6 +1,6 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 /**
@@ -16,7 +16,7 @@ public interface PawnsBoardPlayer {
   Color getColor();
 
   /**
-   * Getter method for the hand of the player
+   * Getter method for the hand of the player.
    *
    * @return the hand of the player
    */

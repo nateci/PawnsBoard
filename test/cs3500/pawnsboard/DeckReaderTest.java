@@ -5,7 +5,9 @@ import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Unit tests for the DeckReader class.

@@ -1,6 +1,6 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Game board interface representing all functions of game board within the Pawns Board game.

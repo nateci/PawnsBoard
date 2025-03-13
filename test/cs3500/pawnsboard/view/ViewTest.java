@@ -12,7 +12,7 @@ import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.Player;
 import cs3500.view.PawnsBoardTextualView;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit tests for the View class.

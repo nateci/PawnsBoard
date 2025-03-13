@@ -8,8 +8,11 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ * Test class for the game. Ensures the game ends properly.
+ */
 public class GameTest {
   private InputStream originalIn;
 

@@ -1,6 +1,6 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Cell interface representing all functions of a cell within the Pawns Board game.

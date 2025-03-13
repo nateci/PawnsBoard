@@ -47,9 +47,10 @@ public class Board implements GameBoard {
   }
 
   private void applyInfluence(Player player, Card card, int row, int col) {
-    char[][] influence = player.getColor() == RED ?
-            card.getInfluenceGrid() : card.getMirroredInfluenceGrid(); // if the player is blue, use
-    int center = 2;   // the center of the influence grid              // mirrored influence grid
+    char[][] influence = player.getColor() == RED
+            // if the player is red use the regular influence grid, mirrored for blue
+            ? card.getInfluenceGrid() : card.getMirroredInfluenceGrid();
+    int center = 2;  // the center of the influence grid
     for (int r = 0; r < 5; r++) {
       for (int c = 0; c < 5; c++) {
         int targetRow = row + (r - center); // sub. center from original  results in influenced row
@@ -94,7 +95,8 @@ public class Board implements GameBoard {
 
   @Override
   public int[] calculateRowScores(int row) {
-    int redScore = 0, blueScore = 0;
+    int redScore = 0;
+    int blueScore = 0;
     for (int c = 0; c < cols; c++) {
       Cell cell = grid[row][c];
       if (cell.hasCard()) { // checks if a cell has a card

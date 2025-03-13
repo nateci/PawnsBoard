@@ -63,7 +63,6 @@ public class DeckReader {
         deck.add(new Card(name, cost, value, influenceGrid, owner));
       }
     }
-
     return deck;
   }
 }
