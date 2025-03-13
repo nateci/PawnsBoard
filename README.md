@@ -40,24 +40,24 @@ public class PawnsBoard {
 ## **Key Components**
 
 ### **Game Loop (`Game.java`)**
-- Manages **player turns** and **game progression**.
-- Ensures **valid moves** and **handles user input**.
+- Manages player turns & game progression.
+- Ensures valid moves & handles user input,
 - Calls `switchTurn()` after every valid move.
-- Ends when **both players pass** consecutively.
-- Determines the **winner** based on final row scores.
+- Ends when both players pass consecutively.
+- Determines the winner based on final row scores.
 
 ### **Board (`Board.java`)**
-- A **rectangular grid** where the game takes place.
-- Contains **cells** that store **pawns or cards**.
-- Provides logic for **placing cards** and **applying influence**.
-- **Prevents invalid moves** (out-of-bounds, insufficient pawns, etc.).
+- A rectangular grid where the game takes place.
+- Contains cells that store pawns or cards.
+- Provides logic for placing cards & applying influence.
+- Prevents invalid moves (out-of-bounds, insufficient pawns, etc.).
 
 ### **Players (`Player.java`)**
 - Each player has:
   - A **color** (Red or Blue).
   - A **deck** of cards.
   - A **hand** drawn from the deck.
-- Handles **card placement**, ensuring only **valid moves** are played.
+- Handles card placement, ensuring only valid moves are played.
 
 ### **Cards (`Card.java`)**
 - Each card has:
@@ -65,47 +65,47 @@ public class PawnsBoard {
   - A **cost** (1-3 pawns required to place).
   - A **value** (affects row scoring).
   - A **5x5 influence grid** (determines how the board is affected).
-- Influence **adds pawns or converts opponent's pawns**.
+- Influence adds pawns or converts opponent's pawns.
 
 ### **View (`View.java`)**
-- Handles **text-based rendering** of:
-  - **The board** (pawns, cards, row scores).
-  - **Player hands** (cards available for play).
-  - **Game prompts and messages** (turn announcements, invalid move messages, etc.).
-  - **Final game results**.
+- Handles text-based rendering of:
+  - The board (pawns, cards, row scores).
+  - Player hands (cards available for play).
+  - Game prompts and messages (turn announcements, invalid move messages, etc.).
+  - Final game results.
 
 ### **Deck Reader (`DeckReader.java`)**
-- Reads deck configurations from a **file**.
-- Ensures **cards are correctly formatted** before adding them to the player's deck.
+- Reads deck configurations from a file.
+- Ensures cards are correctly formatted before adding them to the player's deck.
 
 ---
 
 ### **Key Subcomponents**
 ### **Cells (`Cell.java`)**
-- Stores **pawns or a card**.
-- Tracks **ownership** (Red or Blue).
+- Stores pawns or a card.
+- Tracks ownership (Red or Blue).
 - Determines if a **card can be placed**.
 
 ### **Card Influence**
-- Each card **projects its influence** onto nearby cells based on its **5x5 influence grid**.
+- Each card projects its influence onto nearby cells based on its 5x5 influence grid.
 - Influence effects:
-  - **If a cell is empty:** Adds a **pawn** for the current player.
-  - **If a cell has opponent pawns:** Converts **one** of them.
-  - **If a cell already has a card:** No change.
+  - If a cell is empty: Adds a pawn for the current player.
+  - If a cell has opponent pawns: Converts one of them.
+  - If a cell already has a card: No change.
 
 ### **Scoring System**
-- **Each row is scored separately.**
-- The player with the **higher row-score wins that row**.
-- Total score = **sum of won row-scores**.
-- **Tied rows give no points** to either player.
+- Each row is scored separately.
+- The player with the higher row-score wins that row.
+- Total score = sum of won row-scores.
+- Tied rows give no points to either player.
 
 ---
 
 ## **Source Organization**
-**'`src/cs3500/`**(_Main_)*
+**'`src/cs3500/`**(_Main_)
 - `PawnsBoard.java` → Main method for running the game PawnsBoard.
 
-**`src/cs3500/pawnsboard/`** (_Model_)*
+**`src/cs3500/pawnsboard/`** (_Model_)
 - `Game.java` → Controls game flow.
 - `Board.java` → Represents the game grid.
 - `Player.java` → Manages player actions and cards.
@@ -113,7 +113,7 @@ public class PawnsBoard {
 - `Cell.java` → Represents a single space on the board.
 - `DeckReader.java` → Loads decks from files.
 
-**'`src/cs3500/pawnsboard/view/`**(_View_)*
+**'`src/cs3500/pawnsboard/view/`**(_View_)
 - `PawnsBoardTextualView.java` → Textual view for PawnsBoard.
 
 **`test/cs3500/pawnsboard/`** *(Model tests)*
