@@ -54,17 +54,17 @@ public class PawnsBoard {
 
 ### **Players (`Player.java`)**
 - Each player has:
-  - A **color** (Red or Blue).
-  - A **deck** of cards.
-  - A **hand** drawn from the deck.
+  - A color (Red or Blue).
+  - A deck of cards.
+  - A hand drawn from the deck.
 - Handles card placement, ensuring only valid moves are played.
 
 ### **Cards (`Card.java`)**
 - Each card has:
-  - A **name** (e.g., "Security").
-  - A **cost** (1-3 pawns required to place).
-  - A **value** (affects row scoring).
-  - A **5x5 influence grid** (determines how the board is affected).
+  - A name (e.g., "Security").
+  - A cost (1-3 pawns required to place).
+  - A value (affects row scoring).
+  - A 5x5 influence grid (determines how the board is affected).
 - Influence adds pawns or converts opponent's pawns.
 
 ### **View (`View.java`)**
@@ -84,7 +84,7 @@ public class PawnsBoard {
 ### **Cells (`Cell.java`)**
 - Stores pawns or a card.
 - Tracks ownership (Red or Blue).
-- Determines if a **card can be placed**.
+- Determines if a card can be placed.
 
 ### **Card Influence**
 - Each card projects its influence onto nearby cells based on its 5x5 influence grid.
@@ -102,7 +102,7 @@ public class PawnsBoard {
 ---
 
 ## **Source Organization**
-**'`src/cs3500/`**(_Main_)
+**`src/cs3500/`**(_Main_)
 - `PawnsBoard.java` → Main method for running the game PawnsBoard.
 
 **`src/cs3500/pawnsboard/`** (_Model_)
@@ -113,7 +113,7 @@ public class PawnsBoard {
 - `Cell.java` → Represents a single space on the board.
 - `DeckReader.java` → Loads decks from files.
 
-**'`src/cs3500/pawnsboard/view/`**(_View_)
+**`src/cs3500/pawnsboard/view/`**(_View_)
 - `PawnsBoardTextualView.java` → Textual view for PawnsBoard.
 
 **`test/cs3500/pawnsboard/`** *(Model tests)*
