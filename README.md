@@ -16,7 +16,7 @@ Pawns Board is a strategic two-player board game where players compete to contro
 ---
 
 ##  **Quick Start**
-To play the game, you need a properly formatted deck configuration file. Here’s an code snippet example of how you can set up and start a game in Java:
+To play the game, you need a properly formatted deck (.config) file. Here’s a simple JUnit test to demonstrate how you can set up and start a game in Java:
 
 ```java
   @Test
@@ -70,7 +70,7 @@ To play the game, you need a properly formatted deck configuration file. Here’
 - A rectangular grid where the game takes place.
 - Contains cells that store pawns or cards.
 - Provides logic for placing cards & applying influence.
-- Prevents invalid moves (out-of-bounds, insufficient pawns, etc.).
+- Will prevent invalid moves (out-of-bounds, insufficient pawns, etc.).
 
 ### **Players (`Player.java`)**
 - Each player has:
@@ -81,9 +81,9 @@ To play the game, you need a properly formatted deck configuration file. Here’
 
 ### **Cards (`Card.java`)**
 - Each card has:
-  - A name (e.g., "Security").
+  - A name (e.g.: "Security").
   - A cost (1-3 pawns required to place).
-  - A value (affects row scoring).
+  - A value (for row scoring).
   - A 5x5 influence grid (determines how the board is affected).
 - Influence adds pawns or converts opponent's pawns.
 
@@ -151,4 +151,4 @@ To play the game, you need a properly formatted deck configuration file. Here’
 
 ---
 
-**I hope you enjoy playing Pawns Board!**
+**I hope you enjoy playing our Pawns Board :) !**
