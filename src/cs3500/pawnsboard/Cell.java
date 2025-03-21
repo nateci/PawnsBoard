@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * Representation for a cell on the board.
  */
-public class Cell implements PawnsBoardCell {
+public class Cell implements PawnsBoardCell, ReadOnlyPawnsBoardCell {
   private int pawns = 0;
   private Color owner = null;
   private Card card = null;

@@ -72,4 +72,11 @@ public interface GameBoard {
    * @return the designated cell of the game board
    */
   Cell getCell(int row, int col);
+
+  /**
+   * Creates a copy of the board and all mutable contents within it.
+   *
+   * @return a copy of the board
+   */
+  Board copy();
 }

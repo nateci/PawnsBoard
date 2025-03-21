@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * Representation for a card in Pawns Board.
  */
-public class Card implements PawnsBoardCard {
+public class Card implements PawnsBoardCard, ReadOnlyPawnsBoardCard {
   private final String name;
   private final int cost;
   private final int value;

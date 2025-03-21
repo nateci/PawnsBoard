@@ -147,4 +147,48 @@ public class Board implements GameBoard {
     }
     return grid[row][col];
   }
+
+  @Override
+  public Board copy() {
+    // Create a new board with the same dimensions
+    Board copiedBoard = new Board(this.rows, this.cols);
+
+    // Create a copy of the board
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        Cell originalCell = this.grid[r][c];
+        Cell copiedCell = copiedBoard.grid[r][c];
+
+        // Set pawns and owner for copy
+        if (originalCell.getPawnCount() > 0) {
+          copiedCell.setPawns(originalCell.getPawnCount(), originalCell.getOwner());
+        }
+
+        // Copy card if present
+        if (originalCell.hasCard()) {
+          Card originalCard = originalCell.getCard();
+
+          // Deep copy the influence grid
+          char[][] originalInfluence = originalCard.getInfluenceGrid();
+          char[][] copiedInfluence = new char[5][5];
+          for (int i = 0; i < 5; i++) {
+            System.arraycopy(originalInfluence[i], 0, copiedInfluence[i], 0, 5);
+          }
+
+          // Create new card with copied data
+          Card copiedCard = new Card(
+                  originalCard.getName(),
+                  originalCard.getCost(),
+                  originalCard.getValue(),
+                  copiedInfluence,
+                  originalCard.getOwner()
+          );
+
+          // Place copied card into the new cell
+          copiedCell.setCard(copiedCard);
+        }
+      }
+    }
+    return copiedBoard;
+  }
 }
