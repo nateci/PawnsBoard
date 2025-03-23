@@ -17,8 +17,10 @@ public class PawnsBoard {
   public static void main(String[] args) {
     try {
       // Load decks
-      List<Card> redDeck = DeckReader.loadDeck("docs/deck.config", Color.RED);
-      List<Card> blueDeck = DeckReader.loadDeck("docs/deck.config", Color.BLUE);
+      String sharedDeckFile = "docs/deck.config";
+      int deckSize = 5;
+      List<Card> redDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.RED, deckSize);
+      List<Card> blueDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.BLUE, deckSize);
 
       // Define board dimensions
       int rows = 3;
