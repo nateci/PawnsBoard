@@ -9,20 +9,18 @@ import cs3500.pawnsboard.Board;
 import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.DeckReader;
 import cs3500.pawnsboard.Game;
+import cs3500.view.PawnsBoardViewImpl;
+import cs3500.view.PawnsBoardViewControllerImpl;
 
-/**
- * The class that runs the pawns board game.
- */
 public class PawnsBoard {
 
-  /**
-   * Allows you to actually run the Pawns Board game.
-   */
   public static void main(String[] args) {
     try {
+      // Load decks
       List<Card> redDeck = DeckReader.loadDeck("docs/deck.config", Color.RED);
       List<Card> blueDeck = DeckReader.loadDeck("docs/deck.config", Color.BLUE);
 
+      // Define board dimensions
       int rows = 3;
       int cols = 5;
       int totalCells = rows * cols;
@@ -33,16 +31,27 @@ public class PawnsBoard {
         System.out.println("Need at least " + totalCells + " cards, but only have " + totalCards);
       }
 
-      Player redPlayer = new Player(Color.RED, redDeck);
-      Player bluePlayer = new Player(Color.BLUE, blueDeck);
       Board board = new Board(rows, cols);
+      Game game = getGame(redDeck, blueDeck, board);
 
-      Game game = new Game(board, redPlayer, bluePlayer);
       game.play();
+
+
     } catch (IOException e) {
-      System.out.println("Error loading deck: " + e.getMessage());
+      System.err.println("Error loading deck: " + e.getMessage());
     }
   }
+
+  private static Game getGame(List<Card> redDeck, List<Card> blueDeck, Board board) {
+    Player redPlayer = new Player(Color.RED, redDeck);
+    Player bluePlayer = new Player(Color.BLUE, blueDeck);
+
+    // Pass redPlayer initially — Game will update the model wrapper later if needed
+    ReadOnlyBoardWrapper readOnlyModel = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
+    PawnsBoardViewImpl view = new PawnsBoardViewImpl(readOnlyModel);
+    PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view);
+
+    Game game = new Game(board, redPlayer, bluePlayer, view, controller, readOnlyModel);
+    return game;
+  }
 }
-
-

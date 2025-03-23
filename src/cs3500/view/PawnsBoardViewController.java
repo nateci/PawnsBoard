@@ -1,6 +1,8 @@
 package cs3500.view;
 
 
+import cs3500.pawnsboard.Game;
+
 /**
  * Interface for the Pawns Board view controller.
  * Defines the methods needed to handle user interactions.
@@ -12,6 +14,8 @@ public interface PawnsBoardViewController {
    * @param cardIndex The index of the clicked card
    */
   void handleCardClick(int cardIndex);
+
+  void setGame(Game game);
 
   /**
    * Handles a click on a cell in the game board.

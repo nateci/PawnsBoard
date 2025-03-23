@@ -11,7 +11,6 @@ import java.awt.*;
  */
 public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
 
-  private final ReadOnlyPawnsBoardModel model;
   private final BoardPanel boardPanel;
   private final HandPanel handPanel;
   private PawnsBoardViewController controller;
@@ -22,7 +21,6 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
    * @param model The read-only model to display
    */
   public PawnsBoardViewImpl(ReadOnlyPawnsBoardModel model) {
-    this.model = model;
 
     // Set up the frame
     setTitle("Pawns Board Game");

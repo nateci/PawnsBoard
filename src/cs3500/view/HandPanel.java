@@ -15,7 +15,7 @@ import java.util.List;
  * This panel is responsible for rendering the player's hand and handling
  * card-related user interactions.
  */
-class HandPanel extends JPanel {
+public class HandPanel extends JPanel {
   private final ReadOnlyPawnsBoardModel model;
   private PawnsBoardViewController controller;
 

@@ -8,6 +8,9 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import cs3500.view.PawnsBoardViewControllerImpl;
+import cs3500.view.PawnsBoardViewImpl;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -54,9 +57,10 @@ public class GameTest {
     String simulatedInput = "pass\npass\n";
     ByteArrayInputStream testIn = new ByteArrayInputStream(simulatedInput.getBytes());
     System.setIn(testIn);
-
-    Game game = new Game(board, redPlayer, bluePlayer);
-
+    MockReadOnlyPawnsBoardModel mockModel = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED);
+    PawnsBoardViewImpl view = new PawnsBoardViewImpl(mockModel);
+    PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view);
+    Game game = new Game(board, redPlayer, bluePlayer, view, controller);
     // Play the game (process both "pass" commands and end game)
     game.play();
 

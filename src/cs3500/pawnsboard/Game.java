@@ -2,79 +2,120 @@ package cs3500.pawnsboard;
 
 import java.awt.Color;
 
-import cs3500.view.PawnsBoardTextualView;
+import javax.swing.*;
+
+import cs3500.ReadOnlyBoardWrapper;
+import cs3500.view.PawnsBoardView;
+import cs3500.view.PawnsBoardViewController;
 
 /**
- * Representation for an actual game and its functions.
+ * Game class using GUI view and controller.
  */
 public class Game implements PawnsBoardGame {
   private final Board board;
   private final Player redPlayer;
   private final Player bluePlayer;
-  private final PawnsBoardTextualView view;
+  private final PawnsBoardView view;
+  private final PawnsBoardViewController controller;
+
+  private final ReadOnlyBoardWrapper modelWrapper;
+
+
   private Player currentPlayer;
   private boolean consecutivePasses = false;
   private boolean gameOver = false;
 
   /**
-   * An instance of an actual game.
+   * Constructs a game with GUI support.
    *
-   * @param board     the board
-   * @param redPlayer the red player
-   * @param bluePlayer the blue player
+   * @param board      the board
+   * @param redPlayer  red player
+   * @param bluePlayer blue player
+   * @param view       GUI view
+   * @param controller controller to handle user interaction
    */
-  public Game(Board board, Player redPlayer, Player bluePlayer) {
+  public Game(Board board,
+              Player redPlayer,
+              Player bluePlayer,
+              PawnsBoardView view,
+              PawnsBoardViewController controller,
+              ReadOnlyBoardWrapper modelWrapper) {
     this.board = board;
     this.redPlayer = redPlayer;
     this.bluePlayer = bluePlayer;
     this.currentPlayer = redPlayer;
-    this.view = new PawnsBoardTextualView();
+    this.view = view;
+    this.controller = controller;
+
+    this.view.setController(controller);
+    this.view.makeVisible();
+    this.controller.setGame(this); // so controller can call methods like playCard()
+    this.modelWrapper = modelWrapper;
+
   }
 
+  /**
+   * Starts the game.
+   */
   @Override
   public void play() {
     gameOver = false;
-    while (!gameOver) {
-      // Display current board state
-      view.printTextView(board);
-      // Prompt current player for their move
-      view.displayHand(currentPlayer); // Show current hand
-      String input = view.getUserInput();
-      // Handle pass option
-      if (input.equalsIgnoreCase("pass")) {
-        // Check if this is the second consecutive pass, which ends the game
-        if (consecutivePasses) {
-          gameOver = true;
-          break;
-        }
-        // Reset consecutive passes counter since player didn't pass
-        consecutivePasses = true;
-        switchTurn();
-        continue;
+    view.refresh(); // initial display
+  }
+
+  /**
+   * Called by controller when a player chooses to play a card.
+   */
+  public boolean handlePlayCard(int cardIndex, int row, int col) {
+    if (gameOver) return false;
+
+    if (currentPlayer.playCard(board, cardIndex, row, col)) {
+      consecutivePasses = false;
+      switchTurn();
+      view.refresh();
+
+      if (isGameOver()) {
+        determineWinner();
       }
-      // Parse player input for card placement
-      String[] parts = input.split(" ");
-      if (parts.length != 3) {
-        System.out.println("Invalid move format. Try again.");
-        continue;
-      }
-      try {
-        // Parse the three input values: row, column, and card index
-        int row = Integer.parseInt(parts[0]);
-        int col = Integer.parseInt(parts[1]);
-        int cardIndex = Integer.parseInt(parts[2]);
-        // Attempt to play the card and switch turns if successful
-        if (currentPlayer.playCard(board, cardIndex, row, col)) {
-          consecutivePasses = false;
-          switchTurn();
-        } else {
-          System.out.println("Invalid move. Try again.");
-        }
-      } catch (NumberFormatException e) {
-        System.out.println("Invalid input. Use numbers for row, col, and card index.");
-      }
+
+      return true;
     }
-    determineWinner();
+
+    return false;
+  }
+
+  /**
+   * Called by controller when a player chooses to pass.
+   */
+  public void handlePass() {
+    if (gameOver) return;
+
+    if (consecutivePasses) {
+      gameOver = true;
+      determineWinner();
+    } else {
+      consecutivePasses = true;
+      switchTurn();
+      view.refresh();
+    }
+  }
+
+  private void switchTurn() {
+    currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
+    modelWrapper.setCurrentPlayer(currentPlayer); // 🔥 this line fixes the issue!
+  }
+
+
+  @Override
+  public void determineWinner() {
+    int redScore = board.calculateTotalScore(Color.RED);
+    int blueScore = board.calculateTotalScore(Color.BLUE);
+
+    // Could display in GUI: modal popup or status label update
+    JOptionPane.showMessageDialog(null,
+            "Game Over!\nRed: " + redScore + " | Blue: " + blueScore + "\n" +
+                    (redScore > blueScore ? "Red Wins!" :
+                            blueScore > redScore ? "Blue Wins!" : "It's a tie!"));
   }
 
   @Override
@@ -82,20 +123,9 @@ public class Game implements PawnsBoardGame {
     return gameOver || (!redPlayer.hasValidMoves(board) && !bluePlayer.hasValidMoves(board));
   }
 
-  /**
-   * Switches the active player from red to blue or blue to red.
-   * This method is called after a player completes their turn.
-   */
-  private void switchTurn() {
-    currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
+  public Player getCurrentPlayer() {
+    return currentPlayer;
   }
 
-  @Override
-  public void determineWinner() {
-    // Calculate total scores for both players
-    int redScore = board.calculateTotalScore(Color.RED);
-    int blueScore = board.calculateTotalScore(Color.BLUE);
-    // Display the results
-    view.displayWinner(redScore, blueScore);
-  }
+
 }

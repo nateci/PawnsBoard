@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
  * This panel is responsible for rendering the board state and handling
  * board-related user interactions.
  */
-class BoardPanel extends JPanel {
+public class BoardPanel extends JPanel {
 
   private final ReadOnlyPawnsBoardModel model;
   private PawnsBoardViewController controller;
