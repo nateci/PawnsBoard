@@ -8,9 +8,12 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
+import cs3500.ReadOnlyBoardWrapper;
 import cs3500.view.PawnsBoardViewControllerImpl;
 import cs3500.view.PawnsBoardViewImpl;
 
+import static java.awt.Color.blue;
+import static java.awt.Color.red;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -60,10 +63,10 @@ public class GameTest {
     MockReadOnlyPawnsBoardModel mockModel = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED);
     PawnsBoardViewImpl view = new PawnsBoardViewImpl(mockModel);
     PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view);
-    Game game = new Game(board, redPlayer, bluePlayer, view, controller);
+    ReadOnlyBoardWrapper wrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer); // or currentPlayer
+    Game game = new Game(board, redPlayer, bluePlayer, view, controller, wrapper);
     // Play the game (process both "pass" commands and end game)
     game.play();
-
     // Verify the game is over
     assertTrue(game.isGameOver());
   }

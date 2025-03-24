@@ -71,8 +71,9 @@ public class MockReadOnlyPawnsBoardModel implements ReadOnlyPawnsBoardModel {
 
   @Override
   public int[] calculateRowScores(int row) {
-    return new int[]{5, 3};
+    return (row == 0) ? new int[]{2, 5} : new int[]{5, 3};
   }
+
 
   @Override
   public int calculateTotalScore(Color playerColor) {
