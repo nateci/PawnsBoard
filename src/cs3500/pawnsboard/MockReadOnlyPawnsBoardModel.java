@@ -9,8 +9,7 @@ import java.util.List;
  * A mock implementation of {@link ReadOnlyPawnsBoardModel} for testing purposes.
  * <p>
  * This model provides stubbed behavior for a board of fixed dimensions, including
- * pre-filled hands, fixed row scores, and valid moves. It can be customized further
- * in tests to simulate specific game scenarios.
+ * pre-filled hands, fixed row scores, and valid moves.
  */
 public class MockReadOnlyPawnsBoardModel implements ReadOnlyPawnsBoardModel {
   private final int rows;

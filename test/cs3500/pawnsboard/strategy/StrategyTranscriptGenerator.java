@@ -18,11 +18,13 @@ public class StrategyTranscriptGenerator {
   public static void main(String[] args) {
     // Change this to run FillFirstStrategy or MaximizeRowScoreStrategy
     generateTranscript(new FillFirstStrategy(), "strategy-transcript-first.txt");
-    generateTranscript(new MaximizeRowScoreStrategy(), "strategy-transcript-score.txt");
+    generateTranscript(new MaximizeRowScoreStrategy(),
+            "strategy-transcript-score.txt");
   }
 
   private static void generateTranscript(Strategy strategy, String outputFileName) {
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 5, Color.RED);
+    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3,
+            5, Color.RED);
 
     // Run strategy
     strategy.chooseMoves(model, Color.RED);

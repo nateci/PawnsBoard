@@ -8,6 +8,9 @@ import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
 import cs3500.view.BoardPanel;
 import cs3500.view.PawnsBoardViewController;
 
+/**
+ * Unit tests for BoardPanel.
+ */
 public class BoardPanelTest {
 
   @Test
@@ -40,7 +43,8 @@ public class BoardPanelTest {
     panel.setController(controller);
 
     // Simulate click at center cell
-    MouseEvent click = new MouseEvent(panel, 0, 0, 0, 150, 150, 1, false);
+    MouseEvent click = new MouseEvent(panel, 0, 0,
+            0, 150, 150, 1, false);
     panel.dispatchEvent(click);
 
     assertNotNull(panel.getPreferredSize());

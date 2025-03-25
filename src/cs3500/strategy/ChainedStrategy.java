@@ -11,6 +11,10 @@ import java.util.List;
 public class ChainedStrategy implements Strategy {
   private final List<Strategy> strategies;
 
+  /**
+   * Constructor for chaining strategies together.
+   * @param strategies take in a strategy.
+   */
   public ChainedStrategy(List<Strategy> strategies) {
     this.strategies = strategies;
   }

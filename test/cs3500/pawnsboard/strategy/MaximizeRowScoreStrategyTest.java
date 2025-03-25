@@ -1,6 +1,5 @@
 package cs3500.pawnsboard.strategy;
 
-import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
 import cs3500.strategy.MaximizeRowScoreStrategy;
 import cs3500.strategy.Move;
@@ -21,7 +20,8 @@ public class MaximizeRowScoreStrategyTest {
   public void testChoosesMoveThatWinsTopRow() {
     MaximizeRowScoreStrategy strategy = new MaximizeRowScoreStrategy();
 
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
+    MockReadOnlyPawnsBoardModel model = new
+            MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
       @Override
       public int[] calculateRowScores(int row) {
         if (row == 0) {
@@ -50,7 +50,8 @@ public class MaximizeRowScoreStrategyTest {
   public void testSkipsUnwinnableRows() {
     MaximizeRowScoreStrategy strategy = new MaximizeRowScoreStrategy();
 
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
+    MockReadOnlyPawnsBoardModel model = new
+            MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
       @Override
       public int[] calculateRowScores(int row) {
         return new int[]{3, 6}; // Always losing
@@ -70,7 +71,8 @@ public class MaximizeRowScoreStrategyTest {
   public void testChoosesFirstImprovingMoveInRow() {
     MaximizeRowScoreStrategy strategy = new MaximizeRowScoreStrategy();
 
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
+    MockReadOnlyPawnsBoardModel model = new
+            MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
       @Override
       public int[] calculateRowScores(int row) {
         return new int[]{2, 2}; // Equal → valid if increase is possible

@@ -70,12 +70,14 @@ public class HandPanelTest {
             System.currentTimeMillis(), 0, x, y, 1, false);
     panel.dispatchEvent(click);
 
-    assertEquals(0, clickedCardIndex, "Expected card index 0 to be selected on click.");
+    assertEquals(0, clickedCardIndex,
+            "Expected card index 0 to be selected on click.");
   }
 
   @Test
   public void testGetPreferredSizeHeight() {
     Dimension preferred = panel.getPreferredSize();
-    assertTrue(preferred.height >= 160, "Preferred height should account for card layout.");
+    assertTrue(preferred.height >= 160,
+            "Preferred height should account for card layout.");
   }
 }

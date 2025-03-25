@@ -28,7 +28,8 @@ public class ControlTheBoardStrategy implements Strategy {
         for (int col = 0; col < model.getBoardCols(); col++) {
           if (!model.isValidMove(cardIndex, row, col)) continue;
 
-          int owned = estimateOwnedCellsAfterMove(model, playerColor, hand.get(cardIndex), row, col);
+          int owned = estimateOwnedCellsAfterMove(model,
+                  playerColor, hand.get(cardIndex), row, col);
 
           if (owned > maxControlled) {
             bestMoves.clear();
