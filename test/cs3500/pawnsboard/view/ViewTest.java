@@ -1,15 +1,11 @@
 package cs3500.pawnsboard.view;
 
 import org.junit.jupiter.api.Test;
-import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.List;
 
 import cs3500.pawnsboard.Board;
-import cs3500.pawnsboard.Card;
-import cs3500.pawnsboard.Player;
 import cs3500.view.PawnsBoardTextualView;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

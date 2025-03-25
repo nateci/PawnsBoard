@@ -1,10 +1,5 @@
 package cs3500.view;
 
-import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
-
-import javax.swing.*;
-import java.awt.*;
-
 /**
  * Interface for the Pawns Board game view frame.
  * Defines the methods required for the main view component.

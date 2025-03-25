@@ -13,7 +13,6 @@ import static org.junit.Assert.assertNull;
 
 /**
  * Unit tests for the {@link TieBreaker} utility class.
- * <p>
  * These tests ensure that tie-breaking logic selects the most desirable move
  * based on row, column, and card index priority.
  */

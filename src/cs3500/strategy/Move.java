@@ -61,8 +61,12 @@ public class Move {
 
   @Override
   public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
 
     Move other = (Move) obj;
     return row == other.row && col == other.col && cardIndex == other.cardIndex;

@@ -1,6 +1,7 @@
 package cs3500.pawnsboard;
 
-import java.awt.*;
+
+import java.awt.Color;
 
 /**
  * A read-only interface for a card within the Pawns Board game.

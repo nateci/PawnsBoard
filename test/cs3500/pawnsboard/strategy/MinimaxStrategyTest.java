@@ -16,7 +16,6 @@ import static org.junit.Assert.assertNotNull;
 
 /**
  * Unit tests for the {@link MinimaxStrategy} class.
- * <p>
  * These tests validate that the strategy selects moves that minimize the opponent's options
  * by considering their possible responses after a simulated move.
  */

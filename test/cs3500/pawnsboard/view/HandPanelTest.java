@@ -8,12 +8,14 @@ import cs3500.view.PawnsBoardViewController;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Unit tests for HandPanel using a manual mock model.
@@ -24,6 +26,9 @@ public class HandPanelTest {
   private MockReadOnlyPawnsBoardModel mockModel;
   private int clickedCardIndex = -1;
 
+  /**
+   * Before each for setting up methods for testing.
+   */
   @BeforeEach
   public void setup() {
     mockModel = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED);
@@ -40,16 +45,24 @@ public class HandPanelTest {
       }
 
       @Override
-      public void handleCellClick(int row, int col) {}
+      public void handleCellClick(int row, int col) {
+        // dummy for testing
+      }
 
       @Override
-      public void confirmMove() {}
+      public void confirmMove() {
+        // dummy for testing
+      }
 
       @Override
-      public void passTurn() {}
+      public void passTurn() {
+        // dummy for testing
+      }
 
       @Override
-      public void setGame(cs3500.pawnsboard.Game game) {}
+      public void setGame(cs3500.pawnsboard.Game game) {
+        // dummy for testing
+      }
     });
   }
 

@@ -23,7 +23,9 @@ public class MinimaxStrategy implements Strategy {
     for (int cardIndex = 0; cardIndex < hand.size(); cardIndex++) {
       for (int row = 0; row < model.getBoardRows(); row++) {
         for (int col = 0; col < model.getBoardCols(); col++) {
-          if (!model.isValidMove(cardIndex, row, col)) continue;
+          if (!model.isValidMove(cardIndex, row, col)) {
+            continue;
+          }
 
           int opponentOptions = countOpponentMovesAfter(model, opponent);
           if (opponentOptions < minOpponentMoves) {

@@ -77,7 +77,8 @@ public class DeckReader {
    * @return A randomized list of Card objects assigned to the given player
    * @throws IOException If the file cannot be read or is invalid
    */
-  public static List<Card> getRandomDeckForPlayer(String filePath, Color owner, int count) throws IOException {
+  public static List<Card> getRandomDeckForPlayer(String filePath,
+                                                  Color owner, int count) throws IOException {
     // Load all cards (temporarily assigned the owner)
     List<Card> allCards = loadDeck(filePath, owner);
 

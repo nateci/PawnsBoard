@@ -5,13 +5,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import cs3500.pawnsboard.*;
+import cs3500.pawnsboard.Board;
+import cs3500.pawnsboard.Card;
+import cs3500.pawnsboard.DeckReader;
+import cs3500.pawnsboard.Game;
+import cs3500.pawnsboard.Player;
 import cs3500.view.PawnsBoardViewImpl;
 import cs3500.view.PawnsBoardViewControllerImpl;
 
 /**
  * The main entry point for the Pawns Board game.
- * <p>
  * This class initializes the game by loading decks from a configuration file,
  * setting up players and the board, and launching the game loop.
  */
@@ -23,7 +26,7 @@ public class PawnsBoard {
    * @param args command-line arguments (not used)
    */
   public static void main(String[] args) {
-    String sharedDeckFile = "docs/deck.config";
+    String sharedDeckFile = "deck.config";
     int deckSize = 15;
     int rows = 3;
     int cols = 5;

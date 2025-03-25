@@ -1,6 +1,5 @@
 package cs3500.pawnsboard.strategy;
 
-import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
 import cs3500.strategy.FillFirstStrategy;
 import cs3500.strategy.Move;
@@ -10,7 +9,8 @@ import org.junit.Test;
 import java.awt.Color;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for FillFirstStrategy.

@@ -4,8 +4,14 @@ import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.Cell;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.RenderingHints;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -112,18 +118,17 @@ public class BoardPanel extends JPanel {
         } else {
           g2d.setColor(Color.GRAY);
         }
-          g2d.fillRect(x, y, cellSize, cellSize);
+        g2d.fillRect(x, y, cellSize, cellSize);
+        // Draw cell border
+        g2d.setColor(Color.BLACK);
+        g2d.drawRect(x, y, cellSize, cellSize);
 
-          // Draw cell border
-          g2d.setColor(Color.BLACK);
-          g2d.drawRect(x, y, cellSize, cellSize);
-
-          // Draw cell contents
-          Cell cell = (Cell) model.getCell(row, col);
-          drawCellContents(g2d, cell, x, y, cellSize);
-        }
+        // Draw cell contents
+        Cell cell = (Cell) model.getCell(row, col);
+        drawCellContents(g2d, cell, x, y, cellSize);
       }
     }
+  }
 
   /**
    * Draws the contents of a cell (pawns or card).
@@ -138,8 +143,8 @@ public class BoardPanel extends JPanel {
     if (cell.hasCard()) {
       // Draw card
       Card card = cell.getCard();
-      Color playerColor = card.getOwner() == Color.RED ?
-            new Color(255, 200, 200) : new Color(200, 200, 255);
+      Color playerColor = card.getOwner() == Color.RED
+              ? new Color(255, 200, 200) : new Color(200, 200, 255);
       g2d.setColor(playerColor);
       g2d.fillRect(x, y, cellSize, cellSize);
 
@@ -153,8 +158,8 @@ public class BoardPanel extends JPanel {
       g2d.drawString(valueText, textX, textY);
     } else if (cell.getPawnCount() > 0) {
       // Draw pawn
-      Color pawnColor = cell.getOwner() == Color.RED ?
-          new Color(255, 150, 150) : new Color(150, 150, 255);
+      Color pawnColor = cell.getOwner() == Color.RED
+              ? new Color(255, 150, 150) : new Color(150, 150, 255);
       g2d.setColor(pawnColor);
       int pawnSize = cellSize / 2;
       int pawnX = x + (cellSize - pawnSize) / 2;
@@ -219,8 +224,8 @@ public class BoardPanel extends JPanel {
     int row = (e.getY() - offsetY) / cellSize;
 
     // Check if click is within board boundaries
-    if (row >= 0 && row < model.getBoardRows() &&
-      col >= 0 && col < model.getBoardCols()) {
+    if (row >= 0 && row < model.getBoardRows()
+            && col >= 0 && col < model.getBoardCols()) {
 
       // Toggle selection if clicking the same cell
       if (selectedRow == row && selectedCol == col) {

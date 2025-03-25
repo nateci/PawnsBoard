@@ -7,9 +7,12 @@ import cs3500.view.PawnsBoardViewImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Unit tests for the PawnsBoardViewImpl class.
@@ -50,7 +53,9 @@ public class PawnsBoardViewImplTest {
       }
 
       @Override
-      public void setGame(cs3500.pawnsboard.Game game) {}
+      public void setGame(cs3500.pawnsboard.Game game) {
+        // dummy holder
+      }
     };
 
     assertDoesNotThrow(() -> view.setController(dummyController));

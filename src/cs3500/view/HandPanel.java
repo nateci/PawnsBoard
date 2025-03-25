@@ -4,10 +4,16 @@ import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardCard;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Graphics2D;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Font;
+import java.awt.RenderingHints;
+
 import java.util.List;
 
 /**
@@ -126,13 +132,14 @@ public class HandPanel extends JPanel {
    * @param height The card height
    * @param isSelected Whether the card is selected
    */
-  private void drawCard(Graphics2D g2d, Card card, int x, int y, int width, int height, boolean isSelected) {
+  private void drawCard(Graphics2D g2d, Card card, int x, int y,
+                        int width, int height, boolean isSelected) {
     // Draw card background
     if (isSelected) {
       g2d.setColor(Color.CYAN); // Highlight selected card
     } else {
-      Color cardColor = model.getCurrentPlayerColor() == Color.RED ?
-          new Color(255, 200, 200) : new Color(200, 200, 255);
+      Color cardColor = model.getCurrentPlayerColor() == Color.RED
+              ? new Color(255, 200, 200) : new Color(200, 200, 255);
       g2d.setColor(cardColor);
     }
     g2d.fillRect(x, y, width, height);
@@ -167,8 +174,8 @@ public class HandPanel extends JPanel {
     Color currentPlayerColor = model.getCurrentPlayerColor();
 
     // Use regular or mirrored grid based on player color
-    char[][] displayGrid = currentPlayerColor == Color.RED ?
-        grid : card.getMirroredInfluenceGrid();
+    char[][] displayGrid = currentPlayerColor == Color.RED
+            ? grid : card.getMirroredInfluenceGrid();
 
     for (int r = 0; r < INFLUENCE_GRID_SIZE; r++) {
       for (int c = 0; c < INFLUENCE_GRID_SIZE; c++) {
@@ -235,7 +242,6 @@ public class HandPanel extends JPanel {
 
     // Check if click is within hand boundaries
     if (cardIndex >= 0 && cardIndex < hand.size()) {
-    // Toggle selection if clicking the same card
       if (selectedCardIndex == cardIndex) {
         selectedCardIndex = -1;
       } else {

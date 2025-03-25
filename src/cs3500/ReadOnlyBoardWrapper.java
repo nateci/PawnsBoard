@@ -21,13 +21,14 @@ public class ReadOnlyBoardWrapper implements ReadOnlyPawnsBoardModel {
   private Player currentPlayer;
 
   /**
-   * Constructor for ReadOnlyBoardWrapper
+   * Constructor for ReadOnlyBoardWrapper.
    * @param board takes in a Board.
    * @param redPlayer takes in the red player.
    * @param bluePlayer takes in the blue player.
    * @param currentPlayer takes in whom the action is on.
    */
-  public ReadOnlyBoardWrapper(Board board, Player redPlayer, Player bluePlayer, Player currentPlayer) {
+  public ReadOnlyBoardWrapper(Board board, Player redPlayer,
+                              Player bluePlayer, Player currentPlayer) {
     this.board = board;
     this.redPlayer = redPlayer;
     this.bluePlayer = bluePlayer;
@@ -106,8 +107,12 @@ public class ReadOnlyBoardWrapper implements ReadOnlyPawnsBoardModel {
   public Color getWinner() {
     int redScore = board.calculateTotalScore(Color.RED);
     int blueScore = board.calculateTotalScore(Color.BLUE);
-    if (redScore > blueScore) return Color.RED;
-    if (blueScore > redScore) return Color.BLUE;
+    if (redScore > blueScore) {
+      return Color.RED;
+    }
+    if (blueScore > redScore) {
+      return Color.BLUE;
+    }
     return null; // tie
   }
 

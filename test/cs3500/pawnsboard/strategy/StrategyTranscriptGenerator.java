@@ -15,6 +15,10 @@ import java.io.IOException;
  */
 public class StrategyTranscriptGenerator {
 
+  /**
+   * main method for generating a transcript (txt file).
+   * @param args output to a txt file.
+   */
   public static void main(String[] args) {
     // Change this to run FillFirstStrategy or MaximizeRowScoreStrategy
     generateTranscript(new FillFirstStrategy(), "strategy-transcript-first.txt");

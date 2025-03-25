@@ -1,7 +1,10 @@
 package cs3500.pawnsboard.view;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
+
 import java.awt.event.MouseEvent;
 
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
@@ -15,7 +18,8 @@ public class BoardPanelTest {
 
   @Test
   public void testInitialRenderAndMouseClick() {
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, java.awt.Color.RED);
+    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3,
+            java.awt.Color.RED);
     BoardPanel panel = new BoardPanel(model);
 
     // Simulate layout
@@ -29,16 +33,24 @@ public class BoardPanelTest {
       }
 
       @Override
-      public void handleCardClick(int index) {}
+      public void handleCardClick(int index) {
+        // dummy for testing
+      }
 
       @Override
-      public void confirmMove() {}
+      public void confirmMove() {
+        // dummy for testing
+      }
 
       @Override
-      public void passTurn() {}
+      public void passTurn() {
+        // dummy for testing
+      }
 
       @Override
-      public void setGame(cs3500.pawnsboard.Game game) {}
+      public void setGame(cs3500.pawnsboard.Game game) {
+        // dummy for testing
+      }
     };
     panel.setController(controller);
 

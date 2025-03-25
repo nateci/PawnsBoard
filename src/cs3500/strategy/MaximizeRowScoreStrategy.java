@@ -24,14 +24,18 @@ public class MaximizeRowScoreStrategy implements Strategy {
       int opponentScore = (playerColor == Color.RED) ? rowScores[1] : rowScores[0];
 
       // If player already wins this row, skip
-      if (playerScore > opponentScore) continue;
+      if (playerScore > opponentScore) {
+        continue;
+      }
 
       List<Move> viableMoves = new ArrayList<>();
 
       for (int cardIndex = 0; cardIndex < hand.size(); cardIndex++) {
         ReadOnlyPawnsBoardCard card = hand.get(cardIndex);
         for (int col = 0; col < model.getBoardCols(); col++) {
-          if (!model.isValidMove(cardIndex, row, col)) continue;
+          if (!model.isValidMove(cardIndex, row, col)) {
+            continue;
+          }
 
           int simulatedScore = playerScore + card.getValue();
           if (simulatedScore >= opponentScore) {

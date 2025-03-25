@@ -9,7 +9,6 @@ import java.util.List;
 
 /**
  * A strategy that aims to maximize control of the board.
- * <p>
  * This strategy selects moves that result in the highest estimated number
  * of cells being controlled after playing a card. It evaluates all possible
  * valid moves in the current game state and returns the list of best-scoring moves.
@@ -26,7 +25,9 @@ public class ControlTheBoardStrategy implements Strategy {
     for (int cardIndex = 0; cardIndex < hand.size(); cardIndex++) {
       for (int row = 0; row < model.getBoardRows(); row++) {
         for (int col = 0; col < model.getBoardCols(); col++) {
-          if (!model.isValidMove(cardIndex, row, col)) continue;
+          if (!model.isValidMove(cardIndex, row, col)) {
+            continue;
+          }
 
           int owned = estimateOwnedCellsAfterMove(model,
                   playerColor, hand.get(cardIndex), row, col);
@@ -48,7 +49,6 @@ public class ControlTheBoardStrategy implements Strategy {
   /**
    * Estimates the number of cells that would be controlled by the player after placing
    * the specified card at the given row and column.
-   * <p>
    * This uses the card's influence grid and assumes that each 'X' in the grid represents
    * a cell that would be affected by the card. A cell is considered "gained" if it is
    * within bounds and not already owned by the player.

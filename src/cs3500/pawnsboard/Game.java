@@ -16,7 +16,6 @@ public class Game implements PawnsBoardGame {
   private final Player redPlayer;
   private final Player bluePlayer;
   private final PawnsBoardView view;
-  private final PawnsBoardViewController controller;
 
   private final ReadOnlyBoardWrapper modelWrapper;
 
@@ -45,11 +44,10 @@ public class Game implements PawnsBoardGame {
     this.bluePlayer = bluePlayer;
     this.currentPlayer = redPlayer;
     this.view = view;
-    this.controller = controller;
 
     this.view.setController(controller);
     this.view.makeVisible();
-    this.controller.setGame(this); // so controller can call methods like playCard()
+    controller.setGame(this); // so controller can call methods like playCard()
     this.modelWrapper = modelWrapper;
 
   }
@@ -67,7 +65,9 @@ public class Game implements PawnsBoardGame {
    * Called by controller when a player chooses to play a card.
    */
   public boolean handlePlayCard(int cardIndex, int row, int col) {
-    if (gameOver) return false;
+    if (gameOver) {
+      return false;
+    }
 
     if (currentPlayer.playCard(board, cardIndex, row, col)) {
       consecutivePasses = false;
@@ -89,7 +89,9 @@ public class Game implements PawnsBoardGame {
    * Called by controller when a player chooses to pass.
    */
   public void handlePass() {
-    if (gameOver) return;
+    if (gameOver) {
+      return;
+    }
 
     if (consecutivePasses) {
       gameOver = true;
@@ -115,8 +117,8 @@ public class Game implements PawnsBoardGame {
 
     // Could display in GUI: modal popup or status label update
     JOptionPane.showMessageDialog(null,
-            "Game Over!\nRed: " + redScore + " | Blue: " + blueScore + "\n" +
-                    (redScore > blueScore ? "Red Wins!" :
+            "Game Over!\nRed: " + redScore + " | Blue: " + blueScore + "\n"
+                    + (redScore > blueScore ? "Red Wins!" :
                             blueScore > redScore ? "Blue Wins!" : "It's a tie!"));
   }
 

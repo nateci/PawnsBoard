@@ -18,7 +18,6 @@ import static org.junit.Assert.assertTrue;
 
 /**
  * Unit tests for the {@link ChainedStrategy} class.
- * <p>
  * These tests verify the behavior of chained strategies, ensuring
  * fallback works properly and priority is respected.
  */
