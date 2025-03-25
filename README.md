@@ -239,8 +239,8 @@ These mocks allowed us to:
 We implemented a complete GUI for Pawns Board using **Java Swing**:
 
 - **`PawnsBoardViewImpl`** – Renders the full window using a read-only model
-- **`PawnsBoardPanel`** – Custom `JPanel` for drawing the board and cards
-- **`StubController`** – Handles clicks and key events for testing interactivity
+- **`BoardPanel`** – Custom `JPanel` for drawing the board and cards
+- **`HandPanel`** – Handles clicks and key events for testing interactivity
 
 The view supports:
 - Click-to-select on cards and board cells
