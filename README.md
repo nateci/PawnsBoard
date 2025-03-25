@@ -121,34 +121,69 @@ To play the game, you need a properly formatted deck (.config) file. Here’s a 
 
 ---
 
-## **Source Organization**
-**`src/cs3500/`**(_Main_)
-- `PawnsBoard.java` → Main method for running the game PawnsBoard.
+## **Source Organization** (UPDATED FOR PART 2)
+**`src/cs3500/`** (_Main_)
+- `PawnsBoard.java`
 
 **`src/cs3500/pawnsboard/`** (_Model_)
-- `Game.java` → Controls game flow.
-- `Board.java` → Represents the game grid.
-- `Player.java` → Manages player actions and cards.
-- `Card.java` → Defines card behavior and influence.
-- `Cell.java` → Represents a single space on the board.
-- `DeckReader.java` → Loads decks from files.
+- `Game.java`
+- `Board.java`
+- `Player.java`
+- `Card.java`
+- `Cell.java`
+- `DeckReader.java`
+- `DeckReaderTest.java`
+- `MockCell.java`
+- `MockReadOnlyPawnsBoardModel.java`
+- `PawnsBoardCard.java`
+- `PawnsBoardCell.java`
+- `ReadOnlyPawnsBoardCard.java`
+- `ReadOnlyPawnsBoardCell.java`
+- `ReadOnlyPawnsBoardModel.java`
 
-**`src/cs3500/pawnsboard/view/`**(_View_)
-- `PawnsBoardTextualView.java` → Textual view for PawnsBoard.
+**`src/cs3500/strategy/`** (_Strategy_)
+- `Strategy.java`
+- `Move.java`
+- `FillFirstStrategy.java`
+- `MaximizeRowScoreStrategy.java`
+- `ControlTheBoardStrategy.java`
+- `MinimaxStrategy.java`
+- `ChainedStrategy.java`
+- `TieBreaker.java`
 
-**`test/cs3500/pawnsboard/`** *(Model tests)*
-- `BoardTest.java` → Ensures board initialization and logic work correctly.
-- `GameTest.java` → Tests game mechanics, turn switching, and scoring.
-- `PlayerTest.java` → Validates player actions.
-- `ViewTest.java` → Checks correct text output for board, hands, and results.
-- `InvalidMovesTest.java` → Ensures invalid moves are properly rejected.
+**`src/cs3500/pawnsboard/view/`** (_View_)
+- `PawnsBoardTextualView.java`
+- `PawnsBoardViewImpl.java`
+- `BoardPanel.java`
+- `HandPanel.java`
+- `PawnsBoardView.java`
+- `PawnsBoardViewController.java`
+- `PawnsBoardViewControllerImpl.java`
+- `ReadOnlyBoardWrapper.java`
 
-**`test/cs3500/pawnsboard/view/`** *(View tests)*
-- `ViewTest.java` → Ensures PawnsBoardTextualView is functioning correctly.
+**`test/cs3500/pawnsboard/model/`** (_Model Tests_)
+- `BoardTest.java`
+- `GameTest.java`
+- `PlayerTest.java`
+- `InvalidMovesTest.java`
 
-**`docs/`** *(Config files)*
-- `deck.config` → Contains the list of available cards for players.
+**`test/cs3500/pawnsboard/strategy/`** (_Strategy Tests_)
+- `FillFirstStrategyTest.java`
+- `MaximizeRowScoreStrategyTest.java`
+- `ControlTheBoardStrategyTest.java`
+- `MinimaxStrategyTest.java`
+- `ChainedStrategyTest.java`
+- `TieBreakerTest.java`
+- `StrategyTranscriptGenerator.java`
 
+**`test/cs3500/pawnsboard/view/`** (_View Tests_)
+- `BoardPanelTest.java`
+- `HandPanelTest.java`
+- `PawnsBoardViewImplTest.java`
+- `ViewTest.java`
+
+**`docs/`** (_Config files_)
+- `deck.config`
 ---
 
 ## **Changes for Part 2**
