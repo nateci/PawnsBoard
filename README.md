@@ -124,6 +124,7 @@ To play the game, you need a properly formatted deck (.config) file. Here’s a 
 ## **Source Organization** (UPDATED FOR PART 2)
 **`src/cs3500/`** (_Main_)
 - `PawnsBoard.java`
+- `ReadOnlyBoardWrapper.java`
 
 **`src/cs3500/pawnsboard/`** (_Model_)
 - `Game.java`
