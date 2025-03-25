@@ -211,7 +211,7 @@ The view supports:
 - Visual highlighting for selected items
 - Keyboard input:  
   - **Enter** → Confirm move  
-  - **P** → Pass turn
+  - **Space Bar** → Pass turn
 - Correct mirrored influence grids for Blue player
 - Dynamic resizing
 
@@ -224,6 +224,15 @@ Four screenshots of a 5-row by 7-column game are included:
 - `red-turn.png` – Red player's turn with a selected card and cell
 - `blue-turn.png` – Blue's first turn with mirrored cards
 - `midgame.png` – Non-trivial midgame state with several cards played
+---
+
+
+### **Note for Running the JAR**
+
+To run the program via the provided JAR file, ensure that a file named `deck.config` is available in the working directory. This configuration file contains the starting cards for both players and is required for the game to load and launch correctly.
+
+The `deck.config` file **is already included** with this submission.
+
 ---
 
 **I hope you enjoy playing our Pawns Board :) !**
