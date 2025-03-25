@@ -16,17 +16,6 @@ import java.util.List;
  */
 public class ControlTheBoardStrategy implements Strategy {
 
-  /**
-   * Chooses the list of best possible moves based on board control.
-   * <p>
-   * A "best" move is one that leads to the highest number of estimated owned cells
-   * after the move is made. If multiple moves yield the same number of owned cells,
-   * all such moves are included in the result.
-   *
-   * @param model       the current read-only state of the board
-   * @param playerColor the color of the player making the move
-   * @return a list of optimal moves for the player to choose from
-   */
   @Override
   public List<Move> chooseMoves(ReadOnlyPawnsBoardModel model, Color playerColor) {
     List<Move> bestMoves = new ArrayList<>();
@@ -79,7 +68,7 @@ public class ControlTheBoardStrategy implements Strategy {
 
     for (int i = 0; i < gridSize; i++) {
       for (int j = 0; j < gridSize; j++) {
-        if (influence[i][j] == 'X') { // 'X' means the card affects this cell
+        if (influence[i][j] == 'X') {
           int targetRow = row + (i - center);
           int targetCol = col + (j - center);
 

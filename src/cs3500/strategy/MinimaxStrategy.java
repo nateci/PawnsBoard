@@ -41,9 +41,7 @@ public class MinimaxStrategy implements Strategy {
   }
 
   /**
-   * A simplified estimate of the opponent's valid moves on the current board.
-   * Ideally this should clone/apply the move and evaluate next state,
-   * but we use a static snapshot for now.
+   * An estimate of the opponent's valid moves on the current board.
    */
   private int countOpponentMovesAfter(ReadOnlyPawnsBoardModel model, Color opponentColor) {
     int count = 0;

@@ -121,33 +121,153 @@ To play the game, you need a properly formatted deck (.config) file. Here’s a 
 
 ---
 
-## **Source Organization**
-**`src/cs3500/`**(_Main_)
-- `PawnsBoard.java` → Main method for running the game PawnsBoard.
+## **Source Organization** (UPDATED FOR PART 2)
+**`src/cs3500/`** (_Main_)
+- `PawnsBoard.java`
+- `ReadOnlyBoardWrapper.java`
 
 **`src/cs3500/pawnsboard/`** (_Model_)
-- `Game.java` → Controls game flow.
-- `Board.java` → Represents the game grid.
-- `Player.java` → Manages player actions and cards.
-- `Card.java` → Defines card behavior and influence.
-- `Cell.java` → Represents a single space on the board.
-- `DeckReader.java` → Loads decks from files.
+- `Game.java`
+- `Board.java`
+- `Player.java`
+- `Card.java`
+- `Cell.java`
+- `DeckReader.java`
+- `DeckReaderTest.java`
+- `MockCell.java`
+- `MockReadOnlyPawnsBoardModel.java`
+- `PawnsBoardCard.java`
+- `PawnsBoardCell.java`
+- `ReadOnlyPawnsBoardCard.java`
+- `ReadOnlyPawnsBoardCell.java`
+- `ReadOnlyPawnsBoardModel.java`
 
-**`src/cs3500/pawnsboard/view/`**(_View_)
-- `PawnsBoardTextualView.java` → Textual view for PawnsBoard.
+**`src/cs3500/strategy/`** (_Strategy_)
+- `Strategy.java`
+- `Move.java`
+- `FillFirstStrategy.java`
+- `MaximizeRowScoreStrategy.java`
+- `ControlTheBoardStrategy.java`
+- `MinimaxStrategy.java`
+- `ChainedStrategy.java`
+- `TieBreaker.java`
 
-**`test/cs3500/pawnsboard/`** *(Model tests)*
-- `BoardTest.java` → Ensures board initialization and logic work correctly.
-- `GameTest.java` → Tests game mechanics, turn switching, and scoring.
-- `PlayerTest.java` → Validates player actions.
-- `ViewTest.java` → Checks correct text output for board, hands, and results.
-- `InvalidMovesTest.java` → Ensures invalid moves are properly rejected.
+**`src/cs3500/pawnsboard/view/`** (_View_)
+- `PawnsBoardTextualView.java`
+- `PawnsBoardViewImpl.java`
+- `BoardPanel.java`
+- `HandPanel.java`
+- `PawnsBoardView.java`
+- `PawnsBoardViewController.java`
+- `PawnsBoardViewControllerImpl.java`
+- `ReadOnlyBoardWrapper.java`
 
-**`test/cs3500/pawnsboard/view/`** *(View tests)*
-- `ViewTest.java` → Ensures PawnsBoardTextualView is functioning correctly.
+**`test/cs3500/pawnsboard/model/`** (_Model Tests_)
+- `BoardTest.java`
+- `GameTest.java`
+- `PlayerTest.java`
+- `InvalidMovesTest.java`
 
-**`docs/`** *(Config files)*
-- `deck.config` → Contains the list of available cards for players.
+**`test/cs3500/pawnsboard/strategy/`** (_Strategy Tests_)
+- `FillFirstStrategyTest.java`
+- `MaximizeRowScoreStrategyTest.java`
+- `ControlTheBoardStrategyTest.java`
+- `MinimaxStrategyTest.java`
+- `ChainedStrategyTest.java`
+- `TieBreakerTest.java`
+- `StrategyTranscriptGenerator.java`
+
+**`test/cs3500/pawnsboard/view/`** (_View Tests_)
+- `BoardPanelTest.java`
+- `HandPanelTest.java`
+- `PawnsBoardViewImplTest.java`
+- `ViewTest.java`
+
+**`docs/`** (_Config files_)
+- `deck.config`
+---
+
+## **Changes for Part 2**
+
+### **Strategic Computer Players**
+
+We introduced four new classes implementing the `Strategy` interface:
+
+- **`FillFirstStrategy`**  
+  Scans cards in hand from left to right and board cells from top-left to bottom-right. Chooses the first valid `(card, row, col)` move and stops. If no valid move exists, the player passes.
+
+- **`MaximizeRowScoreStrategy`**  
+  Traverses rows from top to bottom. In each row, attempts to find the first `(card, row, col)` move that improves the player’s score to be **greater than or equal to** the opponent's. If no such move exists in any row, the player passes.
+
+- **`ControlTheBoardStrategy`** *(Extra Credit)*  
+  Evaluates moves based on how many total board cells would be owned after placing a card. Chooses the move that maximizes ownership. Ties are broken by **topmost**, then **leftmost**, then **lowest card index**.
+
+- **`MinimaxStrategy`** *(Extra Credit)*  
+  Simulates each possible move and evaluates the number of valid responses left for the opponent, minimizing their future options. Requires simulating the opponent’s strategy internally.
+
+We also added:
+
+- **`ChainedStrategy`** – Combines multiple strategies in priority order.
+- **`TieBreaker`** – Resolves move ties based on consistent rules.
+
+All strategies were thoroughly unit-tested using mocks. Strategy decision transcripts are saved in:
+- `strategy-transcript-first.txt` (for **FillFirst**)
+- `strategy-transcript-score.txt` (for **MaximizeRowScore**)
+
+---
+
+### **Testing Strategies with Mocks**
+
+To isolate and validate strategy behavior, we created:
+
+- **`MockReadOnlyPawnsBoardModel`**  
+  A controllable simulation of the game model that overrides legality checks, scoring methods, and logs which cells/rows are accessed.
+
+- **`MockCell`**  
+  A simplified board cell that returns static pawn ownership and values.
+
+These mocks allowed us to:
+- Simulate legal and illegal moves
+- Trigger specific row score outcomes
+- Confirm traversal and tie-breaking behavior
+- Generate strategy transcripts for submission
+
+---
+
+###  **Visual View and Event Handling**
+
+We implemented a complete GUI for Pawns Board using **Java Swing**:
+
+- **`PawnsBoardViewImpl`** – Renders the full window using a read-only model
+- **`PawnsBoardPanel`** – Custom `JPanel` for drawing the board and cards
+- **`StubController`** – Handles clicks and key events for testing interactivity
+
+The view supports:
+- Click-to-select on cards and board cells
+- Visual highlighting for selected items
+- Keyboard input:  
+  - **Enter** → Confirm move  
+  - **Space Bar** → Pass turn
+- Correct mirrored influence grids for Blue player
+- Dynamic resizing
+
+---
+
+### **Screenshots**
+
+Four screenshots of a 5-row by 7-column game are included:
+- `start.png` – Start of game
+- `red-turn.png` – Red player's turn with a selected card and cell
+- `blue-turn.png` – Blue's first turn with mirrored cards
+- `midgame.png` – Non-trivial midgame state with several cards played
+---
+
+
+### **Note for Running the JAR**
+
+To run the program via the provided JAR file, ensure that a file named `deck.config` is available in the working directory. This configuration file contains the starting cards for both players and is required for the game to load and launch correctly.
+
+The `deck.config` file **is already included** with this submission.
 
 ---
 

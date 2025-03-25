@@ -8,6 +8,7 @@ import cs3500.pawnsboard.Game;
  * Defines the methods needed to handle user interactions.
  */
 public interface PawnsBoardViewController {
+
   /**
    * Handles a click on a card in the player's hand.
    *
@@ -15,6 +16,10 @@ public interface PawnsBoardViewController {
    */
   void handleCardClick(int cardIndex);
 
+  /**
+   * Handles setting the game to a state.
+   * @param game The game being set.
+   */
   void setGame(Game game);
 
   /**
