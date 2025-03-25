@@ -1,9 +1,13 @@
-package cs3500.pawnsboard;
+package cs3500.pawnsboard.model;
 
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
 import java.util.List;
+
+import cs3500.pawnsboard.Board;
+import cs3500.pawnsboard.Card;
+import cs3500.pawnsboard.Player;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,7 +34,7 @@ public class PlayerTest {
               {'X', 'I', 'C', 'I', 'X'},
               {'X', 'X', 'I', 'X', 'X'},
               {'X', 'X', 'I', 'X', 'X'}
-            }, Color.RED)));
+            }, Color.RED)), 5);
     // Attempt to place the card in an invalid location (column 4, which belongs to Blue)
     assertFalse(redPlayer.playCard(board, 0, 0, 4),
             "Card should not be placed in an opponent's column.");

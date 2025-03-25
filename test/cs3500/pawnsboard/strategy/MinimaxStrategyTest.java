@@ -10,8 +10,16 @@ import org.junit.Test;
 import java.awt.Color;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
+
+/**
+ * Unit tests for the {@link MinimaxStrategy} class.
+ * <p>
+ * These tests validate that the strategy selects moves that minimize the opponent's options
+ * by considering their possible responses after a simulated move.
+ */
 public class MinimaxStrategyTest {
 
   @Test
@@ -25,5 +33,6 @@ public class MinimaxStrategyTest {
 
     List<Move> moves = strategy.chooseMoves(model, Color.RED);
     assertNotNull(moves);
+    assertFalse(moves.isEmpty());
   }
 }

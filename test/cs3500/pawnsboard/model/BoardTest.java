@@ -1,8 +1,10 @@
-package cs3500.pawnsboard;
+package cs3500.pawnsboard.model;
 
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
+
+import cs3500.pawnsboard.Board;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

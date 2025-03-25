@@ -18,39 +18,50 @@ import static org.junit.Assert.*;
 public class FillFirstStrategyTest {
 
   @Test
-  public void testChoosesFirstAvailableMove() {
+  public void testReturnsFirstValidMove() {
     FillFirstStrategy strategy = new FillFirstStrategy();
-
-    // Set up mock board with one card and 3x3 board
     MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED);
-    Card testCard = new Card("CardA", 1, 1, new char[][]{
-            {'_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_'},
-            {'_', '_', 'C', '_', '_'},
-            {'_', '_', '_', '_', '_'},
-            {'_', '_', '_', '_', '_'}
-    }, Color.RED);
 
-    model.getPlayerHand(Color.RED).clear();
-    model.getPlayerHand(Color.RED).add(testCard);
-
-    List<Move> moves = strategy.chooseMoves(model, Color.RED);
-
-    assertEquals(1, moves.size());
-    Move chosen = moves.get(0);
-    assertEquals(0, chosen.getRow());
-    assertEquals(0, chosen.getCol());
-    assertEquals(0, chosen.getCardIndex());
+    // Assume all moves are valid. Strategy should pick card 0, row 0, col 0.
+    List<Move> result = strategy.chooseMoves(model, Color.RED);
+    assertEquals(1, result.size());
+    Move move = result.get(0);
+    assertEquals(0, move.getCardIndex());
+    assertEquals(0, move.getRow());
+    assertEquals(0, move.getCol());
   }
 
   @Test
-  public void testReturnsEmptyIfNoValidMoves() {
+  public void testStopsAtFirstPlayableLocation() {
     FillFirstStrategy strategy = new FillFirstStrategy();
 
-    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.BLUE);
-    model.getPlayerHand(Color.BLUE).clear(); // no cards
+    // Override mock to return false for first few positions
+    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
+      @Override
+      public boolean isValidMove(int cardIndex, int row, int col) {
+        return row == 1 && col == 1; // Only this is valid
+      }
+    };
 
-    List<Move> moves = strategy.chooseMoves(model, Color.BLUE);
-    assertTrue(moves.isEmpty());
+    List<Move> result = strategy.chooseMoves(model, Color.RED);
+    assertEquals(1, result.size());
+    Move move = result.get(0);
+    assertEquals(1, move.getRow());
+    assertEquals(1, move.getCol());
+  }
+
+  @Test
+  public void testNoValidMovesReturnsEmpty() {
+    FillFirstStrategy strategy = new FillFirstStrategy();
+
+    MockReadOnlyPawnsBoardModel model = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED) {
+      @Override
+      public boolean isValidMove(int cardIndex, int row, int col) {
+        return false; // No move is valid
+      }
+    };
+
+    List<Move> result = strategy.chooseMoves(model, Color.RED);
+    assertTrue(result.isEmpty());
   }
 }

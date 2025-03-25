@@ -1,8 +1,13 @@
-package cs3500.pawnsboard;
+package cs3500.pawnsboard.model;
 
 import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.util.List;
+
+import cs3500.pawnsboard.Board;
+import cs3500.pawnsboard.Card;
+import cs3500.pawnsboard.Player;
+
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -23,7 +28,7 @@ public class InvalidMovesTest {
                 {'X', 'I', 'C', 'I', 'X'},
                 {'X', 'X', 'I', 'X', 'X'},
                 {'X', 'X', 'I', 'X', 'X'}
-              }, Color.RED)));
+              }, Color.RED)), 5);
 
     // Out of bounds placement (row -1, column 0)
     assertFalse(redPlayer.playCard(board, 0, -1, 0),
@@ -47,7 +52,7 @@ public class InvalidMovesTest {
               {'X', 'X', 'C', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'}
-            }, Color.BLUE)));
+            }, Color.BLUE)), 5);
     assertFalse(bluePlayer.playCard(board, 0, 0, 4),
             "Card should not be placed when there are insufficient pawns.");
   }
@@ -62,7 +67,7 @@ public class InvalidMovesTest {
               {'X', 'X', 'C', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'}
-            }, Color.RED)));
+            }, Color.RED)), 5);
 
     Card testCard = redPlayer.getHand().get(0);
 
@@ -91,7 +96,7 @@ public class InvalidMovesTest {
               {'X', 'X', 'C', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'},
               {'X', 'X', 'X', 'X', 'X'}
-            }, Color.RED)));
+            }, Color.RED)), 5);
     // Place a card and verify the board state
     assertTrue(redPlayer.playCard(board, 0, 0, 0),
             "Card should be placed successfully.");

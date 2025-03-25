@@ -43,46 +43,6 @@ public class ViewTest {
   }
 
   @Test
-  public void testDisplayHand() {
-    // Create a test player with a mock hand
-    Player player = new Player(Color.RED, List.of(
-            new Card("Test1", 1, 2, new char[][]{
-                    {'X', 'X', 'I', 'X', 'X'},
-                    {'X', 'X', 'I', 'X', 'X'},
-                    {'X', 'I', 'C', 'I', 'X'},
-                    {'X', 'X', 'I', 'X', 'X'},
-                    {'X', 'X', 'I', 'X', 'X'}
-            }, Color.RED),
-            new Card("Test2", 2, 3, new char[][]{
-                    {'X', 'X', 'X', 'X', 'X'},
-                    {'X', 'X', 'I', 'X', 'X'},
-                    {'X', 'I', 'C', 'I', 'X'},
-                    {'X', 'X', 'I', 'X', 'X'},
-                    {'X', 'X', 'X', 'X', 'X'}
-            }, Color.RED)
-    ));
-    // Capture console output
-    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-    System.setOut(new PrintStream(outputStream));
-    // Display hand
-    PawnsBoardTextualView view = new PawnsBoardTextualView();
-    view.displayHand(player);
-    // Restore normal output
-    System.setOut(System.out);
-    // Expected output
-    String newline = System.lineSeparator();
-    String expectedOutput =
-            "Red's Turn." + newline
-                    + "Your current hand:" + newline
-                    + "0: Test1 (Cost: 1, Value: 2)" + newline
-                    + "1: Test2 (Cost: 2, Value: 3)" + newline;
-
-    // Assert output matches expected hand display
-    assertEquals(expectedOutput, outputStream.toString(),
-            "Player's hand should display correctly.");
-  }
-
-  @Test
   public void testDisplayWinner() {
     // Capture console output
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

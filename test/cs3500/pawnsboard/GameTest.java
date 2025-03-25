@@ -45,7 +45,7 @@ public class GameTest {
                     {'X', 'I', 'C', 'I', 'X'},
                     {'X', 'X', 'I', 'X', 'X'},
                     {'X', 'X', 'I', 'X', 'X'}
-            }, Color.RED)));
+            }, Color.RED)), 5);
 
     Player bluePlayer = new Player(Color.BLUE, java.util.List.of(
             new Card("Security", 1, 2, new char[][]{
@@ -54,7 +54,7 @@ public class GameTest {
                     {'X', 'I', 'C', 'I', 'X'},
                     {'X', 'X', 'I', 'X', 'X'},
                     {'X', 'X', 'I', 'X', 'X'}
-            }, Color.BLUE)));
+            }, Color.BLUE)), 5);
 
     // Create input with "pass" command for both players
     String simulatedInput = "pass\npass\n";

@@ -8,7 +8,15 @@ import java.util.List;
 import cs3500.strategy.Move;
 import cs3500.strategy.TieBreaker;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+/**
+ * Unit tests for the {@link TieBreaker} utility class.
+ * <p>
+ * These tests ensure that tie-breaking logic selects the most desirable move
+ * based on row, column, and card index priority.
+ */
 
 public class TieBreakerTest {
 

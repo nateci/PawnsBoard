@@ -1,10 +1,14 @@
-package cs3500.pawnsboard;
+package cs3500.pawnsboard.model;
 
 import org.junit.jupiter.api.Test;
 
 import java.awt.Color;
 import java.io.IOException;
 import java.util.List;
+
+import cs3500.pawnsboard.Card;
+import cs3500.pawnsboard.DeckReader;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;

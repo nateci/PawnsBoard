@@ -1,0 +1,6 @@
+Checked row score for row 0
+Checked: card 0 at (0,0)
+Checked: card 0 at (0,1)
+Checked: card 0 at (0,2)
+Checked: card 0 at (0,3)
+Checked: card 0 at (0,4)

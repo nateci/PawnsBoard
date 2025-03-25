@@ -2,7 +2,7 @@ package cs3500.pawnsboard;
 
 import java.awt.Color;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 import cs3500.ReadOnlyBoardWrapper;
 import cs3500.view.PawnsBoardView;
@@ -71,6 +71,7 @@ public class Game implements PawnsBoardGame {
 
     if (currentPlayer.playCard(board, cardIndex, row, col)) {
       consecutivePasses = false;
+      currentPlayer.drawCardIfAvailable();
       switchTurn();
       view.refresh();
 
@@ -95,6 +96,7 @@ public class Game implements PawnsBoardGame {
       determineWinner();
     } else {
       consecutivePasses = true;
+      currentPlayer.drawCardIfAvailable();
       switchTurn();
       view.refresh();
     }
@@ -102,7 +104,7 @@ public class Game implements PawnsBoardGame {
 
   private void switchTurn() {
     currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
-    modelWrapper.setCurrentPlayer(currentPlayer); // 🔥 this line fixes the issue!
+    modelWrapper.setCurrentPlayer(currentPlayer);
   }
 
 
@@ -122,10 +124,4 @@ public class Game implements PawnsBoardGame {
   public boolean isGameOver() {
     return gameOver || (!redPlayer.hasValidMoves(board) && !bluePlayer.hasValidMoves(board));
   }
-
-  public Player getCurrentPlayer() {
-    return currentPlayer;
-  }
-
-
 }

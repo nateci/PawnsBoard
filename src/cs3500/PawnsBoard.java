@@ -2,48 +2,52 @@ package cs3500;
 
 import java.awt.Color;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.List;
 
-import cs3500.pawnsboard.Player;
-import cs3500.pawnsboard.Board;
-import cs3500.pawnsboard.Card;
-import cs3500.pawnsboard.DeckReader;
-import cs3500.pawnsboard.Game;
+import cs3500.pawnsboard.*;
 import cs3500.view.PawnsBoardViewImpl;
 import cs3500.view.PawnsBoardViewControllerImpl;
 
+/**
+ * The main entry point for the Pawns Board game.
+ * <p>
+ * This class initializes the game by loading decks from a configuration file,
+ * setting up players and the board, and launching the game loop.
+ */
 public class PawnsBoard {
 
+  /**
+   * Launches the Pawns Board game.
+   *
+   * @param args command-line arguments (not used)
+   */
   public static void main(String[] args) {
     String sharedDeckFile = "docs/deck.config";
-    int deckSize = 5;
+    int deckSize = 15;
     int rows = 3;
     int cols = 5;
     int totalCells = rows * cols;
 
-    List<Card> redDeck, blueDeck;
+    if (!new File(sharedDeckFile).exists()) {
+      System.err.println("Deck config file not found: " + sharedDeckFile);
+      return;
+    }
 
     try {
-      File file = new File(sharedDeckFile);
-      if (file.exists()) {
-        redDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.RED, deckSize);
-        blueDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.BLUE, deckSize);
-      } else {
-        System.out.println("📦 No deck file found — using in-memory fallback deck");
-        redDeck = generateDefaultDeck(Color.RED, deckSize);
-        blueDeck = generateDefaultDeck(Color.BLUE, deckSize);
-      }
+      List<Card> redDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.RED, deckSize);
+      List<Card> blueDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.BLUE, deckSize);
 
       int totalCards = redDeck.size() + blueDeck.size();
+
       if (totalCards < totalCells) {
-        System.out.printf("⚠️ Not enough cards to fill the board (%d required, %d available)%n", totalCells, totalCards);
+        System.out.println("Warning: Not enough cards to fill the board.");
+        System.out.printf("Required: %d cards, but only have: %d%n", totalCells, totalCards);
+        System.out.println("The game will still run, but may end early.");
       }
 
       if (redDeck.isEmpty() || blueDeck.isEmpty()) {
-        System.err.println("❌ Cannot start game: one or both decks are empty.");
+        System.err.println("Cannot start game: one or both decks are empty.");
         return;
       }
 
@@ -56,33 +60,24 @@ public class PawnsBoard {
     }
   }
 
+  /**
+   * Constructs a new {@link Game} instance using the given decks and board.
+   *
+   * @param redDeck   the deck for the red player
+   * @param blueDeck  the deck for the blue player
+   * @param board     the game board
+   * @return a fully initialized {@link Game} ready to be played
+   */
   private static Game getGame(List<Card> redDeck, List<Card> blueDeck, Board board) {
-    Player redPlayer = new Player(Color.RED, redDeck);
-    Player bluePlayer = new Player(Color.BLUE, blueDeck);
+    int handSize = 5;
+    Player redPlayer = new Player(Color.RED, redDeck, handSize);
+    Player bluePlayer = new Player(Color.BLUE, blueDeck, handSize);
 
-    ReadOnlyBoardWrapper readOnlyModel = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
+    ReadOnlyBoardWrapper readOnlyModel = new ReadOnlyBoardWrapper(board, redPlayer,
+            bluePlayer, redPlayer);
     PawnsBoardViewImpl view = new PawnsBoardViewImpl(readOnlyModel);
     PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view);
 
     return new Game(board, redPlayer, bluePlayer, view, controller, readOnlyModel);
-  }
-
-  private static List<Card> generateDefaultDeck(Color owner, int count) {
-    String[] names = {"Guardian", "Archer", "Cleric", "Knight", "Mage", "Warden", "Rogue", "Lancer"};
-    List<Card> deck = new java.util.ArrayList<>();
-
-    for (int i = 0; i < count; i++) {
-      String name = names[i % names.length];
-      int cost = (i % 3) + 1;
-      int value = (i % 4) + 1;
-      char[][] grid = new char[5][5];
-      for (int r = 0; r < 5; r++) {
-        for (int c = 0; c < 5; c++) {
-          grid[r][c] = (r == 2 && c == 2) ? 'C' : (Math.random() < 0.15 ? 'I' : 'X');
-        }
-      }
-      deck.add(new Card(name, cost, value, grid, owner));
-    }
-    return deck;
   }
 }

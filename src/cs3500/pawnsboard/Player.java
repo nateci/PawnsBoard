@@ -2,7 +2,9 @@ package cs3500.pawnsboard;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  * Represents a player in the game who can play cards on the board.
@@ -11,15 +13,32 @@ public class Player implements PawnsBoardPlayer {
   private final Color color;
   private final List<Card> hand;
 
+  private final Queue<Card> drawPile;
+
+
   /**
    * An instance of a new player with the specified color and deck.
    *
    * @param color The player's color (RED or BLUE)
-   * @param deck The player's deck of cards
+   * @param initialHandSize The player's deck of cards
    */
-  public Player(Color color, List<Card> deck) {
+  public Player(Color color, List<Card> deck, int initialHandSize) {
+    if (initialHandSize > deck.size() / 3) {
+      throw new IllegalArgumentException("Hand size cannot exceed a third of the deck size.");
+    }
+
     this.color = color;
-    this.hand = new ArrayList<>(deck.subList(0, Math.min(5, deck.size())));
+    this.hand = new ArrayList<>(deck.subList(0, initialHandSize));
+    this.drawPile = new LinkedList<>(deck.subList(initialHandSize, deck.size()));
+  }
+
+  /**
+   * If card is not available, make sure that we are drawing.
+   */
+  public void drawCardIfAvailable() {
+    if (!drawPile.isEmpty()) {
+      hand.add(drawPile.poll());
+    }
   }
 
   @Override

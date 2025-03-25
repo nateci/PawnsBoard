@@ -2,6 +2,13 @@ package cs3500.pawnsboard;
 
 import java.awt.Color;
 
+/**
+ * A simple mock implementation of {@link ReadOnlyPawnsBoardCell}
+ * used for testing or placeholder purposes.
+ * <p>
+ * This mock always reports a RED owner, 2 pawns, no card present,
+ * and provides a basic textual view.
+ */
 public class MockCell implements ReadOnlyPawnsBoardCell {
 
   @Override
