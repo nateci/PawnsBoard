@@ -269,6 +269,46 @@ To run the program via the provided JAR file, ensure that a file named `deck.con
 
 The `deck.config` file **is already included** with this submission.
 
+
+## **Changes for Part 3**
+
+### **Fully Playable Game with GUI Controllers**
+
+In Part 3, we completed the game’s functionality by connecting human and machine players to the model via controllers and made the game fully playable using the graphical user interface.
+
+### **Controller Enhancements**
+
+- Created **`PawnsBoardViewControllerImpl`**, which connects the model and the view for human players.
+  - Implements `PawnsBoardViewController`, `ModelFeatures`, and `PlayerController`.
+  - Handles user actions like selecting a card or board cell, confirming a move, or passing a turn.
+  - Ensures moves are only allowed during the player’s turn and invalid moves are properly rejected.
+  - Displays move feedback via status messages, rather than disruptive popups.
+
+- **`MachinePlayerController`** was created:
+  - Now listens for turn notifications from the model.
+  - Uses strategies to pick moves automatically and play them during its turn.
+
+### **Event Handling and Game Loop**
+
+- The game loop is now controlled by the model (`Game.java`) through turn-based notifications.
+- Each controller listens to model updates and ensures only the active player can act.
+- Controllers register with the model before the game begins to ensure the first player gets the turn.
+
+### **Two-Player GUI Windows**
+
+- Each player now has their own GUI window (`PawnsBoardViewImpl`), complete with controller logic.
+- `main()` initializes both views and controllers, and spaces them apart on screen.
+
+### **Improved UX Feedback**
+
+- Titles of each player's window update to reflect turn status (e.g. "Red Player - Your Turn").
+- Game results are clearly shown at the end in a single popup and in the window title/status.
+
+### **Configurable Game Mode**
+
+- In the `PawnsBoard` main class, booleans `redIsHuman` and `blueIsHuman` toggle between human and AI.
+- Easy to switch between Human vs Human, Human vs AI, or AI vs AI matchups.
+
 ---
 
 **I hope you enjoy playing our Pawns Board :) !**
