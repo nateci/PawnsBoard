@@ -11,18 +11,15 @@ import cs3500.pawnsboard.DeckReader;
 import cs3500.pawnsboard.Game;
 import cs3500.pawnsboard.Player;
 import cs3500.controller.MachinePlayerController;
-import cs3500.pawnsboard.Player;
 import cs3500.controller.PlayerController;
+import cs3500.controller.PawnsBoardViewControllerImpl;
 import cs3500.strategy.ChainedStrategy;
 import cs3500.strategy.FillFirstStrategy;
 import cs3500.strategy.MaximizeRowScoreStrategy;
-import cs3500.controller.PawnsBoardViewControllerImpl;
 import cs3500.view.PawnsBoardViewImpl;
 
 /**
  * The main entry point for the Pawns Board game.
- * This class initializes the game by loading decks from a configuration file,
- * setting up players and the board, and launching the game loop.
  */
 public class PawnsBoard {
 
@@ -32,7 +29,7 @@ public class PawnsBoard {
    * @param args command-line arguments (not used)
    */
   public static void main(String[] args) {
-    String sharedDeckFile = "deck.config";
+    String sharedDeckFile = "docs/deck.config";
     int deckSize = 15;
     int rows = 3;
     int cols = 5;
@@ -61,64 +58,69 @@ public class PawnsBoard {
       }
 
       Board board = new Board(rows, cols);
-
-      // Create players
       int handSize = 5;
+
       Player redPlayer = new Player(Color.RED, redDeck, handSize);
       Player bluePlayer = new Player(Color.BLUE, blueDeck, handSize);
 
-      // Create model wrapper
       ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
 
-      // Set up the game
-      Game game = new Game(board, redPlayer, bluePlayer, null, null, modelWrapper);
+      // Config: Set true/false here to change game mode
+      boolean redIsHuman = true;
+      boolean blueIsHuman = false;
 
-      // Create views for each player
-      PawnsBoardViewImpl redView = new PawnsBoardViewImpl(modelWrapper);
-      PawnsBoardViewImpl blueView = new PawnsBoardViewImpl(modelWrapper);
-
-      // Create controllers for each player
       PlayerController redController;
       PlayerController blueController;
 
-      // Decide which players are human or machine
-      boolean redIsHuman = true;  // Change to false for machine vs machine
-      boolean blueIsHuman = false; // Change to true for human vs human
-
+      // Red player setup
       if (redIsHuman) {
-        PawnsBoardViewControllerImpl redViewCtrl = new PawnsBoardViewControllerImpl(redView, Color.RED);
-        redView.setController(redViewCtrl);
-        redController = redViewCtrl;
-        redViewCtrl.setGame(game);
+        PawnsBoardViewImpl redView = new PawnsBoardViewImpl(modelWrapper);
+        PawnsBoardViewControllerImpl redCtrl = new PawnsBoardViewControllerImpl(redView, Color.RED);
+        redView.setController(redCtrl);
+        redView.setLocation(100, 100);
+        redView.makeVisible();
+        redController = redCtrl;
+
+
       } else {
-        // Create a machine player for Red with a strategy
         ChainedStrategy redStrategy = new ChainedStrategy(List.of(
                 new MaximizeRowScoreStrategy(),
                 new FillFirstStrategy()
         ));
-        redController = new MachinePlayerController(game, modelWrapper, Color.RED, redStrategy);
+        redController = new MachinePlayerController(null, modelWrapper, Color.RED, redStrategy);
       }
 
+      // Blue player setup
       if (blueIsHuman) {
-        PawnsBoardViewControllerImpl blueViewCtrl = new PawnsBoardViewControllerImpl(blueView, Color.BLUE);
-        blueView.setController(blueViewCtrl);
-        blueController = blueViewCtrl;
-        blueViewCtrl.setGame(game);
+        PawnsBoardViewImpl blueView = new PawnsBoardViewImpl(modelWrapper);
+        PawnsBoardViewControllerImpl blueCtrl = new PawnsBoardViewControllerImpl(blueView, Color.BLUE);
+        blueView.setController(blueCtrl);
+        blueView.setLocation(800, 100);
+        blueView.makeVisible();
+
+        blueController = blueCtrl;
       } else {
-        // Create a machine player for Blue with a strategy
         ChainedStrategy blueStrategy = new ChainedStrategy(List.of(
                 new MaximizeRowScoreStrategy(),
                 new FillFirstStrategy()
         ));
-        blueController = new MachinePlayerController(game, modelWrapper, Color.BLUE, blueStrategy);
+        blueController = new MachinePlayerController(null, modelWrapper, Color.BLUE, blueStrategy);
       }
 
-      // Make the views visible
-      if (redIsHuman) {
-        redView.makeVisible();
+
+      // Create and assign game to controllers
+      Game game = new Game(board, redPlayer, bluePlayer, redController, blueController, modelWrapper);
+
+      if (!redIsHuman) {
+        ((MachinePlayerController) redController).setGame(game);
+      } else {
+        ((PawnsBoardViewControllerImpl) redController).setGame(game);
       }
-      if (blueIsHuman) {
-        blueView.makeVisible();
+
+      if (!blueIsHuman) {
+        ((MachinePlayerController) blueController).setGame(game);
+      } else {
+        ((PawnsBoardViewControllerImpl) blueController).setGame(game);
       }
 
       // Start the game

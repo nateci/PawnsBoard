@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
 import cs3500.view.BoardPanel;
-import cs3500.view.PawnsBoardViewController;
+import cs3500.controller.PawnsBoardViewController;
 
 /**
  * Unit tests for BoardPanel.

@@ -14,7 +14,7 @@ import cs3500.strategy.Strategy;
  */
 public class MachinePlayerController implements PlayerController, ModelFeatures {
 
-  private final Game game;
+  private Game game;
   private final Color playerColor;
   private final Strategy strategy;
   private final ReadOnlyBoardWrapper model;
@@ -33,9 +33,6 @@ public class MachinePlayerController implements PlayerController, ModelFeatures 
     this.model = model;
     this.playerColor = playerColor;
     this.strategy = strategy;
-
-    // Register as a listener for model events
-    game.addModelListener(this);
   }
 
   /**
@@ -71,7 +68,7 @@ public class MachinePlayerController implements PlayerController, ModelFeatures 
 
   @Override
   public void gameOver(Color winner, int redScore, int blueScore) {
-  // Machine player doesn't need to do anything when the game is over
+    // Machine player doesn't need to do anything when the game is over
   }
 
   @Override
@@ -96,4 +93,11 @@ public class MachinePlayerController implements PlayerController, ModelFeatures 
     // Machine players should never make invalid moves
     System.err.println("Machine player attempted invalid move: " + message);
   }
+
+
+  public void setGame(Game game) {
+    this.game = game;
+    game.addModelListener(this);
+  }
+
 }

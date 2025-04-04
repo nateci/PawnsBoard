@@ -9,7 +9,8 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 import cs3500.ReadOnlyBoardWrapper;
-import cs3500.view.PawnsBoardViewControllerImpl;
+import cs3500.controller.PawnsBoardViewControllerImpl;
+import cs3500.controller.PlayerController;
 import cs3500.view.PawnsBoardViewImpl;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -61,13 +62,14 @@ public class GameTest {
     MockReadOnlyPawnsBoardModel mockModel = new MockReadOnlyPawnsBoardModel(3,
             3, Color.RED);
     PawnsBoardViewImpl view = new PawnsBoardViewImpl(mockModel);
-    PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view);
+    PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view, Color.RED);
     ReadOnlyBoardWrapper wrapper = new ReadOnlyBoardWrapper(board,
             redPlayer, bluePlayer, redPlayer); // or currentPlayer
-    Game game = new Game(board, redPlayer, bluePlayer, view, controller, wrapper);
+    Game game = new Game(board, redPlayer, bluePlayer, (PlayerController) view, controller, wrapper);
     // Play the game (process both "pass" commands and end game)
     game.play();
     // Verify the game is over
     assertTrue(game.isGameOver());
   }
+
 }

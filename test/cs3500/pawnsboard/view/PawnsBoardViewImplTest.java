@@ -1,7 +1,7 @@
 package cs3500.pawnsboard.view;
 
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
-import cs3500.view.PawnsBoardViewController;
+import cs3500.controller.PawnsBoardViewController;
 import cs3500.view.PawnsBoardViewImpl;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -4,62 +4,55 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import cs3500.ReadOnlyBoardWrapper;
 import cs3500.controller.ModelFeatures;
-import cs3500.view.PawnsBoardView;
-import cs3500.controller.PawnsBoardViewController;
+import cs3500.controller.PlayerController;
 
 /**
- * Game class using GUI view and controller.
+ * Game class that coordinates gameplay between two players (GUI or AI).
  */
 public class Game implements PawnsBoardGame {
   private final Board board;
   private final Player redPlayer;
   private final Player bluePlayer;
-  private final PawnsBoardView view;
-  private final PawnsBoardViewController controller;
+  private final PlayerController redController;
+  private final PlayerController blueController;
   private final ReadOnlyBoardWrapper modelWrapper;
+
   private Player currentPlayer;
   private boolean consecutivePasses = false;
   private boolean gameOver = false;
   private final List<ModelFeatures> modelListeners = new ArrayList<>();
 
-
   /**
-   * Constructs a game with GUI support.
+   * Constructs a new game with specified players and controllers.
    *
-   * @param board      the board
-   * @param redPlayer  red player
-   * @param bluePlayer blue player
-   * @param view       GUI view
-   * @param controller controller to handle user interaction
+   * @param board           The game board
+   * @param redPlayer       Red player
+   * @param bluePlayer      Blue player
+   * @param redController   Controller for red
+   * @param blueController  Controller for blue
+   * @param modelWrapper    Read-only model for strategies and views
    */
   public Game(Board board,
               Player redPlayer,
               Player bluePlayer,
-              PawnsBoardView view,
-              PawnsBoardViewController controller,
+              PlayerController redController,
+              PlayerController blueController,
               ReadOnlyBoardWrapper modelWrapper) {
     this.board = board;
     this.redPlayer = redPlayer;
     this.bluePlayer = bluePlayer;
+    this.redController = redController;
+    this.blueController = blueController;
     this.currentPlayer = redPlayer;
-    this.view = view;
-    this.controller = controller;
-
-    this.view.setController(controller);
-    this.view.makeVisible();
-    controller.setGame(this); // so controller can call methods like playCard()
     this.modelWrapper = modelWrapper;
 
+    this.modelWrapper.setCurrentPlayer(currentPlayer);
   }
 
   /**
    * Adds a listener for model features/events.
-   *
-   * @param listener The listener to add
    */
   public void addModelListener(ModelFeatures listener) {
     modelListeners.add(listener);
@@ -71,7 +64,7 @@ public class Game implements PawnsBoardGame {
   @Override
   public void play() {
     gameOver = false;
-    view.refresh(); // initial display
+    notifyPlayerTurn();
   }
 
   /**
@@ -82,43 +75,21 @@ public class Game implements PawnsBoardGame {
       return false;
     }
 
-    if (currentPlayer.playCard(board, cardIndex, row, col)) {
-      consecutivePasses = false;
-      currentPlayer.drawCardIfAvailable();
-      switchTurn();
-      view.refresh();
-
-      if (isGameOver()) {
-        determineWinner();
-      }
-
-      return true;
-    }
-
     try {
       if (currentPlayer.playCard(board, cardIndex, row, col)) {
         consecutivePasses = false;
         currentPlayer.drawCardIfAvailable();
         switchTurn();
-        view.refresh();
-
         if (isGameOver()) {
           determineWinner();
         }
-
         return true;
       } else {
-        // Notify of invalid move
-        for (ModelFeatures listener : modelListeners) {
-          listener.notifyInvalidMove("Invalid move. Try again.");
-        }
+        notifyInvalidMove("Invalid move. Try again.");
         return false;
       }
     } catch (IllegalArgumentException e) {
-      // Handle exceptions from the model
-      for (ModelFeatures listener : modelListeners) {
-        listener.notifyInvalidMove(e.getMessage());
-      }
+      notifyInvalidMove(e.getMessage());
       return false;
     }
   }
@@ -138,28 +109,34 @@ public class Game implements PawnsBoardGame {
       consecutivePasses = true;
       currentPlayer.drawCardIfAvailable();
       switchTurn();
-      view.refresh();
     }
   }
 
   private void switchTurn() {
     currentPlayer = (currentPlayer == redPlayer) ? bluePlayer : redPlayer;
     modelWrapper.setCurrentPlayer(currentPlayer);
-
-    // Notify it's the new player's turn
     notifyPlayerTurn();
   }
 
   /**
-   * Notifies listeners that it's a player's turn.
+   * Notifies all model listeners which player's turn it is.
    */
   private void notifyPlayerTurn() {
     for (ModelFeatures listener : modelListeners) {
       listener.notifyPlayerTurn(currentPlayer.getColor());
     }
+
+    // Notify the appropriate controller
+    if (currentPlayer == redPlayer) {
+      redController.startTurn();
+    } else {
+      blueController.startTurn();
+    }
   }
 
-
+  /**
+   * Notifies all model listeners that the game is over.
+   */
   @Override
   public void determineWinner() {
     int redScore = board.calculateTotalScore(Color.RED);
@@ -172,16 +149,18 @@ public class Game implements PawnsBoardGame {
       winner = Color.BLUE;
     }
 
-    // Notify listeners of game over
     for (ModelFeatures listener : modelListeners) {
       listener.notifyGameOver(winner, redScore, blueScore);
     }
 
-    // Display in GUI: modal popup or status label update
-    JOptionPane.showMessageDialog(null,
-            "Game Over!\nRed: " + redScore + " | Blue: " + blueScore + "\n"
-                    + (redScore > blueScore ? "Red Wins!" :
-                            blueScore > redScore ? "Blue Wins!" : "It's a tie!"));
+    redController.gameOver(winner, redScore, blueScore);
+    blueController.gameOver(winner, redScore, blueScore);
+  }
+
+  private void notifyInvalidMove(String message) {
+    for (ModelFeatures listener : modelListeners) {
+      listener.notifyInvalidMove(message);
+    }
   }
 
   @Override

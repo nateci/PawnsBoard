@@ -1,16 +1,10 @@
 package cs3500.view;
 
+import cs3500.controller.PawnsBoardViewController;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
 
-import javax.swing.JFrame;
-import javax.swing.JRootPane;
-import javax.swing.JComponent;
-import javax.swing.InputMap;
-import javax.swing.ActionMap;
-import javax.swing.KeyStroke;
-import javax.swing.AbstractAction;
-
-import java.awt.BorderLayout;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Implementation of the PawnsBoardView interface using Swing.
@@ -20,6 +14,7 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
 
   private final BoardPanel boardPanel;
   private final HandPanel handPanel;
+  private final JLabel statusLabel;
   private PawnsBoardViewController controller;
 
   /**
@@ -28,7 +23,6 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
    * @param model The read-only model to display
    */
   public PawnsBoardViewImpl(ReadOnlyPawnsBoardModel model) {
-
     // Set up the frame
     setTitle("Pawns Board Game");
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,10 +31,13 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     // Create the main components
     boardPanel = new BoardPanel(model);
     handPanel = new HandPanel(model);
+    statusLabel = new JLabel("Welcome to Pawns Board!");
+    statusLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
     // Add components to the frame
     add(boardPanel, BorderLayout.CENTER);
     add(handPanel, BorderLayout.SOUTH);
+    add(statusLabel, BorderLayout.NORTH);
 
     // Set up key listener for confirming moves or passing
     setupKeyBindings();
@@ -68,19 +65,24 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     setVisible(true);
   }
 
+  @Override
+  public void setTitle(String title) {
+    super.setTitle(title); // call JFrame's method
+  }
+
+  public void setStatus(String message) {
+    statusLabel.setText(message);
+  }
+
   /**
    * Sets up key bindings for the frame.
    */
   private void setupKeyBindings() {
-    // Set the frame to be focusable
     setFocusable(true);
-
-    // Add key bindings for the root pane
     JRootPane rootPane = getRootPane();
     InputMap inputMap = rootPane.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
     ActionMap actionMap = rootPane.getActionMap();
 
-    // Bind Enter key to confirm move
     inputMap.put(KeyStroke.getKeyStroke("ENTER"), "confirmMove");
     actionMap.put("confirmMove", new AbstractAction() {
       @Override
@@ -91,7 +93,6 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
       }
     });
 
-    // Bind Space key to pass turn
     inputMap.put(KeyStroke.getKeyStroke("SPACE"), "passTurn");
     actionMap.put("passTurn", new AbstractAction() {
       @Override
@@ -103,4 +104,3 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     });
   }
 }
-

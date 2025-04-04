@@ -1,5 +1,7 @@
 package cs3500.view;
 
+import cs3500.controller.PawnsBoardViewController;
+
 /**
  * Interface for the Pawns Board game view frame.
  * Defines the methods required for the main view component.
@@ -22,4 +24,8 @@ public interface PawnsBoardView {
    * Makes the view visible to the user.
    */
   void makeVisible();
+
+  void setStatus(String message);
+  void setTitle(String title);
+
 }

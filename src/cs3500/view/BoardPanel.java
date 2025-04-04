@@ -1,5 +1,6 @@
 package cs3500.view;
 
+import cs3500.controller.PawnsBoardViewController;
 import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.Cell;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;

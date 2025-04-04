@@ -1,8 +1,5 @@
 package cs3500.controller;
 
-import cs3500.controller.ModelFeatures;
-import cs3500.controller.PawnsBoardViewController;
-import cs3500.controller.PlayerController;
 import cs3500.pawnsboard.Game;
 import cs3500.view.PawnsBoardView;
 
@@ -17,16 +14,13 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
 
   private final PawnsBoardView view;
   private Game game;
-  private Color playerColor;
+  private final Color playerColor;
+  private boolean hasHandledGameOver = false;
   private boolean isPlayerTurn = false;
   private int selectedCardIndex = -1;
   private int selectedRow = -1;
   private int selectedCol = -1;
 
-  /**
-   * Controller constructor that takes in a view.
-   * @param view define view.
-   */
   public PawnsBoardViewControllerImpl(PawnsBoardView view, Color playerColor) {
     this.view = view;
     this.playerColor = playerColor;
@@ -40,107 +34,108 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
 
   @Override
   public void handleCellClick(int row, int col) {
-    if(!isPlayerTurn) {
-      showMessage("It's not your turn.");
+    if (!isPlayerTurn) {
+      view.setStatus("It's not your turn.");
       return;
     }
     this.selectedRow = row;
     this.selectedCol = col;
+    view.setStatus("Selected cell at (" + row + ", " + col + ").");
     view.refresh();
   }
 
   @Override
   public void handleCardClick(int cardIndex) {
-    if(!isPlayerTurn) {
-      showMessage("It's not your turn.");
+    if (!isPlayerTurn) {
+      view.setStatus("It's not your turn.");
       return;
     }
     this.selectedCardIndex = cardIndex;
+    view.setStatus("Card " + cardIndex + " selected.");
     view.refresh();
   }
 
   @Override
   public void confirmMove() {
-    if(!isPlayerTurn) {
-      showMessage("It's not your turn.");
+    if (!isPlayerTurn) {
+      view.setStatus("It's not your turn.");
       return;
     }
 
     if (selectedCardIndex == -1 || selectedRow == -1 || selectedCol == -1) {
-      showError("Select both a card and a board cell before confirming.");
+      view.setStatus("Please select both a card and a cell before confirming.");
       return;
     }
 
-    boolean success = game.handlePlayCard(selectedCardIndex, selectedRow, selectedCol);
-    if (!success) {
-      showError("Invalid move. Try again.");
-      return;
+    try {
+      game.handlePlayCard(selectedCardIndex, selectedRow, selectedCol);
+      view.setStatus("Move played! Waiting for opponent...");
+      clearSelection();
+      view.refresh();
+    } catch (IllegalArgumentException e) {
+      view.setStatus(e.getMessage());  // Show error in status bar, not popup
+    } catch (Exception e) {
+      // Unexpected failure – still use popup
+      showError("Unexpected error: " + e.getMessage());
     }
-
-    clearSelection();
-    view.refresh();
   }
+
 
   @Override
   public void passTurn() {
-    if(!isPlayerTurn) {
-      showMessage("It's not your turn.");
+    if (!isPlayerTurn) {
+      view.setStatus("It's not your turn.");
       return;
     }
-    game.handlePass();
     clearSelection();
+    game.handlePass();
+    view.setStatus("Turn passed. Waiting for opponent...");
     view.refresh();
   }
 
-
-  /**
-   * Clears the current selection state in the controller.
-   */
   private void clearSelection() {
     selectedCardIndex = -1;
     selectedRow = -1;
     selectedCol = -1;
   }
 
-  /**
-   * Displays an error message to the user in a dialog box.
-   * @param message the error message to display
-   */
   private void showError(String message) {
-    javax.swing.JOptionPane.showMessageDialog(
-            null,
-            message,
-            "Invalid Move",
-            javax.swing.JOptionPane.ERROR_MESSAGE
-    );
-  }
-
-  /**
-   * Displays an informational message to the user in a dialog box.
-   * @param message the message to display
-   */
-  private void showMessage(String message) {
     JOptionPane.showMessageDialog(
             null,
             message,
-            "Game Information",
+            "Invalid Move",
+            JOptionPane.ERROR_MESSAGE
+    );
+  }
+
+  private void showGameOver(String message) {
+    JOptionPane.showMessageDialog(
+            null,
+            message,
+            "Game Over",
             JOptionPane.INFORMATION_MESSAGE
     );
   }
 
+
   @Override
   public void notifyPlayerTurn(Color currentPlayerColor) {
-    // Update whether it's this player's turn
     isPlayerTurn = (currentPlayerColor == playerColor);
     clearSelection();
     view.refresh();
+
+    if (isPlayerTurn) {
+      view.setTitle(getPlayerName() + " - Your Turn");
+      view.setStatus("Your turn! Select a card and a board cell.");
+    } else {
+      view.setTitle(getPlayerName() + " - Waiting...");
+      view.setStatus("Waiting for the other player...");
+    }
   }
 
   @Override
   public void notifyGameOver(Color winner, int redScore, int blueScore) {
-    isPlayerTurn = false;
-    clearSelection();
-    view.refresh();
+    //not needed here
   }
 
   @Override
@@ -150,19 +145,30 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
 
   @Override
   public void startTurn() {
-
+    // Not needed for human controller — handled via notifyPlayerTurn
   }
 
   @Override
   public void gameOver(Color winner, int redScore, int blueScore) {
-    // Handle game over notification
     isPlayerTurn = false;
     clearSelection();
     view.refresh();
+
+    String result = (winner == null)
+            ? "It's a tie!"
+            : (winner == Color.RED ? "Red wins!" : "Blue wins!");
+
+    showGameOver("Game Over!\nRed: " + redScore + ", Blue: " + blueScore + "\n" + result);
+    view.setStatus("Game over.");
+    view.setTitle("Game Over");
   }
 
   @Override
   public Color getPlayerColor() {
     return playerColor;
+  }
+
+  private String getPlayerName() {
+    return (playerColor == Color.RED) ? "Red Player" : "Blue Player";
   }
 }

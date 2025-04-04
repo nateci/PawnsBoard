@@ -3,7 +3,7 @@ package cs3500.pawnsboard.view;
 import cs3500.pawnsboard.MockReadOnlyPawnsBoardModel;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardCard;
 import cs3500.view.HandPanel;
-import cs3500.view.PawnsBoardViewController;
+import cs3500.controller.PawnsBoardViewController;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
