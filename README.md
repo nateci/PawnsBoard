@@ -121,10 +121,18 @@ To play the game, you need a properly formatted deck (.config) file. Here’s a 
 
 ---
 
-## **Source Organization** (UPDATED FOR PART 2)
+## **Source Organization** (UPDATED FOR PART 3)
 **`src/cs3500/`** (_Main_)
 - `PawnsBoard.java`
 - `ReadOnlyBoardWrapper.java`
+
+- **`src/cs3500/pawnsboard/`** (_Controller_)
+- `MachinePlayerController.java`
+- `ModelFeatures.java`
+- `PawnsBoardViewController.java`
+- `PawnsBoardViewControllerImpl.java`
+- `PlayerActionListener.java`
+- `PlayerController.java`
 
 **`src/cs3500/pawnsboard/`** (_Model_)
 - `Game.java`
@@ -141,7 +149,7 @@ To play the game, you need a properly formatted deck (.config) file. Here’s a 
 - `ReadOnlyPawnsBoardCard.java`
 - `ReadOnlyPawnsBoardCell.java`
 - `ReadOnlyPawnsBoardModel.java`
-
+- 
 **`src/cs3500/strategy/`** (_Strategy_)
 - `Strategy.java`
 - `Move.java`
