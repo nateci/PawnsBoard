@@ -18,6 +18,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+/**
+ * Test class for controller.
+ */
 public class ControllerTest {
   private InputStream originalIn;
 
@@ -34,16 +37,29 @@ public class ControllerTest {
   @Test
   public void testGameEndsAfterConsecutivePasses() {
     Board board = new Board(3, 5);
-    Player redPlayer = new Player(Color.RED, List.of(new Card("Security", 1, 2, new char[][]{{'X', 'X', 'I', 'X', 'X'}, {'X', 'X', 'I', 'X', 'X'}, {'X', 'I', 'C', 'I', 'X'}, {'X', 'X', 'I', 'X', 'X'}, {'X', 'X', 'I', 'X', 'X'}}, Color.RED)), 1);
-    Player bluePlayer = new Player(Color.BLUE, List.of(new Card("Security", 1, 2, new char[][]{{'X', 'X', 'I', 'X', 'X'}, {'X', 'X', 'I', 'X', 'X'}, {'X', 'I', 'C', 'I', 'X'}, {'X', 'X', 'I', 'X', 'X'}, {'X', 'X', 'I', 'X', 'X'}}, Color.BLUE)), 1);
+    Player redPlayer = new Player(Color.RED, List.of(new Card("Security", 1,
+            2, new char[][]{{'X', 'X', 'I', 'X', 'X'},
+            {'X', 'X', 'I', 'X', 'X'},
+            {'X', 'I', 'C', 'I', 'X'},
+            {'X', 'X', 'I', 'X', 'X'},
+            {'X', 'X', 'I', 'X', 'X'}}, Color.RED)), 1);
+    Player bluePlayer = new Player(Color.BLUE, List.of(new Card("Security", 1,
+            2, new char[][]{{'X', 'X', 'I', 'X', 'X'},
+            {'X', 'X', 'I', 'X', 'X'},
+            {'X', 'I', 'C', 'I', 'X'},
+            {'X', 'X', 'I', 'X', 'X'},
+            {'X', 'X', 'I', 'X', 'X'}}, Color.BLUE)), 1);
     String simulatedInput = "pass\npass\n";
     ByteArrayInputStream testIn = new ByteArrayInputStream(simulatedInput.getBytes());
     System.setIn(testIn);
-    MockReadOnlyPawnsBoardModel mockModel = new MockReadOnlyPawnsBoardModel(3, 3, Color.RED);
+    MockReadOnlyPawnsBoardModel mockModel = new MockReadOnlyPawnsBoardModel(3,
+            3, Color.RED);
     PawnsBoardViewImpl view = new PawnsBoardViewImpl(mockModel);
     PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view, Color.RED);
-    ReadOnlyBoardWrapper wrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
-    Game game = new Game(board, redPlayer, bluePlayer, (PlayerController) view, controller, wrapper);
+    ReadOnlyBoardWrapper wrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer,
+            redPlayer);
+    Game game = new Game(board, redPlayer, bluePlayer, (PlayerController) view, controller,
+            wrapper);
     game.play();
     Assertions.assertTrue(game.isGameOver());
   }

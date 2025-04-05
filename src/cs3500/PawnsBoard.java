@@ -13,43 +13,70 @@ import cs3500.pawnsboard.Player;
 import cs3500.controller.MachinePlayerController;
 import cs3500.controller.PlayerController;
 import cs3500.controller.PawnsBoardViewControllerImpl;
-import cs3500.strategy.ChainedStrategy;
-import cs3500.strategy.FillFirstStrategy;
-import cs3500.strategy.MaximizeRowScoreStrategy;
+import cs3500.strategy.*;
 import cs3500.view.PawnsBoardViewImpl;
 
 /**
  * The main entry point for the Pawns Board game.
+ * <p>
+ * This class configures the game based on command-line arguments
+ * and starts the game using appropriate player strategies or GUI views.
+ *
+ * <p><b>Usage:</b>
+ * <pre>
+ *   java -jar pawnsboard.jar <deckFile> <redPlayerType> <bluePlayerType>
+ * </pre>
+ * Player types:
+ * <ul>
+ *   <li>human - GUI-based player</li>
+ *   <li>fillfirst - FillFirstStrategy</li>
+ *   <li>maximizerowscore - MaximizeRowScoreStrategy</li>
+ *   <li>controlboard - ControlTheBoardStrategy</li>
+ *   <li>minimax - MinimaxStrategy</li>
+ *   <li>chain - Chain of MaximizeRowScore → FillFirst</li>
+ * </ul>
  */
 public class PawnsBoard {
 
   /**
    * Launches the Pawns Board game.
    *
-   * @param args command-line arguments (not used)
+   * @param args the command-line arguments:
+   *             [0] = deck file path,
+   *             [1] = red player type,
+   *             [2] = blue player type
    */
   public static void main(String[] args) {
-    String sharedDeckFile = "docs/deck.config";
+    if (args.length != 3) {
+      System.err.println("Usage: java -jar pawnsboard.jar <deckFile> <redPlayerType> <bluePlayerType>");
+      System.err.println("Player types: human | fillfirst | maximizerowscore | controlboard | minimax | chain");
+      return;
+    }
+
+    String deckFile = args[0];
+    String redType = args[1].toLowerCase();
+    String blueType = args[2].toLowerCase();
+
     int deckSize = 15;
     int rows = 3;
     int cols = 5;
     int totalCells = rows * cols;
 
-    if (!new File(sharedDeckFile).exists()) {
-      System.err.println("Deck config file not found: " + sharedDeckFile);
+    // Validate deck file
+    if (!new File(deckFile).exists()) {
+      System.err.println("Deck config file not found: " + deckFile);
       return;
     }
 
     try {
-      List<Card> redDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.RED, deckSize);
-      List<Card> blueDeck = DeckReader.getRandomDeckForPlayer(sharedDeckFile, Color.BLUE, deckSize);
+      // Generate random decks for both players from the shared file
+      List<Card> redDeck = DeckReader.getRandomDeckForPlayer(deckFile, Color.RED, deckSize);
+      List<Card> blueDeck = DeckReader.getRandomDeckForPlayer(deckFile, Color.BLUE, deckSize);
 
-      int totalCards = redDeck.size() + blueDeck.size();
-
-      if (totalCards < totalCells) {
-        System.out.println("Warning: Not enough cards to fill the board.");
-        System.out.printf("Required: %d cards, but only have: %d%n", totalCells, totalCards);
-        System.out.println("The game will still run, but may end early.");
+      // Warn if there aren't enough cards to fill the board
+      if (redDeck.size() + blueDeck.size() < totalCells) {
+        System.out.printf("Warning: Not enough cards to fill the board (%d needed, %d available)%n",
+                totalCells, redDeck.size() + blueDeck.size());
       }
 
       if (redDeck.isEmpty() || blueDeck.isEmpty()) {
@@ -57,6 +84,7 @@ public class PawnsBoard {
         return;
       }
 
+      // Initialize game components
       Board board = new Board(rows, cols);
       int handSize = 5;
 
@@ -65,69 +93,80 @@ public class PawnsBoard {
 
       ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
 
-      // Config: Set true/false here to change game mode
-      boolean redIsHuman = true;
-      boolean blueIsHuman = false;
+      // Create player controllers based on command-line input
+      PlayerController redController = createController(redType, modelWrapper, Color.RED);
+      PlayerController blueController = createController(blueType, modelWrapper, Color.BLUE);
 
-      PlayerController redController;
-      PlayerController blueController;
-
-      // Red player setup
-      if (redIsHuman) {
-        PawnsBoardViewImpl redView = new PawnsBoardViewImpl(modelWrapper);
-        PawnsBoardViewControllerImpl redCtrl = new PawnsBoardViewControllerImpl(redView, Color.RED);
-        redView.setController(redCtrl);
-        redView.setLocation(100, 100);
-        redView.makeVisible();
-        redController = redCtrl;
-
-
-      } else {
-        ChainedStrategy redStrategy = new ChainedStrategy(List.of(
-                new MaximizeRowScoreStrategy(),
-                new FillFirstStrategy()
-        ));
-        redController = new MachinePlayerController(null, modelWrapper, Color.RED, redStrategy);
-      }
-
-      // Blue player setup
-      if (blueIsHuman) {
-        PawnsBoardViewImpl blueView = new PawnsBoardViewImpl(modelWrapper);
-        PawnsBoardViewControllerImpl blueCtrl = new PawnsBoardViewControllerImpl(blueView, Color.BLUE);
-        blueView.setController(blueCtrl);
-        blueView.setLocation(800, 100);
-        blueView.makeVisible();
-
-        blueController = blueCtrl;
-      } else {
-        ChainedStrategy blueStrategy = new ChainedStrategy(List.of(
-                new MaximizeRowScoreStrategy(),
-                new FillFirstStrategy()
-        ));
-        blueController = new MachinePlayerController(null, modelWrapper, Color.BLUE, blueStrategy);
-      }
-
-
-      // Create and assign game to controllers
+      // Initialize game
       Game game = new Game(board, redPlayer, bluePlayer, redController, blueController, modelWrapper);
 
-      if (!redIsHuman) {
+      // Provide game instance to controllers that need it
+      if (redController instanceof MachinePlayerController) {
         ((MachinePlayerController) redController).setGame(game);
-      } else {
+      } else if (redController instanceof PawnsBoardViewControllerImpl) {
         ((PawnsBoardViewControllerImpl) redController).setGame(game);
       }
 
-      if (!blueIsHuman) {
+      if (blueController instanceof MachinePlayerController) {
         ((MachinePlayerController) blueController).setGame(game);
-      } else {
+      } else if (blueController instanceof PawnsBoardViewControllerImpl) {
         ((PawnsBoardViewControllerImpl) blueController).setGame(game);
       }
 
-      // Start the game
+      // Start game
       game.play();
 
     } catch (IOException e) {
       System.err.println("Error loading deck: " + e.getMessage());
+    }
+  }
+
+  /**
+   * Creates a PlayerController based on the type provided.
+   *
+   * @param type          the player type string ("human", "fillfirst", etc.)
+   * @param modelWrapper  the model wrapper for read-only access
+   * @param color         the color of the player (RED or BLUE)
+   * @return a PlayerController for the specified strategy or GUI
+   * @throws IllegalArgumentException if the type is unknown
+   */
+  private static PlayerController createController(String type,
+                                                   ReadOnlyBoardWrapper modelWrapper, Color color) {
+    switch (type) {
+      case "human":
+        PawnsBoardViewImpl view = new PawnsBoardViewImpl(modelWrapper);
+        PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view, color);
+        view.setController(controller);
+        view.setLocation(color == Color.RED ? 100 : 800, 100);
+        view.makeVisible();
+        return controller;
+
+      case "fillfirst":
+        return new MachinePlayerController(null,
+                modelWrapper, color, new FillFirstStrategy());
+
+      case "maximizerowscore":
+        return new MachinePlayerController(null,
+                modelWrapper, color, new MaximizeRowScoreStrategy());
+
+      case "controlboard":
+        return new MachinePlayerController(null,
+                modelWrapper, color, new ControlTheBoardStrategy());
+
+      case "minimax":
+        return new MachinePlayerController(null,
+                modelWrapper, color, new MinimaxStrategy());
+
+      case "chain":
+        return new MachinePlayerController(null,
+                modelWrapper, color,
+                new ChainedStrategy(List.of(
+                        new MaximizeRowScoreStrategy(),
+                        new FillFirstStrategy()
+                )));
+
+      default:
+        throw new IllegalArgumentException("Unknown player type: " + type);
     }
   }
 }

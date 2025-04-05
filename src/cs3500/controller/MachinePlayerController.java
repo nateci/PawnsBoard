@@ -28,7 +28,8 @@ public class MachinePlayerController implements PlayerController, ModelFeatures 
    * @param playerColor The color of the player
    * @param strategy The strategy to use for choosing moves
    */
-  public MachinePlayerController(Game game, ReadOnlyBoardWrapper model, Color playerColor, Strategy strategy) {
+  public MachinePlayerController(Game game, ReadOnlyBoardWrapper model,
+                                 Color playerColor, Strategy strategy) {
     this.game = game;
     this.model = model;
     this.playerColor = playerColor;

@@ -3,27 +3,34 @@ package cs3500.pawnsboard.controller;
 import cs3500.ReadOnlyBoardWrapper;
 import cs3500.controller.MockPawnsBoardView;
 import cs3500.controller.PawnsBoardViewControllerImpl;
-import cs3500.pawnsboard.*;
+import cs3500.pawnsboard.Player;
+import cs3500.pawnsboard.Game;
+import cs3500.pawnsboard.Card;
+import cs3500.pawnsboard.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Implementing the view controller.
+ */
 class PawnsBoardViewControllerImplTest {
 
-  private Board board;
   private Player redPlayer;
   private Player bluePlayer;
-  private Game game;
   private MockPawnsBoardView view;
   private PawnsBoardViewControllerImpl controller;
 
+  /**
+   * setup method for the implementation.
+   */
   @BeforeEach
   void setup() {
-    board = new Board(3, 5);
+    Board board = new Board(3, 5);
     Card sampleCard = new Card("Test", 1, 1, new char[][] {
             {'X', 'X', 'I', 'X', 'X'},
             {'X', 'X', 'I', 'X', 'X'},
@@ -35,12 +42,14 @@ class PawnsBoardViewControllerImplTest {
     List<Card> deck = List.of(sampleCard, sampleCard, sampleCard);
     Player redPlayer = new Player(Color.RED, deck, 1);
     Player bluePlayer = new Player(Color.BLUE, deck, 1);
-    ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
+    ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board,
+            redPlayer, bluePlayer, redPlayer);
 
     view = new MockPawnsBoardView();
     controller = new PawnsBoardViewControllerImpl(view, Color.RED);
     view.setController(controller);
-    game = new Game(board, redPlayer, bluePlayer, null, null, modelWrapper);
+    Game game = new Game(board, redPlayer, bluePlayer, null,
+            null, modelWrapper);
     controller.setGame(game);
   }
 

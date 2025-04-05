@@ -2,6 +2,9 @@ package cs3500.controller;
 
 import cs3500.view.PawnsBoardView;
 
+/**
+ * Mock for testing.
+ */
 public class MockPawnsBoardView implements PawnsBoardView {
 
   public String lastStatus = "";

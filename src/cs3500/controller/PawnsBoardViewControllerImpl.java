@@ -3,8 +3,9 @@ package cs3500.controller;
 import cs3500.pawnsboard.Game;
 import cs3500.view.PawnsBoardView;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JOptionPane;
+import java.awt.Color;
+
 
 /**
  * Controller that handles GUI interactions for Pawns Board.
@@ -20,6 +21,12 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
   private int selectedCardIndex = -1;
   private int selectedRow = -1;
   private int selectedCol = -1;
+
+  /**
+   * Private constructor for view implementation.
+   * @param view represents the view for the model.
+   * @param playerColor which player are we referencing.
+   */
 
   public PawnsBoardViewControllerImpl(PawnsBoardView view, Color playerColor) {
     this.view = view;
@@ -93,12 +100,19 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
     view.refresh();
   }
 
+  /**
+   * clear the selection of the board.
+   */
   private void clearSelection() {
     selectedCardIndex = -1;
     selectedRow = -1;
     selectedCol = -1;
   }
 
+  /**
+   * Just for the popup error message.
+   * @param message represents an error message. (invalid move)
+   */
   private void showError(String message) {
     JOptionPane.showMessageDialog(
             null,
@@ -107,6 +121,11 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
             JOptionPane.ERROR_MESSAGE
     );
   }
+
+  /**
+   * Just represents a gameOver message popup.
+   * @param message represents an popup with a game over.
+   */
 
   private void showGameOver(String message) {
     JOptionPane.showMessageDialog(
@@ -168,6 +187,10 @@ public class PawnsBoardViewControllerImpl implements PawnsBoardViewController,
     return playerColor;
   }
 
+  /**
+   * Method to get the players name.
+   * @return a playerName based on the color.
+   */
   private String getPlayerName() {
     return (playerColor == Color.RED) ? "Red Player" : "Blue Player";
   }
