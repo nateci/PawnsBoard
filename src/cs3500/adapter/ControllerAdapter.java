@@ -74,6 +74,10 @@ public class ControllerAdapter implements PlayerActionListener, ModelStatusListe
     boolean isMyTurn = (newTurn == PlayerInt.PlayerColor.RED && playerColor == Color.RED) ||
                 (newTurn == PlayerInt.PlayerColor.BLUE && playerColor == Color.BLUE);
 
+    if (!isMyTurn) {
+      resetSelections();
+    }
+
     if (view != null) {
       view.refresh();
     }
