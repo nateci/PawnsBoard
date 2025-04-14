@@ -30,7 +30,9 @@ public class GameModelAdapter extends ModelAdapter implements GameModel {
    * Add a listener to be notified of model status changes.
    */
   public void addModelStatusListener(ModelStatusListener listener) {
-    listeners.add(listener);
+    if (listener != null && !listeners.contains(listener)) {
+      listeners.add(listener);
+    }
   }
 
   @Override
