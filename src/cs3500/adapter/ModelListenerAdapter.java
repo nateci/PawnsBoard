@@ -41,7 +41,16 @@ public class ModelListenerAdapter implements ModelFeatures {
 
   @Override
   public void notifyInvalidMove(String message) {
-    // The provider might not have a direct equivalent
-    // We could show a dialog or message in the future if needed
+    System.out.println("Invalid move: " + message);
+    if (message != null && !message.isEmpty()) {
+      javax.swing.SwingUtilities.invokeLater(() -> {
+        javax.swing.JOptionPane.showMessageDialog(
+                null,
+                message,
+                "Invalid Move",
+                javax.swing.JOptionPane.WARNING_MESSAGE
+        );
+      });
+    }
   }
 }
