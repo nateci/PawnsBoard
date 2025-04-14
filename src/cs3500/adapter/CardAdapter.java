@@ -63,25 +63,25 @@ public class CardAdapter implements Card {
       for (int c = 0; c < grid[r].length; c++) {
         // Skip cells that don't have influence
         if (grid[r][c] != 'I' && grid[r][c] != 'C') {
-        continue;
+          continue;
         }
 
         // Translate grid coordinates to board coordinates
+        int targetRow = boardRow + (r - center);
         int targetCol;
-          if (isBlue) {
+
+        if (isBlue) {
           // Mirror horizontally for blue player
           targetCol = boardCol - (c - center);
-          } else {
-            targetCol = boardCol + (c - center);
-          }
+        } else {
+          targetCol = boardCol + (c - center);
+        }
 
-          int targetRow = boardRow + (r - center);
-
-          // Add valid coordinates
-          coordinates.add(new int[] {targetRow, targetCol});
+        // Add valid coordinates
+        coordinates.add(new int[]{targetRow, targetCol});
       }
     }
 
-     return coordinates;
+    return coordinates;
   }
 }
