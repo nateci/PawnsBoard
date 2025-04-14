@@ -347,7 +347,7 @@ In Part 3, we completed the game’s functionality by connecting human and machi
 
 ## Part 4: View Integration & Provider Adapter
 
-### ✅ Features Integrated from Provider View
+### Features Integrated from Provider View
 
 We successfully integrated the provider group’s `PawnsBoardView` for use as **Player 2 (Blue)** in our game. This view runs in a separate window and uses their existing GUI and internal selection handling. The following features from the provider view are fully functional:
 
@@ -358,7 +358,7 @@ We successfully integrated the provider group’s `PawnsBoardView` for use as **
 - Turn refresh and highlighting
 - Final game results display
 
-### 🛠️ Adapter Implementation & Fixes
+### Adapter Implementation & Fixes
 
 To support the provider’s view without modifying their code, we created the following adapter classes:
 
@@ -371,52 +371,20 @@ To resolve compatibility, we:
 - Attached key bindings in `ControllerAdapter` to ensure `'c'`, `'p'`, and `'q'` trigger confirm, pass, and quit.
 - Ensured turn-specific model listeners are notified correctly from our game loop.
 
-### ⚠️ Known Limitations
+### Known Limitations
 
 The following features were **not supported or out-of-scope** due to provider implementation constraints:
-- Provider view does not expose internal Swing components for testability
 - Visual indicators for invalid moves are not shown (only printed to console)
-- No visible “Confirm” button — requires pressing `'c'` explicitly
-- Full integration testing is limited to live manual input (no hooks for automation)
 
-### 📁 Files Changed for Customers
+### Files Changed for Customers
 
 For our customer group (who used our model and view), we made the following changes to our codebase:
 
 - **Extracted and shared clean model interfaces** (`ReadOnlyPawnsBoardModel`, `Card`, `Cell`, etc.) to allow customers to access board state
 - Ensured no model implementation classes were exposed
-- Moved all `view` components into their own package for clarity
 - Documented known limitations and assumptions in `README`
 
 These changes were needed to decouple our model logic from internal representation and allow others to build adapters or strategy components without needing full implementation access.
-"""
-
-# Create updated README content
-updated_readme = original_readme.strip() + part4_section
-
-# Save the new README
-output_path = "/mnt/data/README_FINAL.md"
-with open(output_path, "w", encoding="utf-8") as f:
-    f.write(updated_readme)
-
-output_path
-
-Analyzed
-python
-Always show details
-
-Copy
-from pathlib import Path
-
-# Redefine the paths after environment reset
-readme_path = Path("/mnt/data/README (4).md")
-
-# Load the original README content again
-with open(readme_path, "r", encoding="utf-8") as f:
-    original_readme = f.read()
-
-# Define the Part 4 section again
-part4_section = """
 
 ## Part 4: View Integration & Provider Adapter
 
