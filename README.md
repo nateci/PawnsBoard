@@ -297,9 +297,9 @@ Four screenshots of a 5-row by 7-column game are included:
 ---
 
 
-### **Note for Running the JAR (UPDATED FOR PART 3)**
+### **Note for Running the JAR (UPDATED FOR PART 4)**
 
-To run the program via the provided JAR file, ensure that a file named `deck.config` is available in the working directory. This configuration file contains the starting cards for both players and is required for the game to load and launch correctly. Make sure you provide 3 args. (I.e. : java -jar pawnsboard.jar docs/deck.config human strategy). **NOTE: OUR DECKLOADER WILL SORT DECKS WITH ONE DECK INPUTTED.**
+To run the program via the provided JAR file, ensure that a file named `deck.config` is available in the working directory. This configuration file contains the starting cards for both players and is required for the game to load and launch correctly. Make sure you provide 3 args. (I.e. : java -jar pawnsboard.jar docs/deck.config provider-human human). **NOTE: OUR DECKLOADER WILL SORT DECKS WITH ONE DECK INPUTTED.**
 
 
 
