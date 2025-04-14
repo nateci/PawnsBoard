@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import cs3500.adapter.ControllerAdapter;
+import cs3500.adapter.GameModelAdapter;
 import cs3500.pawnsboard.Board;
 import cs3500.pawnsboard.Card;
 import cs3500.pawnsboard.DeckReader;
@@ -13,28 +15,19 @@ import cs3500.pawnsboard.Player;
 import cs3500.controller.MachinePlayerController;
 import cs3500.controller.PlayerController;
 import cs3500.controller.PawnsBoardViewControllerImpl;
-import cs3500.strategy.*;
+import cs3500.strategy.FillFirstStrategy;
+import cs3500.strategy.MaximizeRowScoreStrategy;
+import cs3500.strategy.MinimaxStrategy;
+import cs3500.strategy.ControlTheBoardStrategy;
+import cs3500.strategy.ChainedStrategy;
+
 import cs3500.view.PawnsBoardViewImpl;
 
 /**
  * The main entry point for the Pawns Board game.
- * <p>
  * This class configures the game based on command-line arguments
  * and starts the game using appropriate player strategies or GUI views.
- *
- * <p><b>Usage:</b>
- * <pre>
- *   java -jar pawnsboard.jar <deckFile> <redPlayerType> <bluePlayerType>
- * </pre>
- * Player types:
- * <ul>
- *   <li>human - GUI-based player</li>
- *   <li>fillfirst - FillFirstStrategy</li>
- *   <li>maximizerowscore - MaximizeRowScoreStrategy</li>
- *   <li>controlboard - ControlTheBoardStrategy</li>
- *   <li>minimax - MinimaxStrategy</li>
- *   <li>chain - Chain of MaximizeRowScore → FillFirst</li>
- * </ul>
+ * EX: java -jar pawnsboard.jar deckFile redPlayerType bluePlayerType
  */
 public class PawnsBoard {
 
@@ -48,8 +41,10 @@ public class PawnsBoard {
    */
   public static void main(String[] args) {
     if (args.length != 3) {
-      System.err.println("Usage: java -jar pawnsboard.jar <deckFile> <redPlayerType> <bluePlayerType>");
-      System.err.println("Player types: human | fillfirst | maximizerowscore | controlboard | minimax | chain");
+      System.err.println("Usage: java -jar pawnsboard.jar"
+              + " <deckFile> <redPlayerType> <bluePlayerType>");
+      System.err.println("Player types: human | fillfirst |"
+              + " maximizerowscore | controlboard | minimax | chain");
       return;
     }
 
@@ -91,14 +86,30 @@ public class PawnsBoard {
       Player redPlayer = new Player(Color.RED, redDeck, handSize);
       Player bluePlayer = new Player(Color.BLUE, blueDeck, handSize);
 
-      ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board, redPlayer, bluePlayer, redPlayer);
+      ReadOnlyBoardWrapper modelWrapper = new ReadOnlyBoardWrapper(board,
+              redPlayer, bluePlayer, redPlayer);
 
       // Create player controllers based on command-line input
       PlayerController redController = createController(redType, modelWrapper, Color.RED);
       PlayerController blueController = createController(blueType, modelWrapper, Color.BLUE);
 
       // Initialize game
-      Game game = new Game(board, redPlayer, bluePlayer, redController, blueController, modelWrapper);
+      Game game = new Game(board, redPlayer, bluePlayer, redController, blueController,
+              modelWrapper);
+
+      if (redController instanceof ControllerAdapter) {
+        ControllerAdapter adapter = (ControllerAdapter) redController;
+        adapter.setGame(game);
+        adapter.getModelAdapter().setGame(game);
+      }
+
+      if (blueController instanceof ControllerAdapter) {
+        ControllerAdapter adapter = (ControllerAdapter) blueController;
+        adapter.setGame(game);
+        adapter.getModelAdapter().setGame(game);
+      }
+
+
 
       // Provide game instance to controllers that need it
       if (redController instanceof MachinePlayerController) {
@@ -164,6 +175,19 @@ public class PawnsBoard {
                         new MaximizeRowScoreStrategy(),
                         new FillFirstStrategy()
                 )));
+
+      case "provider-human":
+        GameModelAdapter providerModel = new GameModelAdapter(null, modelWrapper);
+        cs3500.pawnsboard.provider.view.PawnsBoardView providerView =
+                new cs3500.pawnsboard.provider.view.PawnsBoardView(providerModel);
+
+        ControllerAdapter controllerAdapter =
+                new ControllerAdapter(null, providerView, color, providerModel);
+
+        providerModel.addModelStatusListener(controllerAdapter);
+
+        return controllerAdapter;
+
 
       default:
         throw new IllegalArgumentException("Unknown player type: " + type);

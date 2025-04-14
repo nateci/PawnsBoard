@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import java.awt.Color;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Implementing the view controller.

@@ -18,7 +18,7 @@ import java.util.List;
  */
 public class GameModelAdapter extends ModelAdapter implements GameModel {
 
-  private final Game game;
+  private Game game;
   private final List<ModelStatusListener> listeners = new ArrayList<>();
 
   public GameModelAdapter(Game game, ReadOnlyBoardWrapper model) {
@@ -33,6 +33,10 @@ public class GameModelAdapter extends ModelAdapter implements GameModel {
     if (listener != null && !listeners.contains(listener)) {
       listeners.add(listener);
     }
+  }
+
+  public void setGame(Game game) {
+    this.game = game;
   }
 
   @Override
@@ -61,8 +65,8 @@ public class GameModelAdapter extends ModelAdapter implements GameModel {
   @Override
   public Player getCurrentPlayer() {
     // We don't have direct access to the current player - stub implementation
-    Color playerColor = super.getCurrentPlayerColor() == PlayerInt.PlayerColor.RED ?
-        Color.RED : Color.BLUE;
+    Color playerColor = super.getCurrentPlayerColor() == PlayerInt.PlayerColor.RED
+            ? Color.RED : Color.BLUE;
     return new PlayerAdapter(playerColor);
   }
 
@@ -78,8 +82,8 @@ public class GameModelAdapter extends ModelAdapter implements GameModel {
    * Notify all listeners that the turn has changed.
    */
   public void notifyTurnChanged(Color newTurnColor) {
-    PlayerInt.PlayerColor adapterColor = (newTurnColor == Color.RED) ?
-         PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
+    PlayerInt.PlayerColor adapterColor = (newTurnColor == Color.RED)
+            ? PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
 
     for (ModelStatusListener listener : listeners) {
       listener.turnChanged(adapterColor);

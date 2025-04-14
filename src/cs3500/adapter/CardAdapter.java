@@ -3,7 +3,6 @@ package cs3500.adapter;
 import cs3500.pawnsboard.provider.model.Card;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardCard;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 

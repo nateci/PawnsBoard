@@ -16,6 +16,10 @@ import java.util.List;
 public class PlayerAdapter extends Player {
   private final Color color;
 
+  /**
+   * Constructor for Player Adapter that takes in a color.
+   * @param color for the player.
+   */
   public PlayerAdapter(Color color) {
     // Minimal initialization with empty deck
     super(color, new ArrayList<>(), 0);

@@ -38,8 +38,8 @@ public class ModelAdapter implements ReadOnlyGameModel {
   @Override
   public PlayerInt.PlayerColor getCurrentPlayerColor() {
     Color currentColor = model.getCurrentPlayerColor();
-    return (currentColor == Color.RED) ?
-        PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
+    return (currentColor == Color.RED)
+            ? PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
   }
 
   @Override
@@ -93,10 +93,10 @@ public class ModelAdapter implements ReadOnlyGameModel {
   public Card getCellCard(int row, int col) {
     try {
       cs3500.pawnsboard.ReadOnlyPawnsBoardCell cell = model.getCell(row, col);
-        if (cell.hasCard()) {
-          return new CardAdapter(cell.getCard());
-        }
-       return null;
+      if (cell.hasCard()) {
+        return new CardAdapter(cell.getCard());
+      }
+      return null;
     } catch (IllegalArgumentException e) {
       return null; // Out of bounds
     }
@@ -107,15 +107,17 @@ public class ModelAdapter implements ReadOnlyGameModel {
     try {
       cs3500.pawnsboard.ReadOnlyPawnsBoardCell cell = model.getCell(row, col);
       Color owner = cell.getOwner();
-        if (owner == null) {
-          return null;
-        }
-      return (owner == Color.RED) ?
-               PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
+      if (owner == null) {
+        return null;
+      }
+      return (owner == Color.RED)
+              ? PlayerInt.PlayerColor.RED
+              : PlayerInt.PlayerColor.BLUE;
     } catch (IllegalArgumentException e) {
       return null; // Out of bounds
     }
   }
+
 
   @Override
   public Cell getCell(int row, int col) {

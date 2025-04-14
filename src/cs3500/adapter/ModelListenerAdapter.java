@@ -12,16 +12,21 @@ import java.awt.Color;
 public class ModelListenerAdapter implements ModelFeatures {
   private final ModelStatusListener listener;
 
+  /**
+   * Constructor for the ModelListenerAdapter
+   * @param listener for the adapter.
+   */
+
   public ModelListenerAdapter(ModelStatusListener listener) {
-        this.listener = listener;
+    this.listener = listener;
   }
 
   @Override
   public void notifyPlayerTurn(Color playerColor) {
-    PlayerInt.PlayerColor color = (playerColor == Color.RED) ?
-              PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
+    PlayerInt.PlayerColor color = (playerColor == Color.RED)
+            ? PlayerInt.PlayerColor.RED : PlayerInt.PlayerColor.BLUE;
     listener.turnChanged(color);
-    }
+  }
 
   @Override
   public void notifyGameOver(Color winner, int redScore, int blueScore) {

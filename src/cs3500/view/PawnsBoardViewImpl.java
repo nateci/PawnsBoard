@@ -3,8 +3,17 @@ package cs3500.view;
 import cs3500.controller.PawnsBoardViewController;
 import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JRootPane;
+import javax.swing.KeyStroke;
+
+import java.awt.BorderLayout;
 
 /**
  * Implementation of the PawnsBoardView interface using Swing.

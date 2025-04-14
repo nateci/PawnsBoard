@@ -25,7 +25,17 @@ public interface PawnsBoardView {
    */
   void makeVisible();
 
+  /**
+   * Sets the status via a message.
+   *
+   * @param message sends a message to the user.
+   */
   void setStatus(String message);
+
+  /**
+   * Sets the title/header.
+   * @param title adds a title, or a status for the user to see.
+   */
   void setTitle(String title);
 
 }

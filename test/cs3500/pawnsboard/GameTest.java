@@ -65,7 +65,8 @@ public class GameTest {
     PawnsBoardViewControllerImpl controller = new PawnsBoardViewControllerImpl(view, Color.RED);
     ReadOnlyBoardWrapper wrapper = new ReadOnlyBoardWrapper(board,
             redPlayer, bluePlayer, redPlayer); // or currentPlayer
-    Game game = new Game(board, redPlayer, bluePlayer, (PlayerController) view, controller, wrapper);
+    Game game = new Game(board, redPlayer, bluePlayer, (PlayerController) view,
+            controller, wrapper);
     // Play the game (process both "pass" commands and end game)
     game.play();
     // Verify the game is over

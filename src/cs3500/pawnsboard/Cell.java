@@ -40,6 +40,8 @@ public class Cell implements PawnsBoardCell, ReadOnlyPawnsBoardCell {
 
   @Override
   public boolean canPlaceCard(Player player, Card card) {
+    System.out.printf("canPlaceCard: pawns=%d, cost=%d, owner=%s, playerColor=%s%n",
+            this.pawns, card.getCost(), this.owner, player.getColor());
     return this.pawns >= card.getCost() && this.owner == player.getColor();
   }
 
