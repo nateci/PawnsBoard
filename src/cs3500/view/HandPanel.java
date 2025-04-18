@@ -34,6 +34,7 @@ public class HandPanel extends JPanel {
 
   // Tracking selected card
   private int selectedCardIndex = -1;
+  private ColorScheme colorScheme = new DefaultColorScheme();
 
   /**
    * Creates a new hand panel with the specified model.
@@ -51,6 +52,7 @@ public class HandPanel extends JPanel {
         handleMouseClick(e);
       }
     });
+    setBackground(colorScheme.getCellColor(model.getCurrentPlayerColor(), false));
   }
 
   /**
@@ -67,6 +69,11 @@ public class HandPanel extends JPanel {
     // Set preferred size based on card dimensions
     int height = DEFAULT_CARD_HEIGHT + 50;
     return new Dimension(getWidth(), height);
+  }
+
+  public void setColorScheme(ColorScheme scheme) {
+    this.colorScheme = scheme;
+    repaint();
   }
 
   @Override
@@ -90,10 +97,10 @@ public class HandPanel extends JPanel {
    * @param g2d The graphics context
    */
   private void drawPlayerIndicator(Graphics2D g2d) {
-    g2d.setColor(Color.BLACK);
     g2d.setFont(new Font("Arial", Font.BOLD, 18));
     String playerText = "Player: " + (model.getCurrentPlayerColor() == Color.RED ? "RED" : "BLUE");
     g2d.drawString(playerText, 20, 25);
+    g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
   }
 
   /**
@@ -139,14 +146,12 @@ public class HandPanel extends JPanel {
     if (isSelected) {
       g2d.setColor(Color.CYAN); // Highlight selected card
     } else {
-      Color cardColor = model.getCurrentPlayerColor() == Color.RED
-              ? new Color(255, 200, 200) : new Color(200, 200, 255);
-      g2d.setColor(cardColor);
+      g2d.setColor(colorScheme.getCellColor(model.getCurrentPlayerColor(), isSelected));
     }
     g2d.fillRect(x, y, width, height);
 
     // Draw card border
-    g2d.setColor(Color.BLACK);
+    g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), isSelected));
     g2d.drawRect(x, y, width, height);
 
     // Draw card name
@@ -188,18 +193,31 @@ public class HandPanel extends JPanel {
         g2d.fillRect(cellX, cellY, INFLUENCE_CELL_SIZE, INFLUENCE_CELL_SIZE);
 
         // Draw cell border
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
         g2d.drawRect(cellX, cellY, INFLUENCE_CELL_SIZE, INFLUENCE_CELL_SIZE);
 
         // Color the cell based on influence type
         char influenceType = displayGrid[r][c];
-        if (influenceType == 'I') {
-          g2d.setColor(Color.CYAN);
-          g2d.fillRect(cellX, cellY, INFLUENCE_CELL_SIZE, INFLUENCE_CELL_SIZE);
-        } else if (influenceType == 'C') {
-          g2d.setColor(Color.ORANGE);
-          g2d.fillRect(cellX, cellY, INFLUENCE_CELL_SIZE, INFLUENCE_CELL_SIZE);
+
+        switch (influenceType) {
+          case 'I':
+            g2d.setColor(Color.CYAN); // Increase
+            break;
+          case 'C':
+            g2d.setColor(Color.ORANGE); // Center
+            break;
+          case 'U':
+            g2d.setColor(Color.GREEN.darker()); // Upgrade
+            break;
+          case 'D':
+            g2d.setColor(Color.MAGENTA); // Devalue
+            break;
+          default:
+            g2d.setColor(Color.DARK_GRAY); // Default filler
+            break;
         }
+        g2d.fillRect(cellX, cellY, INFLUENCE_CELL_SIZE, INFLUENCE_CELL_SIZE);
+
       }
     }
   }

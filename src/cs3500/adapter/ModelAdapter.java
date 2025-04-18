@@ -75,9 +75,9 @@ public class ModelAdapter implements ReadOnlyGameModel {
       } else {
         return Cell.CellContent.EMPTY;
       }
-      } catch (IllegalArgumentException e) {
-        return null; // Out of bounds
-      }
+    } catch (IllegalArgumentException e) {
+      return null; // Out of bounds
+    }
   }
 
   @Override

@@ -60,22 +60,22 @@ public class PawnsBoardView extends JFrame {
 
     // Key listener to notify action listeners for pass, confirm, and quit actions.
     this.addKeyListener(new KeyAdapter() {
-          @Override
-          public void keyPressed(KeyEvent e) {
-              char keyChar = e.getKeyChar();
-              if (keyChar == 'p') {
-                for (PlayerActionListener listener : actionListeners) {
-                  listener.passMove();
-                }
-              } else if (keyChar == 'c') {
-                for (PlayerActionListener listener : actionListeners) {
-                   listener.confirmMove();
-                }
-              } else if (keyChar == 'q') {
-                System.out.println("Quitting game.");
-                shutdownGame();
-              }
+      @Override
+      public void keyPressed(KeyEvent e) {
+        char keyChar = e.getKeyChar();
+        if (keyChar == 'p') {
+          for (PlayerActionListener listener : actionListeners) {
+            listener.passMove();
           }
+        } else if (keyChar == 'c') {
+          for (PlayerActionListener listener : actionListeners) {
+            listener.confirmMove();
+          }
+        } else if (keyChar == 'q') {
+          System.out.println("Quitting game.");
+          shutdownGame();
+        }
+      }
     });
     this.setFocusable(true);
     this.requestFocusInWindow();
@@ -175,7 +175,7 @@ public class PawnsBoardView extends JFrame {
     StringBuilder sb = new StringBuilder();
     sb.append("Final Scores:\n");
     sb.append("Red = ").append(scores[0]).append(", Blue = ")
-                .append(scores[1]).append("\n");
+            .append(scores[1]).append("\n");
     sb.append(winner).append("\n");
     sb.append("Press q to exit.");
     textArea.setText(sb.toString());
@@ -183,12 +183,12 @@ public class PawnsBoardView extends JFrame {
     winnersFrame.setSize(new Dimension(400, 300));
     winnersFrame.setLocationRelativeTo(null);
     winnersFrame.addKeyListener(new KeyAdapter() {
-          @Override
-          public void keyPressed(KeyEvent e) {
-            if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
-              System.exit(0);
-            }
-          }
+      @Override
+      public void keyPressed(KeyEvent e) {
+        if (e.getKeyChar() == 'q' || e.getKeyChar() == 'Q') {
+          System.exit(0);
+        }
+      }
     });
     winnersFrame.setFocusable(true);
     winnersFrame.requestFocusInWindow();
@@ -224,11 +224,11 @@ public class PawnsBoardView extends JFrame {
     public BoardPanel() {
       this.setPreferredSize(new Dimension(700, 400));
       this.addMouseListener(new MouseAdapter() {
-             @Override
-             public void mouseClicked(MouseEvent e) {
-               PawnsBoardView.this.requestFocusInWindow();
-               handleBoardClick(e.getX(), e.getY());
-             }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          PawnsBoardView.this.requestFocusInWindow();
+          handleBoardClick(e.getX(), e.getY());
+        }
       });
     }
 
@@ -295,7 +295,7 @@ public class PawnsBoardView extends JFrame {
             if (placedCard != null) {
               g.setColor((cellOwner == PlayerInt.PlayerColor.RED) ? Color.RED : Color.BLUE);
               String text = placedCard.getName() + " | Val:" + placedCard.getValue()
-                        + " | Cost:" + placedCard.getCost();
+                      + " | Cost:" + placedCard.getCost();
               drawCenteredString(g, text, x, y, cellWidth, cellHeight);
             }
           }
@@ -332,7 +332,7 @@ public class PawnsBoardView extends JFrame {
       int clickedCol = boardX / cellWidth;
       int clickedRow = mouseY / cellHeight;
       if (clickedRow >= 0 && clickedRow < model.getBoardRows()
-               && clickedCol >= 0 && clickedCol < model.getBoardCols()) {
+              && clickedCol >= 0 && clickedCol < model.getBoardCols()) {
         selectedRow = clickedRow;
         selectedCol = clickedCol;
         System.out.println("Board cell selected: (" + clickedRow + ", " + clickedCol + ")");
@@ -353,7 +353,7 @@ public class PawnsBoardView extends JFrame {
      * @param height the height of the rectangle.
      */
     private void drawCenteredString(Graphics g, String text, int x, int y,
-                                        int width, int height) {
+                                    int width, int height) {
       FontMetrics fm = g.getFontMetrics();
       int textWidth = fm.stringWidth(text);
       int textHeight = fm.getAscent();
@@ -381,11 +381,11 @@ public class PawnsBoardView extends JFrame {
       this.model = model;
       this.setPreferredSize(new Dimension(600, 200));
       this.addMouseListener(new MouseAdapter() {
-              @Override
-              public void mouseClicked(MouseEvent e) {
-                PawnsBoardView.this.requestFocusInWindow();
-                handleHandClick(e.getX(), e.getY());
-              }
+        @Override
+        public void mouseClicked(MouseEvent e) {
+          PawnsBoardView.this.requestFocusInWindow();
+          handleHandClick(e.getX(), e.getY());
+        }
       });
     }
 
@@ -403,7 +403,7 @@ public class PawnsBoardView extends JFrame {
       int cardWidth = Math.max(1, panelWidth / cardCount);
       PlayerInt.PlayerColor currentColor = model.getCurrentPlayerColor();
       Color cardColor = (currentColor == PlayerInt.PlayerColor.RED)
-               ? new Color(255, 200, 200) : new Color(200, 200, 255);
+              ? new Color(255, 200, 200) : new Color(200, 200, 255);
       int infoHeight = panelHeight / 3;
       int gridTopOffset = infoHeight + 10;
       int lineSpacing = 15;
@@ -418,31 +418,31 @@ public class PawnsBoardView extends JFrame {
           g.setColor(cardColor);
           g.fillRect(x, y, cardWidth, panelHeight);
         }
-          g.setColor(Color.BLACK);
-          g.drawRect(x, y, cardWidth, panelHeight);
-          g.setColor(Color.BLACK);
-          String info = card.getName() + " | Cost: " + card.getCost()
-                   + " | Value: " + card.getValue();
-          drawCenteredString(g, info, x, y, cardWidth, infoHeight, g.getFont());
-          char[][] rawGrid = card.getInfluenceGrid();
-          for (int row = 0; row < rawGrid.length; row++) {
-            String rowString = new String(rawGrid[row]);
-            int textX = x + 10;
-            int textY = y + gridTopOffset + (row * lineSpacing);
-            g.drawString(rowString, textX, textY);
-          }
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, cardWidth, panelHeight);
+        g.setColor(Color.BLACK);
+        String info = card.getName() + " | Cost: " + card.getCost()
+                + " | Value: " + card.getValue();
+        drawCenteredString(g, info, x, y, cardWidth, infoHeight, g.getFont());
+        char[][] rawGrid = card.getInfluenceGrid();
+        for (int row = 0; row < rawGrid.length; row++) {
+          String rowString = new String(rawGrid[row]);
+          int textX = x + 10;
+          int textY = y + gridTopOffset + (row * lineSpacing);
+          g.drawString(rowString, textX, textY);
+        }
       }
     }
 
-   /**
-    * Handles mouse clicks on the hand panel by converting screen coordinates
-    * to hand cell coordinates and selecting the card.
-    *
-    * @param mouseX the x-coordinate of the mouse click.
-    * @param mouseY the y-coordinate of the mouse click.
-    */
+    /**
+     * Handles mouse clicks on the hand panel by converting screen coordinates
+     * to hand cell coordinates and selecting the card.
+     *
+     * @param mouseX the x-coordinate of the mouse click.
+     * @param mouseY the y-coordinate of the mouse click.
+     */
     private void handleHandClick(int mouseX, int mouseY) {
-    List<Card> hand = model.getCurrentPlayerHand();
+      List<Card> hand = model.getCurrentPlayerHand();
       if (hand.isEmpty()) {
         return;
       }
@@ -457,7 +457,7 @@ public class PawnsBoardView extends JFrame {
           selectedCardIndex = clickedIndex;
         }
         System.out.println("Hand card clicked: index " + clickedIndex + " ("
-             + hand.get(clickedIndex).getName() + ")");
+                + hand.get(clickedIndex).getName() + ")");
         PawnsBoardView.this.selectedCardIndex = selectedCardIndex;
         repaint();
       }
@@ -475,7 +475,7 @@ public class PawnsBoardView extends JFrame {
      * @param font  the font to use.
      */
     private void drawCenteredString(Graphics g, String text, int x, int y,
-                                        int width, int height, Font font) {
+                                    int width, int height, Font font) {
       FontMetrics fm = g.getFontMetrics(font);
       int textWidth = fm.stringWidth(text);
       int textHeight = fm.getAscent();
@@ -496,7 +496,7 @@ public class PawnsBoardView extends JFrame {
      * @param height the height of the rectangle.
      */
     private void drawCenteredString(Graphics g, String text, int x, int y,
-                                        int width, int height) {
+                                    int width, int height) {
       drawCenteredString(g, text, x, y, width, height, g.getFont());
     }
 

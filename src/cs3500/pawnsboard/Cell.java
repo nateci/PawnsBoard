@@ -45,11 +45,11 @@ public class Cell implements PawnsBoardCell, ReadOnlyPawnsBoardCell {
     return this.pawns >= card.getCost() && this.owner == player.getColor();
   }
 
-  @Override
+  private int valueModifier = 0;
+  private boolean modifierFrozen = false;
+
   public void influenceBoard(Color playerColor, char influenceType) {
-    if (card != null) {
-      return;
-    }
+    if (card != null) return;
 
     if (influenceType == 'I') {
       if (pawns == 0) {
@@ -60,8 +60,27 @@ public class Cell implements PawnsBoardCell, ReadOnlyPawnsBoardCell {
       } else if (this.owner != playerColor) {
         this.owner = playerColor;
       }
+    } else if (influenceType == 'U') {
+      if (!modifierFrozen) valueModifier++;
+    } else if (influenceType == 'D') {
+      if (!modifierFrozen) valueModifier--;
     }
   }
+
+  public int getValueModifier() {
+    return valueModifier;
+  }
+
+  public void removeCardAndConvertToPawns() {
+    if (card != null) {
+      this.pawns = card.getCost();
+      this.owner = card.getOwner();
+      this.card = null;
+      this.valueModifier = 0;
+      this.modifierFrozen = true;
+    }
+  }
+
 
   @Override
   public int getPawnCount() {

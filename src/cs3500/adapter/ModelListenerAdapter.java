@@ -13,7 +13,7 @@ public class ModelListenerAdapter implements ModelFeatures {
   private final ModelStatusListener listener;
 
   /**
-   * Constructor for the ModelListenerAdapter
+   * Constructor for the ModelListenerAdapter.
    * @param listener for the adapter.
    */
 

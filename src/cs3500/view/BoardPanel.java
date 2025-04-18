@@ -30,6 +30,8 @@ public class BoardPanel extends JPanel {
   private int selectedRow = -1;
   private int selectedCol = -1;
 
+  private ColorScheme colorScheme = new DefaultColorScheme();
+
   /**
    * Creates a new board panel with the specified model.
    *
@@ -46,6 +48,11 @@ public class BoardPanel extends JPanel {
         handleMouseClick(e);
       }
     });
+  }
+
+  public void setColorScheme(ColorScheme scheme) {
+    this.colorScheme = scheme;
+    repaint();
   }
 
   /**
@@ -114,14 +121,12 @@ public class BoardPanel extends JPanel {
         int y = offsetY + row * cellSize;
 
         // Draw cell background
-        if (row == selectedRow && col == selectedCol) {
-          g2d.setColor(Color.CYAN); // Highlight selected cell
-        } else {
-          g2d.setColor(Color.GRAY);
-        }
+        boolean isHighlighted = (row == selectedRow && col == selectedCol);
+        g2d.setColor(colorScheme.getCellColor(model.getCurrentPlayerColor(), isHighlighted));
         g2d.fillRect(x, y, cellSize, cellSize);
+
         // Draw cell border
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
         g2d.drawRect(x, y, cellSize, cellSize);
 
         // Draw cell contents
@@ -150,7 +155,7 @@ public class BoardPanel extends JPanel {
       g2d.fillRect(x, y, cellSize, cellSize);
 
       // Draw card value
-      g2d.setColor(Color.BLACK);
+      g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
       g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 3));
       String valueText = String.valueOf(card.getValue());
       FontMetrics fm = g2d.getFontMetrics();
@@ -159,8 +164,9 @@ public class BoardPanel extends JPanel {
       g2d.drawString(valueText, textX, textY);
     } else if (cell.getPawnCount() > 0) {
       // Draw pawn
-      Color pawnColor = cell.getOwner() == Color.RED
-              ? new Color(255, 150, 150) : new Color(150, 150, 255);
+      Color pawnColor = cell.getOwner().equals(Color.RED)
+              ? colorScheme.getScoreCircleColor(Color.RED)
+              : colorScheme.getScoreCircleColor(Color.BLUE);
       g2d.setColor(pawnColor);
       int pawnSize = cellSize / 2;
       int pawnX = x + (cellSize - pawnSize) / 2;
@@ -169,13 +175,24 @@ public class BoardPanel extends JPanel {
 
       // If more than one pawn, draw the count
       if (cell.getPawnCount() > 1) {
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
         g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));
         String countText = String.valueOf(cell.getPawnCount());
         FontMetrics fm = g2d.getFontMetrics();
         int textX = x + (cellSize - fm.stringWidth(countText)) / 2;
         int textY = y + (cellSize + fm.getAscent()) / 2;
         g2d.drawString(countText, textX, textY);
+      }
+      // === Modifier Overlay ===
+      int mod = cell.getValueModifier();
+      if (mod != 0) {
+        g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));
+        g2d.setColor(mod > 0 ? Color.GREEN.darker() : Color.MAGENTA);
+        String modText = (mod > 0 ? "+" : "") + mod;
+        FontMetrics fm = g2d.getFontMetrics();
+        int textX = x + cellSize - fm.stringWidth(modText) - 4;
+        int textY = y + cellSize - 4;
+        g2d.drawString(modText, textX, textY);
       }
     }
   }
@@ -190,20 +207,21 @@ public class BoardPanel extends JPanel {
    */
   private void drawRowScores(Graphics2D g2d, int offsetX, int offsetY, int cellSize) {
     g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 3));
+    g2d.setColor(Color.BLACK); // Always black text (since it's over white background)
 
     for (int row = 0; row < model.getBoardRows(); row++) {
       int[] scores = model.calculateRowScores(row);
       int redScore = scores[0];
       int blueScore = scores[1];
 
-      // Draw Red's score (left side)
-      g2d.setColor(Color.BLACK);
+      int rowY = offsetY + row * cellSize + cellSize / 2;
+
+      // Red score (left)
       String redText = String.valueOf(redScore);
       int redX = offsetX - cellSize / 2;
-      int rowY = offsetY + row * cellSize + cellSize / 2;
       g2d.drawString(redText, redX, rowY);
 
-      // Draw Blue's score (right side)
+      // Blue score (right)
       String blueText = String.valueOf(blueScore);
       int blueX = offsetX + model.getBoardCols() * cellSize + cellSize / 4;
       g2d.drawString(blueText, blueX, rowY);

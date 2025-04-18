@@ -6,14 +6,18 @@ import cs3500.pawnsboard.ReadOnlyPawnsBoardModel;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.InputMap;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JRootPane;
 import javax.swing.KeyStroke;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 
 /**
  * Implementation of the PawnsBoardView interface using Swing.
@@ -40,6 +44,7 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     // Create the main components
     boardPanel = new BoardPanel(model);
     handPanel = new HandPanel(model);
+    handPanel.setColorScheme(new DefaultColorScheme());
     statusLabel = new JLabel("Welcome to Pawns Board!");
     statusLabel.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 
@@ -48,11 +53,53 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     add(handPanel, BorderLayout.SOUTH);
     add(statusLabel, BorderLayout.NORTH);
 
+    JPanel legendPanel = createLegendPanel();
+    addContrastToggle(boardPanel, legendPanel);
+    add(legendPanel, BorderLayout.EAST);
+
     // Set up key listener for confirming moves or passing
     setupKeyBindings();
 
     // Set initial size
     setSize(800, 600);
+  }
+
+  private boolean highContrastEnabled = false;
+
+  private void addContrastToggle(BoardPanel boardPanel, JPanel container) {
+    JCheckBox toggle = new JCheckBox("High Contrast");
+    toggle.addActionListener(e -> {
+      highContrastEnabled = toggle.isSelected();
+
+      ColorScheme scheme = highContrastEnabled
+              ? new HighContrastColorScheme()
+              : new DefaultColorScheme();
+      boardPanel.setColorScheme(scheme);
+      handPanel.setColorScheme(scheme); // ← Add this line
+    });
+    container.add(toggle);
+  }
+
+
+  private JPanel createLegendPanel() {
+    JPanel legend = new JPanel();
+    legend.setLayout(new BoxLayout(legend, BoxLayout.X_AXIS));
+    legend.add(makeLegendItem(Color.GREEN.darker(), "Upgrade (U)"));
+    legend.add(makeLegendItem(Color.MAGENTA, "Devalue (D)"));
+    legend.add(makeLegendItem(Color.ORANGE, "Increase (I)"));
+    legend.add(makeLegendItem(Color.GRAY, "Card Center (C)"));
+    return legend;
+  }
+
+  private JPanel makeLegendItem(Color color, String text) {
+    JPanel item = new JPanel();
+    item.setLayout(new BoxLayout(item, BoxLayout.Y_AXIS));
+    JPanel colorBox = new JPanel();
+    colorBox.setBackground(color);
+    colorBox.setPreferredSize(new java.awt.Dimension(20, 20));
+    item.add(colorBox);
+    item.add(new JLabel(text));
+    return item;
   }
 
   @Override

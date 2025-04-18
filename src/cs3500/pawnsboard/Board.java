@@ -83,13 +83,17 @@ public class Board implements GameBoard {
   public void printTextView() {
     for (int r = 0; r < rows; r++) {
       int[] scores = calculateRowScores(r);
-      System.out.print(scores[0] + " ");  // prints the red row scores to the board
-
+      System.out.print(scores[0] + " ");
       for (int c = 0; c < cols; c++) {
-        System.out.print(grid[r][c].toTextualView()); // prints the actual card to the board
+        Cell cell = grid[r][c];
+        String base = cell.toTextualView();
+        int mod = cell.getValueModifier();
+        if (mod != 0) {
+          base += "(" + (mod > 0 ? "+" : "") + mod + ")";
+        }
+        System.out.print(base + " ");
       }
-
-      System.out.println(" " + scores[1]); // prints the blue row scores to the board
+      System.out.println(" " + scores[1]);
     }
   }
 
@@ -98,17 +102,24 @@ public class Board implements GameBoard {
     int redScore = 0;
     int blueScore = 0;
     for (int c = 0; c < cols; c++) {
-      Cell cell = grid[row][c];
-      if (cell.hasCard()) { // checks if a cell has a card
-        Card card = cell.getCard();
-        if (cell.getOwner() == Color.RED) {
-          redScore += card.getValue(); // if the card belongs to red add value of card to red score
+      Card card = grid[row][c].getCard();
+      if (card != null) {
+        int baseValue = card.getValue();
+        int mod = grid[row][c].getValueModifier();
+        int modifiedValue = baseValue + mod;
+
+        if (modifiedValue <= 0) {
+          grid[row][c].removeCardAndConvertToPawns();
+          continue;
+        }
+
+        if (card.getOwner() == Color.RED) {
+          redScore += modifiedValue;
         } else {
-          blueScore += card.getValue(); // if the card belongs to blue add value of card to blue
+          blueScore += modifiedValue;
         }
       }
     }
-
     return new int[]{redScore, blueScore}; // returns both the blue and red scores
   }
 

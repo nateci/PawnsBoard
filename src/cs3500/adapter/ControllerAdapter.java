@@ -30,7 +30,8 @@ public class ControllerAdapter implements PlayerActionListener,
    * @param playerColor registers a player color.
    * @param model registers a model.
    */
-  public ControllerAdapter(Game game, PawnsBoardView view, Color playerColor, GameModelAdapter model) {
+  public ControllerAdapter(Game game, PawnsBoardView view, Color playerColor,
+                           GameModelAdapter model) {
     this.game = game;
     this.view = view;
     this.playerColor = playerColor;
