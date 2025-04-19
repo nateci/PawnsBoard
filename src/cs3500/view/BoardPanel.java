@@ -154,7 +154,7 @@ public class BoardPanel extends JPanel {
       g2d.setColor(playerColor);
       g2d.fillRect(x, y, cellSize, cellSize);
 
-      // Draw card value
+      // Draw base card value
       g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
       g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 3));
       String valueText = String.valueOf(card.getValue());
@@ -162,6 +162,19 @@ public class BoardPanel extends JPanel {
       int textX = x + (cellSize - fm.stringWidth(valueText)) / 2;
       int textY = y + (cellSize + fm.getAscent()) / 2;
       g2d.drawString(valueText, textX, textY);
+
+      // Draw modifier overlay if present
+      int mod = cell.getValueModifier();
+      if (mod != 0) {
+        g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));
+        g2d.setColor(mod > 0 ? Color.GREEN.darker() : Color.MAGENTA);
+        String modText = (mod > 0 ? "+" : "") + mod;
+        FontMetrics modFm = g2d.getFontMetrics();
+        int modX = x + cellSize - modFm.stringWidth(modText) - 4;
+        int modY = y + cellSize - 4;
+        g2d.drawString(modText, modX, modY);
+      }
+
     } else if (cell.getPawnCount() > 0) {
       // Draw pawn
       Color pawnColor = cell.getOwner().equals(Color.RED)

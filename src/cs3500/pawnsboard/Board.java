@@ -43,8 +43,10 @@ public class Board implements GameBoard {
     }
     grid[row][col].setCard(card);
     applyInfluence(player, card, row, col);
+    applyPostInfluenceCleanup();
     return true;
   }
+
 
   private void applyInfluence(Player player, Card card, int row, int col) {
     char[][] influence = player.getColor() == RED
@@ -201,5 +203,19 @@ public class Board implements GameBoard {
       }
     }
     return copiedBoard;
+  }
+
+  private void applyPostInfluenceCleanup() {
+    for (int r = 0; r < rows; r++) {
+      for (int c = 0; c < cols; c++) {
+        Cell cell = grid[r][c];
+        if (cell.hasCard()) {
+          int effectiveValue = cell.getCard().getValue() + cell.getValueModifier();
+          if (effectiveValue <= 0) {
+            cell.removeCardAndConvertToPawns();
+          }
+        }
+      }
+    }
   }
 }

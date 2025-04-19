@@ -49,23 +49,29 @@ public class Cell implements PawnsBoardCell, ReadOnlyPawnsBoardCell {
   private boolean modifierFrozen = false;
 
   public void influenceBoard(Color playerColor, char influenceType) {
-    if (card != null) return;
-
-    if (influenceType == 'I') {
-      if (pawns == 0) {
-        this.pawns = 1;
-        this.owner = playerColor;
-      } else if (this.owner == playerColor && pawns < 3) {
-        this.pawns++;
-      } else if (this.owner != playerColor) {
-        this.owner = playerColor;
+    if (card == null) {
+      // Pawn logic (same as before)
+      if (influenceType == 'I') {
+        if (pawns == 0) {
+          this.pawns = 1;
+          this.owner = playerColor;
+        } else if (this.owner == playerColor && pawns < 3) {
+          this.pawns++;
+        } else if (this.owner != playerColor) {
+          this.owner = playerColor;
+        }
       }
-    } else if (influenceType == 'U') {
-      if (!modifierFrozen) valueModifier++;
-    } else if (influenceType == 'D') {
-      if (!modifierFrozen) valueModifier--;
+    }
+    if (!modifierFrozen) {
+      if (influenceType == 'U') {
+        valueModifier++;
+      } else if (influenceType == 'D') {
+        valueModifier--;
+      }
     }
   }
+
+
 
   public int getValueModifier() {
     return valueModifier;

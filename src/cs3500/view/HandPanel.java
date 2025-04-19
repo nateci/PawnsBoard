@@ -201,10 +201,10 @@ public class HandPanel extends JPanel {
 
         switch (influenceType) {
           case 'I':
-            g2d.setColor(Color.CYAN); // Increase
+            g2d.setColor(Color.YELLOW); // Increase
             break;
           case 'C':
-            g2d.setColor(Color.ORANGE); // Center
+            g2d.setColor(Color.GRAY); // Center
             break;
           case 'U':
             g2d.setColor(Color.GREEN.darker()); // Upgrade
