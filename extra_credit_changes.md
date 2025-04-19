@@ -1,10 +1,10 @@
-## 🔧 Changes for Extra Credit Features
+## Changes for Extra Credit Features
 
-The following files were **created** or **modified** to implement all 3 extra credit features.
+The following files were **created** // **modified** to implement the extra credit features.
 
 ---
 
-### 🆕 Files Created
+### Files Created
 
 #### `ColorScheme.java`
 - An interface defining theming behavior for contrast modes:
@@ -16,16 +16,14 @@ The following files were **created** or **modified** to implement all 3 extra cr
 #### `DefaultColorScheme.java`
 - Implements the normal mode color scheme:
   - Light red/blue themes, black text, cyan highlight
-  - Used as the default view for all components
+  - Used as the default view for all components (that way we can impl a contrast scheme)
 
 #### `HighContrastColorScheme.java`
 - Implements high contrast mode:
   - Pure black cells, white text, red/cyan pawns, yellow highlight
-  - Ensures maximum accessibility
-
 ---
 
-### 🧾 Files Modified
+### Files Modified
 
 #### `BoardPanel.java`
 - Added a `ColorScheme colorScheme` field with a default
@@ -48,3 +46,27 @@ The following files were **created** or **modified** to implement all 3 extra cr
   - Calls `boardPanel.setColorScheme(...)` and `handPanel.setColorScheme(...)` accordingly
 - Attached the toggle to the existing `legendPanel`
 - Set default color scheme on both panels at construction
+
+#### `Board.java`
+- Updated `placeCard(...)` and `applyInfluence(...)` logic to support new influence types:
+  - `'U'` (Upgrade): increases value modifier on the target cell
+  - `'D'` (Devalue): decreases value modifier on the target cell
+- Handles card removal when a cell's effective value drops to 0 or below:
+  - Removes the card
+  - Leaves pawns in the cell matching the card's original cost
+  - Resets the modifier for that cell
+- `calculateRowScores(...)` was modified to factor in value modifiers (`getValueModifier()`)
+
+#### `Cell.java`
+- Added support for value-based influence via:
+  - `int valueModifier` — tracks net influence from Upgrade (U) and Devalue (D)
+  - `boolean modifierFrozen` — locks the modifier after a card is removed from the cell
+- methods changed:
+  - `getValueModifier()` — returns the cumulative upgrade/devalue influence
+  - `removeCardAndConvertToPawns()` — handles card deletion when value ≤ 0, drops pawns, and freezes the modifier
+  - modified `influenceBoard(...)` — applies `I`, `U`, or `D` logic based on influence type:
+    - `'I'` increases pawn count or converts ownership
+    - `'U'` increases future card value (if not frozen)
+    - `'D'` decreases future card value (if not frozen)
+- Ensures modifiers stack, persist, and reset when required
+
