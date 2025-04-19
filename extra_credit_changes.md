@@ -21,6 +21,9 @@ The following files were **created** // **modified** to implement the extra cred
 #### `HighContrastColorScheme.java`
 - Implements high contrast mode:
   - Pure black cells, white text, red/cyan pawns, yellow highlight
+ 
+#### `UDDeck.config`
+- New deck that supports all the new features for (I,C,U,D)
 ---
 
 ### Files Modified
