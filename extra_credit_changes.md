@@ -14,13 +14,13 @@ The following files were **created** // **modified** to implement the extra cred
   - `getHighlightColor()`
 
 #### `DefaultColorScheme.java`
-- Implements the normal mode color scheme:
+- Will now implement the normal mode color scheme:
   - Light red/blue themes, black text, cyan highlight
   - Used as the default view for all components (that way we can impl a contrast scheme)
 
 #### `HighContrastColorScheme.java`
 - Implements high contrast mode:
-  - Pure black cells, white text, red/cyan pawns, yellow highlight
+  - Pure black cells, white text, (pure) red/cyan pawns, yellow highlight
  
 #### `UDDeck.config`
 - New deck that supports all the new features for (I,C,U,D)
@@ -52,7 +52,7 @@ The following files were **created** // **modified** to implement the extra cred
 - Created `addContrastToggle(...)` method that:
   - Adds a checkbox to toggle contrast mode at runtime
   - Calls `boardPanel.setColorScheme(...)` and `handPanel.setColorScheme(...)` accordingly
-- Attached the toggle to the existing `legendPanel`
+- Attached the toggle to the existing `legendPanel` 
 - Set default color scheme on both panels at construction
 
 #### `Board.java`
@@ -64,7 +64,7 @@ The following files were **created** // **modified** to implement the extra cred
   - Leaves pawns in the cell matching the card's original cost
   - Resets the modifier for that cell
 - `calculateRowScores(...)` was modified to factor in value modifiers (`getValueModifier()`)
-- Added the method `applyPostInfluenceCleanup()` to trigger value-based removal logic after influence is applied
+- Also we added the method `applyPostInfluenceCleanup()` to trigger value-based removal logic after influence is applied (helper for cleaning cards)
 
 #### `Cell.java`
 - Added support for value-based influence via:
