@@ -42,6 +42,11 @@ The following files were **created** // **modified** to implement the extra cred
 - Updated:
   - `drawPlayerIndicator(...)` to use `getTextColor(...)`
   - `drawCard(...)` to use `getCellColor(...)` for background and `getTextColor(...)` for all text
+  - we updated the influence grid rendering to correctly reflect influence types:
+    - 'I' → yellow
+    - 'U' → green
+    - 'D' → magenta
+    - 'C' → grey (center cell)
 
 #### `PawnsBoardViewImpl.java`
 - Created `addContrastToggle(...)` method that:
@@ -59,6 +64,7 @@ The following files were **created** // **modified** to implement the extra cred
   - Leaves pawns in the cell matching the card's original cost
   - Resets the modifier for that cell
 - `calculateRowScores(...)` was modified to factor in value modifiers (`getValueModifier()`)
+- Added the method `applyPostInfluenceCleanup()` to trigger value-based removal logic after influence is applied
 
 #### `Cell.java`
 - Added support for value-based influence via:
