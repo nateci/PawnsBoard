@@ -147,27 +147,28 @@ public class BoardPanel extends JPanel {
    */
   private void drawCellContents(Graphics2D g2d, Cell cell, int x, int y, int cellSize) {
     if (cell.hasCard()) {
-      // Draw card
+      // === Render card background ===
       Card card = cell.getCard();
       Color playerColor = card.getOwner() == Color.RED
-              ? new Color(255, 200, 200) : new Color(200, 200, 255);
+              ? new Color(255, 200, 200)  // light red for red cards
+              : new Color(200, 200, 255); // light blue for blue cards
       g2d.setColor(playerColor);
       g2d.fillRect(x, y, cellSize, cellSize);
 
-      // Draw base card value
+      // === Draw card base value ===
       g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
       g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 3));
-      String valueText = String.valueOf(card.getValue());
+      String valueText = String.valueOf(card.getValue()); // base (unmodified) value
       FontMetrics fm = g2d.getFontMetrics();
       int textX = x + (cellSize - fm.stringWidth(valueText)) / 2;
       int textY = y + (cellSize + fm.getAscent()) / 2;
       g2d.drawString(valueText, textX, textY);
 
-      // Draw modifier overlay if present
+      // === Draw value modifier overlay, if present ===
       int mod = cell.getValueModifier();
       if (mod != 0) {
         g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));
-        g2d.setColor(mod > 0 ? Color.GREEN.darker() : Color.MAGENTA);
+        g2d.setColor(mod > 0 ? Color.GREEN.darker() : Color.MAGENTA); // color based on type
         String modText = (mod > 0 ? "+" : "") + mod;
         FontMetrics modFm = g2d.getFontMetrics();
         int modX = x + cellSize - modFm.stringWidth(modText) - 4;
@@ -176,7 +177,7 @@ public class BoardPanel extends JPanel {
       }
 
     } else if (cell.getPawnCount() > 0) {
-      // Draw pawn
+      // === Render pawn circle ===
       Color pawnColor = cell.getOwner().equals(Color.RED)
               ? colorScheme.getScoreCircleColor(Color.RED)
               : colorScheme.getScoreCircleColor(Color.BLUE);
@@ -186,7 +187,7 @@ public class BoardPanel extends JPanel {
       int pawnY = y + (cellSize - pawnSize) / 2;
       g2d.fillOval(pawnX, pawnY, pawnSize, pawnSize);
 
-      // If more than one pawn, draw the count
+      // === Draw pawn count if more than 1 ===
       if (cell.getPawnCount() > 1) {
         g2d.setColor(colorScheme.getTextColor(model.getCurrentPlayerColor(), false));
         g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));
@@ -196,7 +197,8 @@ public class BoardPanel extends JPanel {
         int textY = y + (cellSize + fm.getAscent()) / 2;
         g2d.drawString(countText, textX, textY);
       }
-      // === Modifier Overlay ===
+
+      // === Draw value modifier on pawn cell (if present) ===
       int mod = cell.getValueModifier();
       if (mod != 0) {
         g2d.setFont(new Font("Arial", Font.BOLD, cellSize / 4));

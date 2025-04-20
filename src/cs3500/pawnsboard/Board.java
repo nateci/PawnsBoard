@@ -48,27 +48,57 @@ public class Board implements GameBoard {
   }
 
 
+  /**
+   * Applies the influence of a card to the surrounding cells on the board.
+   *
+   * The card's 5x5 influence grid determines how nearby cells are affected.
+   * If the player is RED, the original influence grid is used.
+   * If the player is BLUE, a mirrored version is used (to reflect board symmetry).
+   * The center of the influence grid ('C') aligns with the card's placement location.
+   * Influence types can include:
+   *   - 'I' (Increase pawn count or convert ownership)
+   *   - 'U' (Upgrade: +1 modifier)
+   *   - 'D' (Devalue: -1 modifier)
+   *
+   * @param player the player placing the card
+   * @param card   the card being placed
+   * @param row    the row of the placed card
+   * @param col    the column of the placed card
+   */
   private void applyInfluence(Player player, Card card, int row, int col) {
+    // Use the regular or mirrored influence grid depending on the player's color
     char[][] influence = player.getColor() == RED
-            // if the player is red use the regular influence grid, mirrored for blue
-            ? card.getInfluenceGrid() : card.getMirroredInfluenceGrid();
-    int center = 2;  // the center of the influence grid
+            ? card.getInfluenceGrid()
+            : card.getMirroredInfluenceGrid();
+
+    int center = 2; // Center of a 5x5 grid (used to align influence around the placed card)
+
+    // Loop through the influence grid
     for (int r = 0; r < 5; r++) {
       for (int c = 0; c < 5; c++) {
-        int targetRow = row + (r - center); // sub. center from original  results in influenced row
-        int targetCol = col + (c - center); // sub. center from original  results in influenced col
+        // Convert local grid coordinates to board coordinates
+        int targetRow = row + (r - center);
+        int targetCol = col + (c - center);
 
+        // If the cell is within bounds, apply influence
         if (isValidCell(targetRow, targetCol)) {
-          grid[targetRow][targetCol].influenceBoard(player.getColor(), influence[r][c]);  // applies
-          // influence to the board
+          grid[targetRow][targetCol].influenceBoard(player.getColor(), influence[r][c]);
         }
       }
     }
   }
 
+  /**
+   * Checks if a given board position is within the valid bounds.
+   *
+   * @param row the row index to check
+   * @param col the column index to check
+   * @return true if the position is valid, false otherwise
+   */
   private boolean isValidCell(int row, int col) {
     return row >= 0 && row < rows && col >= 0 && col < cols;
   }
+
 
   @Override
   public boolean isValidMove(Player player, Card card, int row, int col) {
@@ -111,7 +141,7 @@ public class Board implements GameBoard {
         int modifiedValue = baseValue + mod;
 
         if (modifiedValue <= 0) {
-          grid[row][c].removeCardAndConvertToPawns();
+          grid[row][c].removeCardAndConvertToPawns(); //For valid row scores for ex. credit
           continue;
         }
 
@@ -205,12 +235,27 @@ public class Board implements GameBoard {
     return copiedBoard;
   }
 
+  /**
+   * Scans all cells on the board and removes any cards whose effective value is 0 or less.
+   *
+   * The effective value of a card is its base value plus any influence-based modifiers
+   * applied by upgrade ('U') or devalue ('D') effects. If the value is 0 or below:
+   * - The card is removed from the board.
+   * - The cell is populated with pawns equal to the card's cost.
+   * - Ownership is set to the original card's owner.
+   * - The value modifier is reset and frozen to prevent further changes.
+   *
+   * This is called after new influence is applied to ensure all invalid cards are removed.
+   */
   private void applyPostInfluenceCleanup() {
     for (int r = 0; r < rows; r++) {
       for (int c = 0; c < cols; c++) {
         Cell cell = grid[r][c];
         if (cell.hasCard()) {
+          // Calculate effective value of the card after all modifiers
           int effectiveValue = cell.getCard().getValue() + cell.getValueModifier();
+
+          // If value is zero or negative, remove the card and convert it to pawns
           if (effectiveValue <= 0) {
             cell.removeCardAndConvertToPawns();
           }

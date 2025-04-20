@@ -30,6 +30,9 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
   private final JLabel statusLabel;
   private PawnsBoardViewController controller;
 
+  private boolean highContrastEnabled = false;
+
+
   /**
    * Creates a new view with the specified model.
    *
@@ -64,43 +67,75 @@ public class PawnsBoardViewImpl extends JFrame implements PawnsBoardView {
     setSize(800, 600);
   }
 
-  private boolean highContrastEnabled = false;
-
+  /**
+   * Adds a toggle checkbox to enable or disable high contrast mode.
+   * Updates both the board and hand panels with the appropriate ColorScheme.
+   *
+   * @param boardPanel The BoardPanel whose theme should be updated.
+   * @param container  The panel to which the toggle checkbox should be added.
+   */
   private void addContrastToggle(BoardPanel boardPanel, JPanel container) {
     JCheckBox toggle = new JCheckBox("High Contrast");
+
+    // Handle toggle behavior
     toggle.addActionListener(e -> {
       highContrastEnabled = toggle.isSelected();
 
+      // Choose the color scheme based on toggle state
       ColorScheme scheme = highContrastEnabled
               ? new HighContrastColorScheme()
               : new DefaultColorScheme();
+
+      // Apply the scheme to both board and hand panels
       boardPanel.setColorScheme(scheme);
-      handPanel.setColorScheme(scheme); // ← Add this line
+      handPanel.setColorScheme(scheme);
     });
+
+    // Add the checkbox to the container (e.g. legend panel)
     container.add(toggle);
   }
 
-
+  /**
+   * Creates a legend panel that visually explains the meaning of different influence colors.
+   * Includes visual boxes with labels for Upgrade (U), Devalue (D), Increase (I),
+   * and Card Center (C).
+   *
+   * @return A JPanel containing the influence legend.
+   */
   private JPanel createLegendPanel() {
     JPanel legend = new JPanel();
     legend.setLayout(new BoxLayout(legend, BoxLayout.X_AXIS));
+
+    // Add labeled color boxes for each influence type
     legend.add(makeLegendItem(Color.GREEN.darker(), "Upgrade (U)"));
     legend.add(makeLegendItem(Color.MAGENTA, "Devalue (D)"));
     legend.add(makeLegendItem(Color.ORANGE, "Increase (I)"));
     legend.add(makeLegendItem(Color.GRAY, "Card Center (C)"));
+
     return legend;
   }
 
+  /**
+   * Creates an individual item in the legend with a colored box and description label.
+   *
+   * @param color The background color representing the influence type.
+   * @param text  The label text describing the influence.
+   * @return A JPanel with the visual legend item.
+   */
   private JPanel makeLegendItem(Color color, String text) {
     JPanel item = new JPanel();
     item.setLayout(new BoxLayout(item, BoxLayout.Y_AXIS));
+
+    // Colored box representing the influence type
     JPanel colorBox = new JPanel();
     colorBox.setBackground(color);
     colorBox.setPreferredSize(new java.awt.Dimension(20, 20));
+
     item.add(colorBox);
     item.add(new JLabel(text));
     return item;
   }
+
 
   @Override
   public void refresh() {
