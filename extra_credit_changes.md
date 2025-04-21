@@ -32,8 +32,9 @@ The following files were **created** // **modified** to implement the extra cred
 - Added a `ColorScheme colorScheme` field with a default
 - Added `setColorScheme(...)` method to inject new schemes at runtime
 - Updated:
-  - `drawBoard(...)` to use `colorScheme.getCellColor(...)`
-  - `drawCellContents(...)` to use `colorScheme.getTextColor(...)`, `getScoreCircleColor(...)`
+  - `drawBoard(...)` to use `colorScheme.getCellColor(...)` 
+  - `drawCellContents(...)` to use `colorScheme.getTextColor(...)`, `getScoreCircleColor(...)` , and refractored logic out into:
+    -  `drawCenteredText`, `drawValueModifier`, `drawPawn`, and `drawCard`
   - `drawRowScores(...)` now uses `Color.BLACK` always for visibility on white margin
 
 #### `HandPanel.java`
